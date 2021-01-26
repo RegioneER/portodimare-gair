@@ -1,0 +1,19 @@
+GAIR Users Guide
+===================
+
+.. toctree::
+    :maxdepth: 2
+
+    data/index
+    managing_layers/index
+    managing_maps/index
+    publishing_data/index
+    managing_geodatabuilder/index
+
+.. toctree::
+    :maxdepth: 3
+
+    case_studies/index
+    modules_on_gair_interface/index
+    managing_documents/index
+    accounts_user_profile/index	

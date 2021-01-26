@@ -1,0 +1,121 @@
+{% load i18n %}
+
+{% if modules  %}
+<nav class="filter" ng-cloak>
+  <h4 class="padding-LR"><a href="#" class="toggle toggle-nav">
+      <span class="fa fa-chevron-right"></span>{% trans "Modules" %}
+    </a></h4>
+  <ul class="nav closed node-treeview-content" id="modules">
+	  
+	<li>
+		<a 
+			data-value=""
+			data-filter="module"
+			title="{% trans "All" %}"
+			ng-click="single_choice_listener($event)" 
+			class="btn-clear-link"
+		>
+		{% trans "All" %}
+		</a>
+	</li>
+
+	
+	{% for m in modules %}
+	{% verbatim %}	
+	<li>
+		<a 
+			data-value="{% endverbatim %}{{m.slug}}{% verbatim %}"
+			data-filter="module"
+			title="{% endverbatim %}{{m.slug}}{% verbatim %}"
+			ng-click="single_choice_listener($event)" 
+			class="btn-clear-link"
+		>
+		{% endverbatim %}{{m.name}}{% verbatim %}
+		</a>
+	</li>
+	{% endverbatim %}
+    {% endfor %}
+
+
+        {% comment %}
+      <!-- <li ng-repeat="module in modules" >
+
+        <a data-value="{{ module.module }}" 
+            data-filter="module" 
+            title="{{ module.module }}"
+            ng-click="multiple_choice_listener($event)" 
+            class="{{module.active}} btn-clear-link">
+          
+            {{ module.module}}
+
+          <! - - <span class="badge pull-right">{{ module.documents_count }}</span> - - >
+		</a>
+		
+      </li> -->
+      {% endcomment %}
+  </ul>
+
+</nav>
+{% endif %}
+
+
+{% if cstype and user.is_authenticated  %}
+<nav class="filter" ng-cloak>
+    <h4 class="padding-LR"><a href="#" class="toggle toggle-nav">
+        <span class="fa fa-chevron-right"></span>{% trans "Type" %}
+      </a></h4>
+    <ul class="nav closed node-treeview-content" id="cstype">
+
+
+		<li>
+			<a 
+				data-value=""
+				data-filter="cstype"
+				title="{% trans "All" %}"
+				ng-click="single_choice_listener($event)" 
+				class="btn-clear-link"
+			>
+			{% trans "All" %}
+			</a>
+		</li>
+
+		
+		
+			{% for m in cstype %}  
+			{% verbatim %}	
+			<li>
+				<a 
+					data-value="{% endverbatim %}{{m.slug}}{% verbatim %}"
+					data-filter="cstype"
+					title="{% endverbatim %}{{m.name}}{% verbatim %}"
+					ng-click="single_choice_listener($event)" 
+					class="btn-clear-link"
+				>
+				{% endverbatim %}{{m.name}}{% verbatim %}
+				</a>
+			</li>
+			{% endverbatim %}
+			{% endfor %}
+
+
+		{% comment %}
+        <!-- <li ng-repeat="cst in cstype" >
+  
+          <a data-value="{{ cst.cstype }}" 
+              data-filter="cstype" 
+              title="{{ cst.cstype }}"
+              ng-click="multiple_choice_listener($event)" 
+              class="{{cst.active}} btn-clear-link">
+            
+              {{ cst.cstype}}
+  
+            < ! -- <span class="badge pull-right">{{ cst.documents_count }}</span> - - >
+          </a>
+          
+        </li> -->
+        {% endcomment %}
+    </ul>
+
+</nav>
+
+{% endif %}

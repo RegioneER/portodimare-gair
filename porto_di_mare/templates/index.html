@@ -1,0 +1,517 @@
+{% extends "geonode_base.html" %}
+{% load i18n %}
+{% load static from staticfiles %}
+{% load base_tags %}
+
+{% block title %} {% trans "Welcome!" %} - {{ block.super }} {% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+
+
+{% block middle %}
+  {{ block.super }}
+
+  {% block hero %}
+  {% if block.super %}
+  {{ block.super }}
+  {% else %}
+  <div class="jumbotron">
+  	<div class="container">
+        <h1>{{custom_theme.jumbotron_welcome_title|default:_("Welcome")}}</h1>
+  		<p></p>
+		<p>{{custom_theme.jumbotron_welcome_content|default:_("GeoNode is an open source platform for sharing geospatial data and maps.")}}</p>
+		{% if not custom_theme.jumbotron_cta_hide %}
+		  <p><a class="btn btn-default btn-lg" target="_blank"
+				title="{{custom_theme.jumbotron_cta_text|default:_("Get Started &raquo;")}}"
+  				href="{{custom_theme.jumbotron_cta_link|default:_("http://docs.geonode.org/en/2.10.x/usage")}}"
+  				role="button">{{custom_theme.jumbotron_cta_text|default:_("Get Started &raquo;")}}</a></p>
+		{% endif %}
+	</div>
+  </div>
+  {% endif %}
+  {% endblock hero %}
+
+  {% block mainbody %}
+	  
+	  {% block body_outer %}{% endblock %}
+
+      {% block bigsearch %}
+      {% if block.super %}
+      {{ block.super }}
+      {% else %}
+      <div class="big-search">
+      	<div class="container">
+      		<h1>{% trans "Search for Data." %}</h1>
+      		<div class="search">
+      			<form id="search" action="{% url "search" %}" >
+					<span class="fa fa-search fa-3x"></span>
+					<label class="sr-only" for="search_input">{% trans 'Search'%}</label>  
+      				{% if HAYSTACK_SEARCH %}
+      				<input id="search_input" type="text" placeholder="{% trans 'Search' %}" class="form-control" name="q">
+      				{% else %}
+      				<input id="search_input" type="text" placeholder="{% trans 'Search' %}" class="form-control" name="title__icontains">
+      				{% endif %}
+      			</form>
+      		</div>
+      		<p><a target="_self" class="btn btn-default btn-lg" href="{% url "search" %}" title="{% trans "Advanced Search" %}">{% trans "Advanced Search" %}</a></p>
+      	</div>
+      </div>
+      {% endif %}
+      {% endblock bigsearch %}
+
+      {% block datasets %}
+      <section id="datasets">
+      	<div class="container">
+      		<div class="row">
+      			<div class="container text-center">
+					
+					<h2>{% trans "Discover the available datasets." %}</h2>
+					
+
+
+                    <div class="row home-facets">
+          				<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=aquaculture" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Aquaculture" %}">
+          						<div class="category">
+          							<span aria-hidden="false" class="fa fa-tint fa-3x"></span>
+          							<h3 class="category-title">{% trans "Aquaculture" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+          				<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=biological_characteristics" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Biological Characteristics" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-leaf fa-3x"></span>
+          							<h3 class="category-title">{% trans "Biological Characteristics" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+          				<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=cables_and_pipelines" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Submarine cable & pipeline routes" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-ils fa-3x"></span>
+          							<h3 class="category-title">{% trans "Submarine cable & pipeline routes" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+          				<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=coastal_defence" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Coastal defence" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-flag fa-3x"></span>
+          							<h3 class="category-title">{% trans "Coastal defence" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+          				<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=coastal_land_uses_activities" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Coastal land uses / activities" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-square-o fa-3x"></span>
+          							<h3 class="category-title">{% trans "Coastal land uses / activities" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+          				<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							<a target="_self" aria-label="label"
+								href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=cultural_heritage" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Underwater cultural heritage" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-university fa-3x"></span>
+          							<h3 class="category-title">{% trans "Underwater cultural heritage" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+          				<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=economic_indicators" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Economic indicators" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-line-chart fa-3x"></span>
+          							<h3 class="category-title">{% trans "Economic indicators" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+          				<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=extraction_areas" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Raw material extraction areas" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-diamond fa-3x"></span>
+          							<h3 class="category-title">{% trans "Raw material extraction areas" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+          				<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=fishing" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Fishing" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-qq fa-3x"></span>
+          							<h3 class="category-title">{% trans "Fishing" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+          				<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=human_population" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Human population" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-users fa-3x"></span>
+          							<h3 class="category-title">{% trans "Human population" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+          				<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=maritime_boundaries" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Maritime boundaries" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-ellipsis-h fa-3x"></span>
+          							<h3 class="category-title">{% trans "Maritime boundaries" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+          				<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=maritime_transport_and_traffic_flows" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Maritime transport and traffic flows" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-ship fa-3x"></span>
+          							<h3 class="category-title">{% trans "Maritime transport and traffic flows" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=military" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Military" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-fighter-jet fa-3x"></span>
+          							<h3 class="category-title">{% trans "Military" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=oil_and_gas" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Oil and gas" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-fire fa-3x"></span>
+          							<h3 class="category-title">{% trans "Oil and gas" %}</h3>
+          						</div>
+          					</a>
+						  </div>
+						 <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							<a target="_self" aria-label="label"
+								href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=physical_characteristics" data-toggle="tooltip" data-placement="bottom"
+								title="{% trans "Physical characteristics" %}" >
+								<div class="category">
+									<span aria-hidden="true" class="fa fa-male fa-3x"></span>
+									<h3 class="category-title">{% trans "Physical characteristics" %}</h3>
+								</div>
+							</a>
+						</div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=ports" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Ports" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-anchor fa-3x"></span>
+          							<h3 class="category-title">{% trans "Ports" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=pressures_impacts" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Pressures impacts" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-tachometer fa-3x"></span>
+          							<h3 class="category-title">{% trans "Pressures impacts" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=protected_areas" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Nature and species conservation sites & protected areas" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-picture-o fa-3x"></span>
+          							<h3 class="category-title">{% trans "Nature and species conservation sites & protected areas" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=renewable_energies" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Renewable energies" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-bolt fa-3x"></span>
+          							<h3 class="category-title">{% trans "Renewable energies" %}</h3>
+          						</div>
+          					</a>
+          				</div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							  <a target="_self" aria-label="label"
+							  	href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=scientific_research" data-toggle="tooltip" data-placement="bottom"
+          						title="{% trans "Scientific research" %}" >
+          						<div class="category">
+          							<span aria-hidden="true" class="fa fa-flask fa-3x"></span>
+          							<h3 class="category-title">{% trans "Scientific research" %}</h3>
+          						</div>
+          					</a>
+						</div>
+						<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							<a target="_self" aria-label="label"
+								href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=social_indicators" data-toggle="tooltip" data-placement="bottom"
+								title="{% trans "Social indicators" %}" >
+								<div class="category">
+									<span aria-hidden="true" class="fa fa-share-alt fa-3x"></span>
+									<h3 class="category-title">{% trans "Social indicators" %}</h3>
+								</div>
+							</a>
+						</div>
+						<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							<a target="_self" aria-label="label"
+								href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=source_of_pollution" data-toggle="tooltip" data-placement="bottom"
+								title="{% trans "Source of pollution" %}" >
+								<div class="category">
+									<span aria-hidden="true" class="fa fa-industry fa-3x"></span>
+									<h3 class="category-title">{% trans "Source of pollution" %}</h3>
+								</div>
+							</a>
+						</div>
+						<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							<a target="_self" aria-label="label"
+								href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=spatial_policy" data-toggle="tooltip" data-placement="bottom"
+								title="{% trans "Spatial policy" %}" >
+								<div class="category">
+									<span aria-hidden="true" class="fa fa-space-shuttle fa-3x"></span>
+									<h3 class="category-title">{% trans "Spatial policy" %}</h3>
+								</div>
+							</a>
+						</div>
+						<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							<a target="_self" aria-label="label"
+								href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=terrestrial_boundaries" data-toggle="tooltip" data-placement="bottom"
+								title="{% trans "Terrestrial boundaries" %}" >
+								<div class="category">
+									<span aria-hidden="true" class="fa fa-globe fa-3x"></span>
+									<h3 class="category-title">{% trans "Terrestrial boundaries" %}</h3>
+								</div>
+							</a>
+						</div>
+						<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							<a target="_self" aria-label="label"
+								href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=tourism" data-toggle="tooltip" data-placement="bottom"
+								title="{% trans "Tourism & recreation" %}" >
+								<div class="category">
+									<span aria-hidden="true" class="fa fa-tree fa-3x"></span>
+									<h3 class="category-title">{% trans "Tourism & recreation" %}</h3>
+								</div>
+							</a>
+						</div>
+						<div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 cat-home">
+							<a target="_self" aria-label="label"
+								href="{% url "search" %}?limit=100&offset=0&category__main_category__identifier__in=geopolitical_boundaries" data-toggle="tooltip" data-placement="bottom"
+								title="{% trans "Geopolitical boundaries (legal status)" %}" >
+								<div class="category">
+									<span aria-hidden="true" class="fa fa-circle-o fa-3x"></span>
+									<h3 class="category-title">{% trans "Geopolitical boundaries (legal status)" %}</h3>
+								</div>
+							</a>
+						</div>
+                    </div>
+      			</div>
+      		</div>
+      	</div>
+      </section>
+      {% endblock datasets %}
+
+      {% block showcase %}
+      <section id="showcase">
+
+          <div class="container text-center">
+            <h2>{% trans "Featured Datasets" %}</h2>
+            <div class="row home-facets">
+            {% with facet_type='home' %}
+             {% facets as facets %}
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <a target="_self" href="{% url "layer_browse" %}" title="{% trans "Explore layers" %}">
+					<span class="fa fa-square-o fa-4x rotate-45"></span>
+					<h3 class="showcase-title">{{ facets.layer|default:_("No") }} {% blocktrans count counter=facets.layer %}Layer{% plural %}Layers{% endblocktrans %}</h3>
+				</a>
+                <p>{% trans "Click to search for geospatial data published by other users, organizations and public sources. Download data in standard formats." %}</p>
+				<div class="" style="margin-top: 15px;"></div>  
+				
+				{% if user.is_authenticated %}
+                <p class="text-center"><a target="_self" class="btn btn-default" href="{% url "layer_upload" %}" role="button" title="{% trans "Add layers" %}">{% trans "Add layers" %} &raquo;</a></p>
+                {% else %}
+                <p class="text-center"><a target="_self" class="btn btn-default" href="{% url "layer_browse" %}" role="button" title="{% trans "Explore layers" %}">{% trans "Explore layers" %} &raquo;</a></p>
+                {% endif %}
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <a  target="_self" href="{% url "maps_browse" %}" title="{% trans "Explore maps" %}">
+					<span class="fa fa-map-marker fa-4x"></span>
+					<h3 class="showcase-title">{{ facets.map|default:_("No") }} {% blocktrans count counter=facets.map %}Map{% plural %}Maps{% endblocktrans %}</h3>
+				</a>
+                <p>{% trans "Data is available for browsing, aggregating and styling to generate maps which can be saved, downloaded, shared publicly or restricted to specify users only." %}</p>
+				<div class="" style="margin-top: 15px;"></div>  
+				
+				{% if user.is_authenticated %}
+                <p><a  target="_self" class="btn btn-default" href="{% url "new_map" %}" role="button" title="{% trans "Create maps" %}">{% trans "Create maps" %} &raquo;</a></p>
+                {% else %}
+                <p><a  target="_self" class="btn btn-default" href="{% url "maps_browse" %}" role="button" title="{% trans "Explore maps" %}">{% trans "Explore maps" %} &raquo;</a></p>
+                {% endif %}
+			  </div>
+			  <div class="col-md-12 col-sm-12 hidden-xs" style="margin-top: 25px;"></div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <a  target="_self" href="{% url "document_browse" %}"  title="{% trans "Explore documents" %}">
+					<span class="fa fa-newspaper-o fa-4x"></span>
+					<h3 class="showcase-title">{{ facets.document|default:_("No") }} {% blocktrans count counter=facets.document %}Document{% plural %}Documents{% endblocktrans %}</h3>
+				</a>
+                <p>{% trans "As for the layers and maps GeoNode allows to publish tabular and text data, manage theirs metadata and associated documents." %}</p>
+				<div class="" style="margin-top: 15px;"></div>  
+				{% if user.is_authenticated %}
+                <p class="text-center"><a  target="_self" class="btn btn-default" href="{% url "document_browse" %}" role="button" title="{% trans "Add documents" %}">{% trans "Add documents" %} &raquo;</a></p>
+                {% else %}
+                <p class="text-center"><a  target="_self" class="btn btn-default" href="{% url "document_browse" %}" role="button" title="{% trans "Explore documents" %}">{% trans "Explore documents" %} &raquo;</a></p>
+                {% endif %}
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <a  target="_self" href="{% url "profile_browse" %}" title="{% trans "See users" %}">
+					<span class="fa fa-user fa-4x"></span>
+					<h3 class="showcase-title">{{ facets.user|default:_("No") }} {% blocktrans count counter=facets.user %}User{% plural %}Users{% endblocktrans %}</h3>
+				</a>
+                <p>{% trans "Geonode allows registered users to easily upload geospatial data and various documents in several formats." %}</p>
+				<div class="" style="margin-top: 15px;"></div>  
+				<p><a  target="_self" class="btn btn-default" href="{% url "profile_browse" %}" role="button" title="{% trans "See users" %}">{% trans "See users" %} &raquo;</a></p>
+			  </div>
+			  <div class="col-md-12 col-sm-12 hidden-xs" style="margin-top: 25px;"></div>
+			  
+            {% endwith %}
+            </div>
+          </div>
+
+
+            <div class="container text-center">
+
+                {% verbatim %}
+                <!-- <div ng-app="featured">
+                  <div ng-repeat="item in featured | limitTo:4">
+                    <div class="col-md-3">
+                      <a  target="_self" href="{{ item.detail_url }}"><img alt="" ng-src="{{ item.thumbnail_url }}" /></a>
+                      <h4>{{ item.title | limitTo: 20 }}{{item.title.length > 20 ? '...' : ''}}</h4> 
+                    </div>
+                  </div>
+                </div> -->
+				{% endverbatim %}
+				<div class="" style="margin-top: 25px;"></div>  
+                <p><a  target="_self" class="btn btn-info btn-lg" href="/search/" title="{% trans "Explore all datasets" %}">{% trans "Explore all datasets" %}</a></p>
+            </div>
+
+      </section>
+      {% endblock showcase %}
+      {% block partners %}
+        {% if custom_theme.partners.all %}
+        <section id="partners">
+        <div class="container text-center">
+          <h2>{{ custom_theme.partners_title|default:_("Our partners") }}</h2>
+          <div class="row">
+              {% for partner in custom_theme.partners.all %}
+              <div class="col-md-2">
+                <a style="font-size: 12px" href="{{ partner.partner_link|safe }}" target="_blank"  title="{% trans partner.title|safe %}">
+                  {% if partner.logo %}
+                  <div class="partner_logo" style="background-image: url({{partner.logo.url}})">
+                  {% else %}
+                  {{ partner.title|safe }}
+                  {% endif %}
+                  </div>
+                </a>
+              </div>
+              {% endfor %}
+          </div>
+        </div>
+        </section>
+        {% endif %}
+      {% endblock partners %}
+
+      {% block cookielawinfo %}
+      {% if custom_theme.cookie_law_info_bar_enabled %}
+          	<div id="cookie-law-info-bar">
+              	<h1 class="cli_messagebar_head">{{ custom_theme.cookie_law_info_bar_head }}</h1>
+              	<p>{{ custom_theme.cookie_law_info_bar_text|safe }}</p>
+				<div style="margin-top: 15px;;"></div>
+				<a data-cli_action="accept" id="cookie_action_close_header" target="_blank"  
+					class="medium cli-plugin-button cli-plugin-main-button cookie_action_close_header cli_action_button" style="display:inline-block;" 
+					title="{% trans "Accept" %}">{% trans "Accept" %}</a>
+				<a target="_self" id="cookie_action_close_header_reject" 
+					class="medium cli-plugin-button cli-plugin-main-button cookie_action_close_header_reject cli_action_button"  data-cli_action="reject" 
+					title="{% trans "Reject" %}">{% trans "Reject" %}</a>
+				<a target="_self" id="cookie_action_close_header_leave" href='{{ custom_theme.cookie_law_info_leave_url }}' 
+					class="medium cli-plugin-button cli-plugin-main-button cookie_action_close_header_reject" style="display:inline-block;" 
+					title="{% trans "Leave" %}">{% trans "Leave" %}</a>
+				
+          	</div>
+          <div id="cookie-law-info-again" style="display:none;">
+              <span id="cookie_hdr_showagain">{{ custom_theme.cookie_law_info_showagain_head }}</span>
+          </div>
+          <div class="cli-modal-backdrop cli-fade cli-settings-overlay"></div>
+          <div class="cli-modal-backdrop cli-fade cli-popupbar-overlay"></div>
+          <script type="text/javascript">
+            /* <![CDATA[ */
+            cli_cookiebar_settings='{"animate_speed_hide":"{{custom_theme.cookie_law_info_animate_speed_hide}}","animate_speed_show":"{{custom_theme.cookie_law_info_animate_speed_show}}","background":"{{custom_theme.cookie_law_info_background}}","border":"{{custom_theme.cookie_law_info_border}}","border_on":{{custom_theme.cookie_law_info_border_on}},"button_1_button_colour":"{{custom_theme.cookie_law_info_button_1_button_colour}}","button_1_button_hover":"{{custom_theme.cookie_law_info_button_1_button_hover}}","button_1_link_colour":"{{custom_theme.cookie_law_info_button_1_link_colour}}","button_1_as_button":{{custom_theme.cookie_law_info_button_1_as_button}},"button_1_new_win":{{custom_theme.cookie_law_info_button_1_new_win}},"button_2_button_colour":"{{custom_theme.cookie_law_info_button_2_button_colour}}","button_2_button_hover":"{{custom_theme.cookie_law_info_button_2_button_hover}}","button_2_link_colour":"{{custom_theme.cookie_law_info_button_2_link_colour}}","button_2_as_button":{{custom_theme.cookie_law_info_button_2_as_button}},"button_2_hidebar":{{custom_theme.cookie_law_info_button_2_hidebar}},"button_3_button_colour":"{{custom_theme.cookie_law_info_button_3_button_colour}}","button_3_button_hover":"{{custom_theme.cookie_law_info_button_3_button_hover}}","button_3_link_colour":"{{custom_theme.cookie_law_info_button_3_link_colour}}","button_3_as_button":{{custom_theme.cookie_law_info_button_3_as_button}},"button_3_new_win":{{custom_theme.cookie_law_info_button_3_new_win}},"button_4_button_colour":"{{custom_theme.cookie_law_info_button_4_button_colour}}","button_4_button_hover":"{{custom_theme.cookie_law_info_button_4_button_hover}}","button_4_link_colour":"{{custom_theme.cookie_law_info_button_4_link_colour}}","button_4_as_button":{{custom_theme.cookie_law_info_button_4_as_button}},"font_family":"{{custom_theme.cookie_law_info_font_family}}","header_fix":{{custom_theme.cookie_law_info_header_fix}},"notify_animate_hide":{{custom_theme.cookie_law_info_notify_animate_hide}},"notify_animate_show":{{custom_theme.cookie_law_info_notify_animate_show}},"notify_div_id":"{{custom_theme.cookie_law_info_notify_div_id}}","notify_position_horizontal":"{{custom_theme.cookie_law_info_notify_position_horizontal}}","notify_position_vertical":"{{custom_theme.cookie_law_info_notify_position_vertical}}","scroll_close":{{custom_theme.cookie_law_info_scroll_close}},"scroll_close_reload":{{custom_theme.cookie_law_info_scroll_close_reload}},"accept_close_reload":{{custom_theme.cookie_law_info_accept_close_reload}},"reject_close_reload":{{custom_theme.cookie_law_info_reject_close_reload}},"showagain_tab":{{custom_theme.cookie_law_info_showagain_tab}},"showagain_background":"{{custom_theme.cookie_law_info_showagain_background}}","showagain_border":"{{custom_theme.cookie_law_info_showagain_border}}","showagain_div_id":"{{custom_theme.cookie_law_info_showagain_div_id}}","showagain_x_position":"{{custom_theme.cookie_law_info_showagain_x_position}}","text":"{{custom_theme.cookie_law_info_text}}","show_once_yn":{{custom_theme.cookie_law_info_show_once_yn}},"show_once":"{{custom_theme.cookie_law_info_show_once}}","logging_on":{{custom_theme.cookie_law_info_logging_on}},"as_popup":{{custom_theme.cookie_law_info_as_popup}},"popup_overlay":{{custom_theme.cookie_law_info_popup_overlay}},"bar_heading_text":"{{custom_theme.cookie_law_info_bar_heading_text}}","cookie_bar_as":"{{custom_theme.cookie_law_info_cookie_bar_as}}","popup_showagain_position":"{{custom_theme.cookie_law_info_popup_showagain_position}}","widget_position":"{{custom_theme.cookie_law_info_widget_position}}"}';
+            /* ]]> */
+		  </script>
+		  <noscript></noscript>
+      {% endif %}
+      {% endblock cookielawinfo %}
+
+  {% endblock mainbody %}
+
+{% endblock middle %}
+
+{% block extra_script %}
+{{ block.super }}
+{% if DEBUG_STATIC %}
+<script src="{% static "lib/js/angular.js" %}"></script>
+<noscript></noscript>
+{% endif %}
+<script type="text/javascript">
+    FEATURED_URL = '{% url 'api_dispatch_list' api_name='ext' resource_name='featured' %}'
+    'use strict';
+    (function(){
+      var module = angular.module('featured', []);
+      module.run(function($http, $rootScope){
+        $http.get(FEATURED_URL).success(function(data){
+          $rootScope.featured = data.objects;
+        });
+      });
+    })();
+</script>
+<noscript></noscript>
+
+<script>
+	$('[data-toggle="tooltip"]').tooltip({container: 'body'});
+</script>
+<noscript></noscript>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var Cli_Data = {"nn_cookie_ids":[],"cookielist":[]};
+/* ]]> */
+</script>
+<noscript></noscript>
+<script type="text/javascript" src="{% static "geonode/js/cookie-law-info/cookie-law-info-public.js" %}"></script>
+<noscript></noscript>
+
+{% endblock extra_script %}

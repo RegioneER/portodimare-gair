@@ -1,0 +1,63 @@
+{% extends 'index.html' %}
+{% load i18n %}
+{% comment %}
+This is where you can override the hero area block. You can simply modify the content below or replace it wholesale to meet your own needs.
+{% endcomment %}
+
+
+{% block hero %}
+<div class="jumbotron">
+  <div class="container">
+      <h1>{{custom_theme.jumbotron_welcome_title|default:_("Welcome")}}</h1>
+      
+      <p>
+        {{custom_theme.jumbotron_welcome_content|default:_("GeoNode is an open source platform for sharing geospatial data and maps.")}}
+      
+      {% if not custom_theme.jumbotron_cta_hide %}
+      <a class="btn btn-default btn-lg" target="_blank"
+          href="{{custom_theme.jumbotron_cta_link|default:_("http://docs.geonode.org/en/2.10.x/usage/")}}"
+          role="button">{{custom_theme.jumbotron_cta_text|default:_("Get Started &raquo;")}}</a>
+      {% endif %}
+    </p>
+  </div>
+</div>
+{% endblock hero %} 
+
+
+
+
+{% block body_outer %}{% endblock %}
+
+
+
+{% block bigsearch %}
+
+<div class="big-search">	  
+		<div class="container">
+		  <div class="row">
+			  <h2 class="text-center">
+				  Welcome to the Geoportal of Adriatic-Ionian Region
+			  </h2>
+			  <p>
+					  The Geo data portal of Adriatic Ionian Region (GAIR) provides access to numerous datasets related to coastal and marine areas and to several modules for Integrated Coastal Zone Management (ICZM) and Maritime Spatial Planning (MSP) analysis and risk evaluation. It represents a relevant and original improvement supporting transparent and efficient decision-making processes. The Geoportal improve transnational cooperation between AIR Countries on maritime and marine governance and services, i.e. ICZM/MSP, and an important support to the EUSAIR Action Plan implementation, cross-cutting to the 4 Pillars of the Strategy. 
+					  <br/><br/>The GAIR is the main output of the project <a href="https://portodimare.adrioninterreg.eu/" style="color: #FFFFFF;font-weight: bold;" target="_blank">PORTODIMARE</a>, co-funded by the <a href="https://www.adrioninterreg.eu/" style="color: #FFFFFF;font-weight: bold;" target="_blank">Interreg ADRION</a> Programme.
+			  </p>
+			  <!-- <h1>{% trans "Search for Data." %}</h1>
+			  <div class="search">
+				  <form id="search" action="{% url "search" %}" >
+					  <span class="fa fa-search fa-2x"></span>
+					  {% if HAYSTACK_SEARCH %}
+					  <input id="search_input" type="text" placeholder="Search" class="form-control" name="q">
+					  {% else %}
+					  <input id="search_input" type="text" placeholder="Search" class="form-control" name="title__icontains">
+					  {% endif %}
+				  </form>
+			  </div>
+			  <p><a class="btn btn-default btn-lg" href="{% url "search" %}">Advanced Search</a></p> -->
+		  </div>	  
+	  </div>
+	</div>
+
+	
+{% endblock bigsearch %}
+ 

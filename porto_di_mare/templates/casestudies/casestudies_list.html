@@ -1,0 +1,122 @@
+{% extends "casestudies/casestudies_base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block title %} {% trans "Explore Casestudies" %} - {{ block.super }} {% endblock %}
+
+{% block body_class %}casestudies casestudies-list explore{% endblock %}
+
+
+{% block sidebar %}
+	
+
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="padding-LR">
+			<div class="selections">
+				<h4>{% trans "Filters" %}
+					<small>
+						<a href="." id="clear-search"
+							class="pull-right btn-link">{% trans "Clear" %}</a></small>
+				</h4>
+			</div>
+			{% comment %}
+			{% if SEARCH_FILTERS.TEXT_ENABLED  %}
+			{% include "search/_cs_text_filter.html" %}
+			{% endif  %}
+			{% endcomment %}
+		</div>
+
+		<div id="slide-pane">
+			
+			{% include "search/_cs_module_filter.html" %}
+
+		</div>
+	</div>
+</div>
+	
+{% endblock sidebar %}  
+
+
+{% block body %}
+
+{% with include_type_filter='true' %}
+{% with facet_type='casestudies' %}
+{% with header='Type' %}
+{% with filter='type__in' %}
+
+
+
+<div class="row" id="row-page-header">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="page-header">
+			<h1> 
+				{% trans "Explore Case Studies" %}
+				<span ng-if="text_query.length  > 0"> / </span> <span
+					ng-bind="text_query"></span> 
+			</h1>
+			<!-- {% trans "Explore Documents" %} -->			
+		</div>
+	</div>
+</div>
+
+
+
+
+
+<div class="container flex-grid">
+	<div class="col-md-12 col-sm-12 col-xs-12"> 
+		<h2 class="pull-left h3" ng-bind="total_counts + ' {{ facet_type | title }} found'"></h2>
+	<!--	{% include "search/_sort_filters.html" %} -->
+	</div>
+
+	<div class="col-md-12 col-sm-12 col-xs-12 grid-spacer">
+		{% include 'casestudies/_resourcebase_snippet.html' %}
+		
+		{%comment%}
+			{% include 'search/_pagination.html' %}
+		{%endcomment%}
+	</div>
+</div>
+
+{% if user.is_authenticated %}
+	{% include 'casestudies/_confirm_casestudies_clone.html' %}
+{% endif %}
+
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% include "_bulk_permissions_form.html" %}
+
+{% endblock %}
+
+
+
+
+
+{% block extra_script %}
+{{ block.super }}
+  {% if GEONODE_SECURITY_ENABLED %}
+    {% include "_permissions_form_js.html" %}
+  {% endif %}
+
+ 
+<script type="text/javascript">
+    SEARCH_URL = "{% url 'api_casestudies_list' %}";
+	FILTER_TYPE = 'casestudies';
+	FILTER_MODULE = '';
+	FILTER_CSTYPE = '';
+	CS_LIST = true;
+</script>
+ 
+  {% with include_spatial='true' %}
+  {% include 'search/search_scripts.html' %}
+  {% endwith %}
+
+
+
+	{% include "casestudies/_casestudies_script.html" %}
+
+
+{% endblock extra_script %}

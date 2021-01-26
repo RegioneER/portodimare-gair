@@ -1,0 +1,528 @@
+{% load i18n %}
+<script type="text/javascript">
+    var TYPE_YOUR_SEARCH = '{% trans 'Type your search here ...' %}';
+    var ERROR_TITLE_DEFAULT =  '{% trans 'An error occurred' %}';
+    var ERROR_MESSAGE_DEFAULT =  '{% trans 'Please try again later.' %}';
+    var ERROR_MESSAGE_PERMISSION =  '{% trans 'Operation not allowed.' %}';
+    var SUCCESS_MESSAGE_EDIT =  '{% trans 'Modification successful.' %}';
+</script>
+
+
+
+<script type="text/javascript">
+
+function setTypeSelect() {
+	var select = $("#id_form_type");
+	if ($("#type").val().trim().length > 0)
+		select.val( $("#type").val() );
+	
+
+	if (select.length > 0) {
+		select.change(function(e) {
+			e.preventDefault();
+			e.stopImmediatePropagation();
+
+			var _val = $(this).val();
+			$("#type").val(_val);
+
+		});
+	}
+}
+
+
+</script>
+
+
+
+<script type="text/javascript">
+		var autocomplete = $('#search_input').yourlabsAutocomplete({
+			url: '{% url "autocomplete_light_autocomplete" "ResourceBaseAutocomplete" %}',
+			choiceSelector: 'span',
+			hideAfter: 200,
+			minimumCharacters: 1,
+			placeholder: TYPE_YOUR_SEARCH,
+			appendAutocomplete: $('#search_input'),
+			autoHilightFirst: false
+		});
+		$('#search_input').bind('selectChoice', function (e, choice, autocomplete) {
+			if (choice[0].children[0] == undefined) {
+				$('#search_input').val($(choice[0]).text());
+				$('#search').submit();
+			}
+		});
+
+		$("#nav_search a").click(function (e) {
+			e.stopImmediatePropagation();
+			e.preventDefault();
+			var search_bar = $(".navbar-nav.search-nav");
+			if ($("#nav_search").hasClass("active_menu")) {
+				$("#nav_search").removeClass("active_menu");
+				search_bar.slideUp(function() {
+					
+				});
+			}
+			else {
+				$("#nav_search").addClass("active_menu");
+				search_bar.hide();
+				search_bar.removeClass("hide");
+				search_bar.slideDown();
+			}
+		});
+
+
+	</script>
+	<noscript></noscript>
+
+	<script type="text/javascript">
+		// Workaround to fix the autocomplete box positions
+		yourlabs.Autocomplete.prototype.fixPosition = function (html) {
+			this.input.parents().filter(function () {
+				return $(this).css('overflow') === 'hidden';
+			}).first().css('overflow', 'visible');
+			if (this.input.attr('name') !== 'resource-keywords') {
+				this.box.insertAfter(this.input).css({ top: 28, left: 0 });
+			} else {
+				var pos = $.extend({}, this.input.position(), {
+					height: this.input.outerHeight()
+				});
+				this.box.insertAfter(this.input).css({ top: pos.top + pos.height, left: pos.left });
+			}
+		};
+	</script>
+	<noscript></noscript>
+
+	<script type="text/javascript" src="{% url "lang" %}"></script>
+	<noscript></noscript>
+	
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+
+			$('[data-toggle="tooltip"]').tooltip();
+			
+			
+			$(document).ajaxComplete(function () {
+				$('[data-toggle="tooltip"]').tooltip();
+			});
+
+			setToggleSidebarBtn();
+
+			$(".alert .close").click(function(e) {
+				$('.alert').hide();
+			});
+
+
+			$("#change-language").change(function() {
+				$("#form-set-lang").submit();
+			});
+
+		});
+
+
+
+
+
+        // CUSTOM ALERT SNIPPET
+        /*
+            @title : titolo nel tag h2,
+            message: testo del messaggio di errore ,
+            appendTo : false // 
+                se false, verrà inserito come fratello di "#row-page-header" (non presente in tutte le pagina)
+                altrimenti specificare la classe o l'id in cui appendere.
+      
+        */
+        var alertSnippet = {
+            title : ERROR_TITLE_DEFAULT,
+            message: ERROR_MESSAGE_DEFAULT,
+            code: null,
+            status: null,
+            appendTo : false // se false, verrà inserito come fratello di "#row-page-header" (non presente in tutte le pagina)
+        };
+
+
+
+		function setFilter() {
+
+			$("#text_search_input").val( getQueryStringParam("label") ) ;
+			
+			$("#filter-label").val($("#text_search_input").val());
+			
+			if ($("#filter-owner").length) {
+				var owner = getQueryStringParam("owner");
+				$("#filter-owner").val(owner);
+				$(".btn-search-owner").removeClass("active");
+				if (owner == undefined) 
+					owner = "";
+				$(".btn-search-owner[data-value='"+owner+"']").addClass("active");
+			}
+
+			if ($("#filter-type").length) {
+				var type = getQueryStringParam("cstype");
+				$("#filter-type").val(type);
+				$(".btn-search-type").removeClass("active");
+				if (type == undefined) 
+					type = "";
+				$(".btn-search-type[data-value='"+type+"']").addClass("active");
+			}
+
+
+
+			var sort_li = $("#sort > li");
+			var sort_btn_li = $("#sort_btn .sort-btn");
+			var order_by = getQueryStringParam("order_by");
+			if ( !order_by ) 
+				order_by = "-updated";
+
+			var page = getQueryStringParam("page");
+			if ( !page ) 
+				page = "1";
+			$("#filter-page").val(page);
+
+			sort_li.find("a").removeClass("selected");
+			sort_li.find("a[data-value='"+order_by+"']").addClass("selected");
+			var sort_btn = $("#sort_btn>div[data-value='"+order_by+"']");
+			sort_btn_li.addClass("hidden");
+			sort_btn.removeClass("hidden");
+			$("#sort_btn").removeClass("hidden");
+			$("#run_icon").addClass("hidden");
+
+			$("#text_search_btn").click(function(e) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				filterPreloader();
+				var value = $("#text_search_input").val();
+				$("#filter-label").val(value);
+				$("#filter-label").val(value);
+				$("#filter-form").submit();
+			});
+
+			$(".list-page").click(function(e) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				filterPreloader();
+				var value = $(this).attr("data-value");
+				$("#filter-page").val(value);
+				$("#filter-form").submit();
+			});
+
+			$(".btn-search-owner").click(function(e) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				filterPreloader();
+				$(".btn-search-owner").removeClass("active");
+				$(this).addClass("active");
+				var value = $(this).attr("data-value");
+				$("#filter-owner").val(value);
+				$("#filter-form").submit();
+			});
+			
+			
+			$(".btn-search-type").click(function(e) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				filterPreloader();
+				$(".btn-search-type").removeClass("active");
+				$(this).addClass("active");
+				var value = $(this).attr("data-value");
+				$("#filter-type").val(value);
+				$("#filter-form").submit();
+			});
+
+			var filterPreloader = function() {
+				$("#geodatabuilder-list").css("opacity" , "0.5");
+				$("#sort_btn").addClass("hidden");
+				$("#run_icon").removeClass("hidden");
+			}
+
+
+
+			var setOrder = function() {
+				
+				sort_btn_li.addClass("hidden");
+				var sort_active = sort_li.find(".selected");
+				var sort_value = sort_active.attr("data-value");
+				var sort_btn = $("#sort_btn>div[data-value='"+sort_value+"']");
+				sort_btn.removeClass("hidden");
+				$("#filter-order_by").val(sort_value);
+				$("#filter-form").submit();
+			}
+
+			sort_li.find("a").click(function(e) {
+				filterPreloader();
+				sort_li.find("a").removeClass("selected");
+				$(this).addClass("selected");
+				setOrder();
+			});
+
+
+
+
+		}
+
+
+
+        function setAlertFeedback(obj) {
+            var a = jQuery.extend({}, alertSnippet);
+
+            if (obj.title != null)
+                a.title = obj.title;
+
+            if (obj.message != null)
+                a.message = obj.message;
+            
+			if (obj.type != null)
+                a.type = obj.type;
+			else
+                a.type = "danger";
+
+			var type_class = "alert-" + a.type;
+            var alertFeedback = $("#alertFeedback").clone();
+            alertFeedback.attr("id" , "alertFeedback-" + $.now() );
+            alertFeedback.find(".alert-title").html(a.title);
+            alertFeedback.find(".alert-message .text").html(a.message);
+            alertFeedback.find(".alert-message").addClass(type_class);
+
+            if (!a.appendTo) 
+                alertFeedback.insertAfter("#row-page-header");
+
+            alertFeedback.removeClass("hide");
+
+
+			var close_btn = alertFeedback.find(".close");
+			close_btn.click(function(e) {
+				e.preventDefault();
+				alertFeedback.addClass("hide");
+				alertFeedback.find(".alert-title").html("");
+            	alertFeedback.find(".alert-message .text").html("");
+			});
+			
+
+        }
+
+
+        ///////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+		function validateNumber(i) {
+			var val = i.val();
+			var value = Number( val );
+			var min = Number( i.attr("data-min") );
+			var max = Number( i.attr("data-max") );
+			var has_decimal = true;
+			if (i.attr("data-decimal") == undefined)
+				has_decimal = false;
+
+			var decimal = Number( i.attr("data-decimal") );
+
+			var data_orig_value = i.attr("data-orig-value") ;
+			var _resp = false;
+
+			if (data_orig_value != val){
+				i.addClass("input-new-value");
+			} 
+			else {
+				i.removeClass("input-new-value"); 
+			}
+
+			if (isNaN(value) || val.trim().length == 0) {
+				i.val( data_orig_value );
+				i.removeClass("input-new-value");
+			}
+			else {
+				i.removeClass("input-error");
+				if (value < min || value > max) {
+					i.addClass("input-error").removeClass("input-new-value");
+				}
+				else {
+					if (has_decimal) {
+						if (decimal) {
+							i.val( roundToTwo(value) );
+							_resp = true;
+						}
+						else {
+							i.val( parseInt(value) );
+							_resp = true;
+						}
+					}
+					else {
+						_resp = true;
+					}
+				}
+			}
+			return _resp; 
+		}
+
+		// arrotonda a due decimali un numero
+		function roundToTwo(num) {    
+			return +(Math.round(num + "e+2")  + "e-2");
+		}
+
+		
+		function setInt(n) {
+			var _n = '0.0';
+			// controlla se il numero è intero o decimale
+			if (n % 1 === 0) {	// è intero
+				if (String(n).split(".").length > 1)
+					_n = n;
+				else 
+					_n = n + ".0";
+			}
+			else {
+				_n = n;
+			}
+			return _n;
+		}
+
+		function setToggleSidebarBtn() {
+
+			var left_sidebar_container = $(".left-sidebar-container");
+
+			if(left_sidebar_container.length) {
+				$("#navbarToggleSidebar").removeClass("hide");
+			}
+
+
+			$("#navbarToggleSidebar").click(function(e) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				if ($(".left-sidebar").hasClass("open")) {
+					// $(".left-sidebar").removeClass("open");
+					// $(".left-sidebar-container").css("left" , "-100%");
+
+					// $(".left-sidebar-container").bind('transitionend', function() { 
+					// 	if ($(".left-sidebar").hasClass("open")) {
+					// 		$(".left-sidebar").removeClass("open");
+					// 		$(".left-sidebar-container").removeAttr("style");
+					// 	}
+					// });
+					$(".left-sidebar-container").animate(
+						{
+							"left" : "-100%"
+						}, 500 , function() {
+							$(".left-sidebar").css("z-index" , "-1020");
+							$(".left-sidebar").removeClass("open");
+						});
+					
+				}
+				else {
+					$(".left-sidebar").css("z-index" , "1020");
+					$(".left-sidebar-container").animate(
+						{
+							"left" : "0%"
+						}, 500 , function() {
+							$(".left-sidebar").addClass("open");
+						});
+					// $(".left-sidebar").addClass("open");
+				}
+			});
+		}
+
+
+		
+
+
+		/* common function per le chiamate api ai CS,
+		* ENDPOIT -> url endpoint locale dei cs
+		* _data -> oggetto del post
+		* cb -> funzione di call back
+		*/
+		function callApiCasestudies(ENDPOINT, _data, cb, type ) {
+			
+			var _type = "GET";
+			if (type)
+				_type = type;
+
+			console.log(ENDPOINT, _data);
+			var resp = {
+				success: true,
+				data: []
+			}
+			$.ajax({
+				type: _type,
+				url: ENDPOINT,
+				data: _data, // serializes the form's elements.
+				success: function (data) {
+					console.log(data);
+					resp.success = true;
+					resp.data = data;
+					eval(cb(resp));
+				},
+				error: function (resp, status) {
+					resp.success = false;
+					resp.data = resp;
+					eval(cb(resp));
+				}
+			});
+
+		}
+
+
+		function getAllDuplicateFor() {
+			var elements = [...document.querySelectorAll('[for]')];
+			var ids = elements.map(el => el.getAttribute("for"));
+			var dups = elements.filter(el => ids.filter(id => id === el.getAttribute("for")).length > 1);
+			return dups;
+		}
+
+		function getAllDuplicateIds() {
+			var elements = [...document.querySelectorAll('[id]')];
+			var ids = elements.map(el => el.id);
+			var dups = elements.filter(el => ids.filter(id => id === el.id).length > 1);
+			return dups;
+		}
+
+
+
+
+
+		/*
+		
+			imposta elementi sticky
+
+		*/
+
+		function setSticky(div_content, to , div_sticky, h) {  
+			
+			var scroll = $(window).scrollTop();
+			// var div_top = div.position().top;
+			// var to_top = to.position().top;
+			// var to_h = to.height();
+			// console.log(scroll , to);
+			if (scroll >  to) {
+				if (!div_sticky.hasClass("navbar-fixed-top")) {
+					div_sticky.addClass("navbar-fixed-top");
+					div_content.css("height" , h );
+				}
+			} 
+			else {
+				div_sticky.removeClass("navbar-fixed-top");
+					div_content.css("height" , "auto" );
+			}
+		}
+
+
+		function getQueryStringParam(param) {
+			var query = window.location.search.substring(1);
+			var vars = query.split('&');
+			for (var i = 0; i < vars.length; i++) {
+				var pair = vars[i].split('=');
+				if (decodeURIComponent(pair[0]) == param) {
+					return decodeURIComponent(pair[1]);
+				}
+			}
+		}
+
+
+
+
+
+	</script>
+<noscript>
+
+</noscript>

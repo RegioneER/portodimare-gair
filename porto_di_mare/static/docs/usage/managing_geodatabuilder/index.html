@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>GeoDataBuilder &mdash; GAIR  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Case Studies" href="../case_studies/index.html" />
+    <link rel="prev" title="Publishing Data" href="../publishing_data/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html"> GAIR
+          
+
+          
+            
+            <img src="../../_static/logo-adrion-portodimare.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                European Regional Development Fund - Instrument for Pre-Accession II Fund
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/index.html">What is GAIR</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.html">Getting Started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GAIR Help</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">GAIR Users Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data/index.html">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_layers/index.html">Working with Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_maps/index.html">Working with Maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../publishing_data/index.html">Publishing Data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">GeoDataBuilder</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#geodatabuilder-expression">GeoDataBuilder - Expression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#geodatabuilder-create-new-expression">GeoDataBuilder - Create new Expression</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../case_studies/index.html">Case Studies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules_on_gair_interface/index.html">Working with Case Studies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_documents/index.html">Working with Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../accounts_user_profile/index.html">Accounts and User Profile</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+ 
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GAIR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">GAIR Users Guide</a> &raquo;</li>
+        
+      <li>GeoDataBuilder</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/usage/managing_geodatabuilder/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="geodatabuilder">
+<span id="id1"></span><h1>GeoDataBuilder<a class="headerlink" href="#geodatabuilder" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line">This section will guide you to use <em>GeoDataBuilder</em> GAIR to browse, create and manage (if you are a GAIR singed in user) a geo expression to combine geospatial information stored on the Geoportal itself.</div>
+<div class="line">The aim of the GeoDataBuilder is to produce new layers, useful for <em>Case Studies</em> analysis.</div>
+<div class="line">The <em>Explore GeoDataBuilder</em> main page can be accessed from the <span class="guilabel">Data</span> dropdown menu of the navigation bar (at the top of the page), shown in the picture below.</div>
+</div>
+<div class="figure align-center" id="geodatabuilder-link">
+<img alt="Link to Explore GeoDataBuilder" src="../../_images/geodatabuilder_link.png" />
+<p class="caption"><span class="caption-text">Link to Explore GeoDataBuilder</span></p>
+</div>
+<div class="line-block">
+<div class="line">In the <em>Explore GeoDataBuilder</em> main page you can see a list of “geo” expression previously created by GAIR users, with a title and short description.</div>
+<div class="line">Each expression is related to a case study.</div>
+<div class="line">The content can be available or not, according to the user profile permission.</div>
+<div class="line">Only authenticated user can create new expression.</div>
+</div>
+<div class="figure align-center" id="explore-geodatabuilder-exp">
+<img alt="Explore GeoDataBuilder" src="../../_images/explore_geodatabuilder_exp.png" />
+<p class="caption"><span class="caption-text">Explore GeoDataBuilder</span></p>
+</div>
+<p>The <span class="guilabel">View Expression</span> button of the <em>Explore GeoDataBuilder</em> opens the relative expression’s page.</p>
+<div class="section" id="geodatabuilder-expression">
+<h2>GeoDataBuilder - Expression<a class="headerlink" href="#geodatabuilder-expression" title="Permalink to this headline">¶</a></h2>
+<p>A <em>GeoDataBuilder Expression</em> is a geo expression, created by GAIR singed in user, that combine geospatial information stored on the Geoportal, and produce new layer,
+useful for <em>Case Studies</em> analysis.</p>
+<p>Each geo expression has a title and a description, heplful to identify the expression itself.
+The black box shows the layers names and the operators used by the expression.</p>
+<div class="figure align-center" id="view-geodatabuilder-exp">
+<img alt="GeoDataBuilder Expression" src="../../_images/view_geodatabuilder_exp.png" />
+<p class="caption"><span class="caption-text">GeoDataBuilder Expression</span></p>
+</div>
+<p>The Thumbnail and some brief information on the layers combined in the expression are listed below the expression box. A link to the related Case Study is available on the right.</p>
+</div>
+<div class="section" id="geodatabuilder-create-new-expression">
+<h2>GeoDataBuilder - Create new Expression<a class="headerlink" href="#geodatabuilder-create-new-expression" title="Permalink to this headline">¶</a></h2>
+<p>A new GeoDataBuilder expression allows to combine geospatial information stored in the Geoportal to create a new layer, useful for <em>Case Studies</em> analysis. In fact the result,
+that expresses a combination of layers, will be selectable as input of a specific case study.</p>
+<p>On this feature-rich page, the fields provided in the interface,highlighted with an asterisk, are mandatory.</p>
+<p>Required fields include:
+-       A title, as the name of the expression,
+-       a clear and comprehensive description (to allow other users of the GAIR to easily understand the use and context of the expression created).</p>
+<div class="figure align-center" id="create-new-geodatabuilder-exp">
+<img alt="Create new Expression" src="../../_images/create_new_geodatabuilder_exp.png" />
+<p class="caption"><span class="caption-text">Create new Expression</span></p>
+</div>
+<p>When creating a new expression, it is also mandatory to specify the existing case study to whom associate the expression. This association can be done by selecting the Case Study from the drop-down menu.
+This means that it is necessary to create the case study first, in order to be able to associate an expression with it.</p>
+<p>A geo expression is a orderly succession of layers (filterable with options and selectable with a click in the list displayed below) and spatial operators.
+Spatial operator are selectable from the available options: <span class="guilabel">+</span>, <span class="guilabel">-</span>, <span class="guilabel">x</span>; <span class="guilabel">÷</span>.
+and brackets and numeric values ​​can also be added.
+If you wish to remove one of the elements you added in the black box, just select it by clicking and then press the bin icon that shows above it.
+Remember that at least one layer is required for a valid expression and the brackets can’t be empty.</p>
+<p>The <span class="guilabel">Save Expression</span> button create the expression. If the expression is not valid an error message and some useful indications are displayed and the save function are not available.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../case_studies/index.html" class="btn btn-neutral float-right" title="Case Studies" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../publishing_data/index.html" class="btn btn-neutral float-left" title="Publishing Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright CC-SA
+      <span class="lastupdated">
+        Last updated on Nov 24, 2020.
+      </span>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

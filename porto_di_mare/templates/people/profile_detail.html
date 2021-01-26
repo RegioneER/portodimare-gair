@@ -1,0 +1,378 @@
+{% extends "people/profile_base.html" %}
+{% load static %}
+{% load i18n %}
+{% load avatar_tags %}
+{% load activity_tags %}
+{% load pagination_tags %}
+
+{% block title %} {% trans "Profile of " %}{{ profile.first_name|default:profile.username }}{% endblock %}
+
+{% block head %}
+{% if TWITTER_CARD %}
+{% include "people/_profile_twittercard.html" %}
+{% endif %}
+{% if OPENGRAPH_ENABLED %}
+{% include "people/_profile_opengraph.html" %}
+{% endif %}
+{{ block.super }}
+{% endblock %}
+
+{% block body_class %}{% trans "people explore" %}{% endblock %}
+
+{% block nav_user_isactive %}
+{% if user.id ==  profile.id %}
+active_menu
+{% endif %}
+{% endblock nav_user_isactive %}
+
+{% block nav_about_isactive %}
+{% if user.id != profile.id %}
+active_menu
+{% endif %}
+{% endblock nav_about_isactive %}
+
+
+
+{% block sidebar %}
+
+<div class="list-group">
+    <div class="list-group-item">
+
+
+        <div class="profile-image">
+            {% autoescape off %}{% avatar profile 240 %}{% endautoescape %}
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <div style="margin-top: 30px;"></div>
+                <h3>{% trans 'Groups' %}</h3>
+            </div>
+
+            {% if user.is_authenticated %}
+            {% if user == profile %}
+            {% for group in profile.group_list_all %}
+            <div ng-if="group.logo != ''" class="col-md-4 group-logo">
+                <a href="{{ group.get_absolute_url }}">
+                    <img class="img-responsive" 
+                        {% if group.logo %}
+                        src="{% get_media_prefix %}{{ group.logo }}"
+                        {%else%}
+                        src="/static/img/img_placeholder.jpg"
+                        {%endif%}
+                        data-toggle="tooltip" data-placement="right" title="{{ group.title }}"
+                        alt="{{ group.title }}" /></a>
+            </div>
+            
+            {% endfor %}
+            {% else %}
+            {% for group in profile.group_list_public %}
+            <div ng-if="group.logo != ''" class="col-md-4 group-logo">
+                <a href="{{ group.get_absolute_url }}">
+                    <img class="img-responsive" 
+                        {% if group.logo %}
+                        src="{% get_media_prefix %}{{ group.logo }}"
+                        {%else%}
+                        src="/static/img/img_placeholder.jpg"
+                        {%endif%}
+                        data-toggle="tooltip" data-placement="right" title="{{ group.title }}"
+                        alt="{{ group.title }}" /></a>
+            </div>
+            
+            {% endfor %}
+            {% endif %}
+            {% endif %}
+
+            
+        </div>
+
+        <div style="margin-top: 30px;"></div>
+        <h3>{{ profile.first_name|default:profile.name_long }}</h3>
+        <table class="table table-user-profile">
+            <tbody>
+                {% if SHOW_PROFILE_EMAIL %}
+                <tr>
+                    <td class="table-user-profile-attribute">{% trans 'Email' %}</td>
+                    {% if profile.email %}
+                    <td><a href="mailto:{{ profile.email }}">{{ profile.email }}</a></td>
+                    {% else %}
+                    <td>{% trans 'Not provided.' %}</td>
+                    {% endif %}
+                </tr>
+                {% endif %}
+                <tr>
+                    <td class="table-user-profile-attribute">{% trans 'Position' %}</td>
+                    <td>{{ profile.position | default:_('Not provided.') }}</td>
+                </tr>
+                <tr>
+                    <td class="table-user-profile-attribute">{% trans 'Organization'  %}</td>
+                    <td>{{ profile.organization | default:_('Not provided.') }}</td>
+                </tr>
+                {% if user.is_authenticated %}
+                <tr>
+                    <td class="table-user-profile-attribute">{% trans 'Location' %}</td>
+                    <td>{{ profile.location | default:_('Not provided.') }}</td>
+                </tr>
+                <tr>
+                    <td class="table-user-profile-attribute">{% trans 'Voice' %}</td>
+                    {% if profile.voice %}
+                    <td><a href="tel:{{ profile.voice }}">{{ profile.voice }}</a></td>
+                    {% else %}
+                    <td>{% trans "Not provided" %}.</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <td class="table-user-profile-attribute">{% trans 'Fax' %}</td>
+                    <td>{{ profile.fax | default:_('Not provided.') }}</td>
+                </tr>
+               
+               
+                {% endif %}
+                <!--
+                <tr>
+                    <td class="table-user-profile-attribute">{% trans 'Keywords' %}</td>
+                    <td>
+                        {% if profile.keyword_list %}
+                        {% for keyword in profile.keyword_list %}
+                        <span class="label label-default">{{ keyword }}</span>
+                        {% endfor %}
+                        {% else %}
+                        {% trans 'Not provided' %}
+                        {% endif %}
+                    </td>
+                </tr>
+                -->
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="list-group">
+    <div class="list-group-item">
+        <a class="btn btn-block btn-info" 
+            href="{% url "message_create" profile.pk %}">
+            <span class="fa fa-paper-plane-o"></span> 
+            {% trans "Message User" %}</a>
+    </div>
+    {% if user != profile %}
+    <div class="list-group-item">
+        <a class="btn btn-block btn-info" 
+            href="{% url "user-activity" profile.username %}">
+            <span class="fa fa-fire"></span>
+            {% trans "User Activities" %}</a>
+    </div>
+    {% else %}
+        {% if user.is_superuser %}
+        <div class="list-group-item">
+            <a class="btn btn-block btn-info" 
+                href="{% url "profile_edit" profile.username %}">
+                <span class="fa fa-edit"></span>
+                {% trans "Edit profile" %}</a>
+        </div>
+        {% endif %}       
+    {% endif %}    
+
+    
+    
+</div>
+
+{% endblock sidebar %}
+
+
+
+
+{% block body %}
+
+
+
+
+
+
+
+
+<div class="row">
+    
+    
+    <div class="col-md-12">
+
+    
+        <div class="page-header">
+    
+            <small><a class="btn-dark-light-link breadcrumb-title" 
+                href="{% url "profile_browse" %}">
+                {% trans "Explore People" %}</a> /</small>
+            <h1 class="page-title">{{ profile.name_long }}</h1>
+            
+        </div>
+        
+
+    </div>
+
+
+    {% if USE_GEOSERVER and DISPLAY_WMS_LINKS %}
+    <div class="col-md-12">  
+        
+        {% if profile.profile %}
+        <h2 class="h4 h-label">{% trans "Description" %}</h2>
+        <p>
+            {{ profile.profile }}
+        </p>
+        <div style="margin-top: 30px;"></div>
+        {% endif %}      
+        
+        
+        {% if request.user.is_authenticated and 'access_token' in request.session %}
+        <a class="btn btn-info btn-lg"
+            href="{% url 'capabilities_user' profile.username %}?access_token={{ request.session.access_token }}">
+            <span class="fa fa-map"></span> 
+            {% trans 'User layers WMS GetCapabilities document' %}
+        </a>
+        {% else %}
+        <a class="btn btn-info btn-lg" 
+            href="{% url 'capabilities_user' profile.username %}">
+            <span class="fa fa-map"></span> 
+            {% trans 'User layers WMS GetCapabilities document' %}
+        </a>
+        {% endif %}
+        
+
+        <hr />
+
+    </div>
+    {% endif %}
+
+
+    
+
+
+            
+
+
+    <div class="col-xs-12 {% if user == profile %}col-md-9{% else %}col-md-12{% endif %}">
+        
+
+        <h2 class="h4 h-label">{% trans "Resources" %}</h2>
+        <div style="margin-top: 30px;">
+            {% include "people/_profile_filters.html" %}
+        </div>
+        <!-- <div class="col-md-12">
+    {% include "search/_sort_filters.html" %}
+  </div> -->
+        <div style="margin-top: 30px;">
+            {% include 'base/_resourcebase_snippet.html' %}
+        </div>
+        <div style="margin-top: 30px;">
+            {% include 'search/_pagination.html' %}
+        </div>
+    </div>
+
+
+
+    {% if user == profile %}
+    <div class="col-xs-12 col-md-3">
+        
+        
+        <div class="list-group">
+            <div class="list-group-item"
+                ><a class="title" href="{% url "profile_edit" user.username %}"><span class="fa fa-edit"></span>
+                    {% trans "Edit profile" %}</a></div>
+            <div class="list-group-item"
+                ><a class="title" href="{% url "socialaccount_connections" %}"><span class="fa fa-sign-in"></span>
+                    {% trans "Connected social accounts" %}</a></div>
+            <div class="list-group-item"
+                ><a class="title" href="{% url "account_email" %}"><span class="fa fa-envelope-o"></span>
+                    {% trans "Associated e-mails" %}</a></div>
+            <div class="list-group-item"
+                ><a class="title" href="{% url "account_change_password" %}"><span class="fa fa-lock"></span>
+                    {% trans "Set/Change password" %}</a></div>
+        </div>
+        <div style="margin-top: 8px"></div>
+        <hr />
+        <div style="margin-top: 8px"></div>
+        <div class="list-group">
+            <div class="list-group-item"
+                ><a class="title" href="{% url "layer_upload" %}"><span class="fa fa-cloud-upload"></span>
+                    {% trans "Upload new layers" %}</a></div>
+            {% if USE_GEOSERVER and CREATE_LAYER %}
+            <div class="list-group-item"
+                ><a class="title" href="{% url "layer_create" %}"><span class="fa fa-map-o"></span>
+                    {% trans "Create a new layer" %}</a></div>
+            {% endif %}
+            <div class="list-group-item"
+                ><a class="title" href="{% url "new_map" %}"><span class="fa fa-map-marker"></span>
+                    {% trans "Create a new map" %}</a></div>
+            <div class="list-group-item"
+                ><a class="title" href="{% url "user-activity" profile.username %}"><span class="fa fa-fire"></span>
+                    {% trans "My Activities" %}</a></div>
+            {% if FAVORITE_ENABLED %}
+            <div class="list-group-item"
+                ><a class="title" href="{% url "favorite_list" %}"><span class="fa fa-star"></span>
+                    {% trans "Favorites" %}</a></div>
+            {% endif %}
+        </div>
+        <div style="margin-top: 8px"></div>
+        <hr />
+        <div style="margin-top: 8px"></div>
+        <div class="list-group">
+            {% if USE_NOTIFICATIONS %}
+            <div class="list-group-item"
+                ><a class="title" href="{% url "pinax_notifications:notice_settings" %}"><span
+                        class="fa fa-bell"></span> {% trans "Notifications" %}</a></div>
+            {% endif %}
+            {% if perms.announcements.can_manage %}
+            <div class="list-group-item"
+                ><a class="title" href="{% url "announcements_list" %}"><span class="fa fa-bullhorn"></span>
+                    {% trans "Announcements" %}</a></div>
+            {% endif %}
+        </div>
+        <div style="margin-top: 8px"></div>
+        <hr />
+        <div style="margin-top: 8px"></div>
+        <div class="list-group">
+            <div class="list-group-item"
+                ><a class="title" href="{% url "geonode.invitations:geonode-send-invite" %}"><span
+                        class="fa fa-edit"></span> {% trans "Invite Users" %}</a></div>
+            {% if user.is_superuser or user.is_staff %}
+            <div class="list-group-item"
+                ><a class="title" href="{% url "proxy" %}?url={{ OGC_SERVER.default.LOCATION }}"><span
+                        class="fa fa-gears"></span> {% trans "GeoServer" %}</a></div>
+            <div class="list-group-item">
+            <a class="title" href="{% url "admin:index" %}">
+                    <span class="fa fa-cog"></span>
+                    {% trans "Admin" %}</a></div>
+            {% endif %}
+        </div>                 
+    </div>
+    {% endif %}
+
+</div>
+
+
+
+{% endblock %}
+
+{% block extra_script %}
+{{ block.super }}
+{% if GEONODE_SECURITY_ENABLED %}
+{% include "_permissions_form_js.html" %}
+{% endif %}
+<script type="text/javascript">
+    {% if HAYSTACK_SEARCH %}
+    SEARCH_URL = '{% url 'api_get_search' api_name='ext' resource_name='base' %}?owner__username={{profile.username}}'
+    {% else %}
+    SEARCH_URL = '{% url 'api_dispatch_list' api_name='ext' resource_name='base' %}?owner__username={{profile.username}}';
+    {% endif %}
+</script>
+{% include 'search/search_scripts.html' %}
+
+<style type="text/css">
+.list-group-item {
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+.list-group {
+	border-top: none;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,97 @@
+.. _map-info:
+
+Map Information
+===============
+
+| As mentioned in the :ref:`finding-maps` section, in GAIR users can see their maps and all the published maps through the :guilabel:`Explore Maps` link of the :guilabel:`Maps` dropdown menu in the navigation bar.
+
+.. figure:: img/maps_link.png
+   :alt: Link for the Explore Maps page
+   :align: center
+   :name: maps_link
+   
+   Link for the Explore Maps page
+
+| Click on the title of the *Map* you are interested in to open its *Information* page, it should looks like the following.
+
+.. figure:: img/map_info.png
+   :alt: The Map Information page
+   :align: center
+   :name: map_info
+   
+   The Map Information page
+
+The *Map Page* is divided into three main sections:
+
+1. the *Map Preview* section, under the title
+2. the *Tabs* section, under the layer preview
+3. the *Tools* section, on the right side of the page
+
+Map Preview
+-----------
+
+The *Map Preview* shows the *Map* with very basic functionalities:
+
+* the *Base Map Switcher* that allows you to change the base map (lower left corner);
+* the *Zoom in/out* tool to enlarge and decrease the view, the *Zoom to max extent* tool for the zoom to fit the layers extents (lower right corner);
+* the *Query Objects* tool to retrieve information about the map objects by clicking on the map (lower right corner);
+* the *Print* tool to print the preview (upper right corner).
+
+.. figure:: img/map_preview.*
+   :alt: Map Preview
+   :align: center
+   :name: map_preview
+
+   Map Preview
+
+Information  Sections
+----------------------
+
+This section shows some basic information about the map and allows users to share, rate and comment the map with other users.
+
+* The basic information shows some metadata such as its Title, Publication Date, License, which Regions are involved, Owner and Group. The metadata also reports a descriptive Abstract of the map.
+* The ``Map Layers WMS GetCapabilities document`` link is also provided, the response to a GetCapabilities request is an XML document that allows clients to retrieve service metadata from a server.
+
+  .. figure:: img/map_info_tab.png
+    :alt: Maps Info tab
+    :align: center
+    :name: map_info_tab
+
+    Maps Info
+
+* The *Share* section provides the links for the map to share through social media or email.
+* You can *Rate* the map through the *Rating system*.
+
+  .. figure:: img/map_rating.png
+    :alt: Maps Info tab
+    :align: center
+    :name: map_rating
+
+    Map Sharing and Rating
+
+* At the bottom of the page there is the *Comments* section, users can post their comments. Click on :guilabel:`Add Comment`, to insert comment and click :guilabel:`Submit Comment` to post it.
+
+  .. figure:: img/map_comments.png
+    :alt: Map Comments
+    :align: center
+    :name: map_comments
+    
+    Map Comments
+
+Your comment will be added next to the last already existing comment. If you want to remove it click on the red :guilabel:`Delete` button.
+
+Map Tools
+---------
+
+| In the right side of the *Map Information* page there are some tools that can help you to manage your maps.
+  In this paragraph you will learn how to discover and retrieve information about maps.
+| The following is a list of actions you can take in order to accomplish this task:
+
+* click the :guilabel:`Download Map` button, to download the map as image;
+* click the :guilabel:`Metadata Detail` button to see the map metadata, see :ref:`map-metadata`;
+* click the :guilabel:`Editing Tools` button to access to many editing tools. Those functionalities will be explained in the :ref:`exploring-maps` section;
+* click the :guilabel:`View Map` button to open the map, see the :ref:`exploring-maps` section for more details;
+* see the *Map Layers* section to konw which layers are used by the map (you can open the *Layer Page* by clicking on its name, available only for local layers);
+* click the :guilabel:`Create a Map` button of the *Copy this map* section to duplicate the map;
+* click the :guilabel:`Publish Map WMS` of the *Map WMS* section to publish local map layers as WMS layer group;
+* see the *About* section to know the map *Owner*, the *Contact* user and the *Metadata Author*.

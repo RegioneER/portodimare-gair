@@ -1,0 +1,406 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Layer Styling &mdash; GAIR  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Layers Uploading" href="uploading_layers.html" />
+    <link rel="prev" title="Layers Metadata" href="layer_metadata.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html"> GAIR
+          
+
+          
+            
+            <img src="../../_static/logo-adrion-portodimare.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                European Regional Development Fund - Instrument for Pre-Accession II Fund
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/index.html">What is GAIR</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.html">Getting Started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GAIR Help</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">GAIR Users Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data/index.html">Data</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Working with Layers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="layer_info.html">Layer Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layer_permissions.html">Changing the Layer Permissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layer_download.html">Downloading Layers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layer_editing.html">Layer Editing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layer_metadata.html">Layers Metadata</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Layer Styling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creating-new-styles">Creating new Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#editing-the-layer-style">Editing the Layer Style</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#uploading-styles">Uploading Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#managing-styles">Managing Styles</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="uploading_layers.html">Layers Uploading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="new_layer_from_scratch.html">Creating a Layer from scratch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using_remote_services.html">Using Remote Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_maps/index.html">Working with Maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../publishing_data/index.html">Publishing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_geodatabuilder/index.html">GeoDataBuilder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../case_studies/index.html">Case Studies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules_on_gair_interface/index.html">Working with Case Studies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_documents/index.html">Working with Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../accounts_user_profile/index.html">Accounts and User Profile</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+ 
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GAIR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">GAIR Users Guide</a> &raquo;</li>
+        
+          <li><a href="index.html">Working with Layers</a> &raquo;</li>
+        
+      <li>Layer Styling</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/usage/managing_layers/layer_styling.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="layer-styling">
+<span id="layer-style"></span><h1>Layer Styling<a class="headerlink" href="#layer-styling" title="Permalink to this headline">¶</a></h1>
+<p>Maps are helpful because they allow you gain a deeper understanding of your data by allowing you to visualize it in many different ways.
+So you can tell different stories depending on how the data is presented.
+For any given data or layer, you should explore different styling options and choose the best style for that.</p>
+<p>In GeoNode each layer has a <em>Default Style</em> which is determined by the nature of the data you’re mapping. When uploading a new layer (see <a class="reference internal" href="uploading_layers.html#uploading-layers"><span class="std std-ref">Layers Uploading</span></a>) a new default style will be associated to it.</p>
+<div class="figure align-center" id="id1">
+<img alt="../../_images/layer_default_style.png" src="../../_images/layer_default_style.png" />
+<p class="caption"><span class="caption-text"><em>Default Style for Layers</em></span></p>
+</div>
+<p>Referring to the example above, dark orange lines are not very good to represent waterways so we would need to change this style. In the following paragraphs you will learn how to create a new style starting from given templates, how to edit a style, how to upload styles from file and how to manage them.</p>
+<div class="section" id="creating-new-styles">
+<h2>Creating new Styles<a class="headerlink" href="#creating-new-styles" title="Permalink to this headline">¶</a></h2>
+<p>In order to create a new style, open the <em>Layer Page</em> (see <a class="reference internal" href="layer_info.html#layer-info"><span class="std std-ref">Layer Information</span></a>) and click on <span class="guilabel">Editing Tools</span>. Then click the <span class="guilabel">Edit</span> button in the <em>Styles</em> section of the <em>Layer Editing</em> panel (see the picture below).</p>
+<div class="figure align-center" id="id2">
+<img alt="../../_images/edit_style_button.png" src="../../_images/edit_style_button.png" />
+<p class="caption"><span class="caption-text"><em>Edit Styles button</em></span></p>
+</div>
+<p>The <em>Layer</em> will open in a new <em>Map</em>. The <em>Styles Panel</em> will show you all the available styles for the layer and some useful tools.</p>
+<div class="figure align-center" id="id3">
+<img alt="../../_images/styles_map_panel.png" src="../../_images/styles_map_panel.png" />
+<p class="caption"><span class="caption-text"><em>The Styles Panel in the Map</em></span></p>
+</div>
+<p>Now follow the steps below:</p>
+<ol class="arabic simple">
+<li>Click the <a class="reference internal" href="../../_images/create_new_style_button.png"><img alt="create_new_style_button" class="align-middle" src="../../_images/create_new_style_button.png" style="width: 30px; height: 30px;" /></a> button. The <em>Style Templates Panel</em> will open.</li>
+</ol>
+<blockquote>
+<div><div class="figure align-center" id="id4">
+<img alt="../../_images/create_new_style_from_templates.png" src="../../_images/create_new_style_from_templates.png" />
+<p class="caption"><span class="caption-text"><em>Create new Styles</em></span></p>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Choose a <em>Style Template</em> from the list (both <em>CSS</em> and <em>SLD</em> styles are available).</li>
+</ol>
+<blockquote>
+<div><div class="figure align-center" id="id5">
+<img alt="../../_images/style_templates.png" src="../../_images/style_templates.png" />
+<p class="caption"><span class="caption-text"><em>Style Templates</em></span></p>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Click the <a class="reference internal" href="../../_images/add_style_button.png"><img alt="add_style_button" class="align-middle" src="../../_images/add_style_button.png" style="width: 30px; height: 30px;" /></a> button to add the <em>Style Template</em> to the styles list.</li>
+</ol>
+<blockquote>
+<div></div></blockquote>
+<ol class="arabic simple" start="4">
+<li>Insert a <em>Title</em> and an <em>Abstract</em> (optional), then click on <span class="guilabel">Save</span>.</li>
+</ol>
+<blockquote>
+<div><div class="figure align-center" id="id6">
+<a class="reference internal image-reference" href="../../_images/new_style_title.png"><img alt="../../_images/new_style_title.png" src="../../_images/new_style_title.png" style="width: 300px;" /></a>
+<p class="caption"><span class="caption-text"><em>Title and Abstract for new Styles</em></span></p>
+</div>
+</div></blockquote>
+<p>The style you have created is now added to the <em>Styles List</em>.</p>
+<div class="figure align-center" id="id7">
+<img alt="../../_images/new_style_in_list.png" src="../../_images/new_style_in_list.png" />
+<p class="caption"><span class="caption-text"><em>New Styles into the list</em></span></p>
+</div>
+<p>You will also see this new style in the <em>Layer Page</em>.</p>
+<div class="figure align-center" id="id8">
+<img alt="../../_images/new_style_in_layer_page.png" src="../../_images/new_style_in_layer_page.png" />
+<p class="caption"><span class="caption-text"><em>The Layer Page with the new Style</em></span></p>
+</div>
+<p>Now you can switch the style by clicking on the corresponding checkbox.</p>
+<p>It would be nice to change the style in order to decrease the opacity of the filling color as well as to reduce the lines width.
+The embedded <a class="reference external" href="https://mapstore2.geo-solutions.it/mapstore/#/">MapStore</a> makes available a powerful <em>Style Editor</em> to accomplish that tasks. In the next paragraph we will explain how.</p>
+</div>
+<div class="section" id="editing-the-layer-style">
+<h2>Editing the Layer Style<a class="headerlink" href="#editing-the-layer-style" title="Permalink to this headline">¶</a></h2>
+<p>The following steps show you how to edit styles:</p>
+<ol class="arabic simple">
+<li>From inside the map open the <em>TOC (Table Of Content)</em> by clicking the <a class="reference internal" href="../../_images/toc_button.png"><img alt="toc_button" class="align-middle" src="../../_images/toc_button.png" style="width: 30px; height: 30px;" /></a> button</li>
+<li>Click on <a class="reference internal" href="../../_images/layer_settings_button.png"><img alt="layer_settings_button" class="align-middle" src="../../_images/layer_settings_button.png" style="width: 30px; height: 30px;" /></a></li>
+<li>Open the <em>Style</em> tab <a class="reference internal" href="../../_images/style_tab.png"><img alt="style_tab" class="align-middle" src="../../_images/style_tab.png" style="width: 30px; height: 30px;" /></a></li>
+</ol>
+<blockquote>
+<div><div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Styles editing is allowed only to those users who have the needed permission. See <a class="reference internal" href="layer_permissions.html#layer-permissions"><span class="std std-ref">Changing the Layer Permissions</span></a> to read more)</p>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li>Select the <em>Style</em> and click on <a class="reference internal" href="../../_images/style_editor_button.png"><img alt="style_editor_button" class="align-middle" src="../../_images/style_editor_button.png" style="width: 30px; height: 30px;" /></a></li>
+<li>Edit the style. The <em>Style Editor</em> helps you to write valid styles through the <em>Syntax Validator</em> which shows you a popup in case of errors (see the picture below).</li>
+</ol>
+<blockquote>
+<div><div class="figure align-center" id="id9">
+<img alt="../../_images/style_editor_syntax_validator.png" src="../../_images/style_editor_syntax_validator.png" />
+<p class="caption"><span class="caption-text"><em>The Style Editor Syntax Validation</em></span></p>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="6">
+<li>Click on <a class="reference internal" href="../../_images/save_style_button.png"><img alt="save_style_button" class="align-middle" src="../../_images/save_style_button.png" style="width: 30px; height: 30px;" /></a> to save your changes.</li>
+</ol>
+<p>See the following gif to recap the whole process.</p>
+<div class="figure align-center" id="id10">
+<img alt="../../_images/style_editor.gif" src="../../_images/style_editor.gif" />
+<p class="caption"><span class="caption-text"><em>The Style Editor</em></span></p>
+</div>
+<div class="line-block">
+<div class="line">You can also decide to make your new style the <em>Default Style</em> of that layer. Click on <a class="reference internal" href="../../_images/set_style_as_default_button.png"><img alt="set_style_as_default_button" class="align-middle" src="../../_images/set_style_as_default_button.png" style="width: 30px; height: 30px;" /></a> to do that.</div>
+<div class="line">Click on <a class="reference internal" href="../../_images/delete_style_button.png"><img alt="delete_style_button" class="align-middle" src="../../_images/delete_style_button.png" style="width: 30px; height: 30px;" /></a> to delete the style.</div>
+</div>
+</div>
+<div class="section" id="uploading-styles">
+<h2>Uploading Styles<a class="headerlink" href="#uploading-styles" title="Permalink to this headline">¶</a></h2>
+<p>In GeoNode it is also possible to upload an existing style from file.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Currently only styles in <strong>SLD (Style Layer Descriptor 1.0, 1.1)</strong> format can be uploaded in GeoNode.</p>
+</div>
+<p>From the <em>Layer Page</em> click on <em>Editing Tools</em> to open the <em>Editing Tools</em> panel and follow the steps below:</p>
+<ol class="arabic simple">
+<li>Click the <span class="guilabel">Upload</span> button of the <em>Styles</em> section</li>
+</ol>
+<blockquote>
+<div><div class="figure align-center" id="id11">
+<a class="reference internal image-reference" href="../../_images/upload_style_button.png"><img alt="../../_images/upload_style_button.png" src="../../_images/upload_style_button.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-text"><em>Upload Styles button</em></span></p>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Click on <span class="guilabel">Choose Files</span> and select your style from your disk</li>
+</ol>
+<blockquote>
+<div><div class="figure align-center" id="id12">
+<img alt="../../_images/upload_styles.png" src="../../_images/upload_styles.png" />
+<p class="caption"><span class="caption-text"><em>Upload Styles</em></span></p>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Click on <span class="guilabel">Upload files</span></li>
+</ol>
+<p>Once the process has been finished the new <em>Style</em> will be visible in the <em>Layer Page</em>.</p>
+</div>
+<div class="section" id="managing-styles">
+<h2>Managing Styles<a class="headerlink" href="#managing-styles" title="Permalink to this headline">¶</a></h2>
+<p>Given a layer, you can manage all its styles in tha <em>Styles Management Page</em> accessible from the <span class="guilabel">Manage</span> button of the <em>Layer Editing</em> panel.</p>
+<div class="figure align-center" id="id13">
+<img alt="../../_images/manage_styles.png" src="../../_images/manage_styles.png" />
+<p class="caption"><span class="caption-text"><em>Managing Styles</em></span></p>
+</div>
+<p>In that page you can:</p>
+<ul class="simple">
+<li>See the <em>Layer Name</em></li>
+<li>Add/remove styles to/from the <em>Available styles</em> list</li>
+<li>Choose the <em>Layer Default Style</em> from the <em>Available styles</em> list</li>
+</ul>
+<p>Click on <span class="guilabel">Update Available Styles</span> to save your changes.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="uploading_layers.html" class="btn btn-neutral float-right" title="Layers Uploading" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="layer_metadata.html" class="btn btn-neutral float-left" title="Layers Metadata" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright CC-SA
+      <span class="lastupdated">
+        Last updated on Nov 24, 2020.
+      </span>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

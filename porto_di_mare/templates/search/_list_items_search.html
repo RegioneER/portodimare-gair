@@ -1,0 +1,50 @@
+{% load i18n %}
+
+
+<h4 class="padding-LR">
+    <a href="#" class="toggle toggle-nav">
+        <span class="fa fa-chevron-right"></span>
+        {% blocktrans %}
+        {{ label }}
+        {% endblocktrans %}
+    </a>
+</h4>
+
+<ul class="nav opened node-treeview-content" id="{{id}}">
+
+    <li>
+        <a 
+            ng-click="single_choice_listener($event)" 
+            data-value="" 
+            title="{% trans "All" %}"
+            class=" btn-clear-link btn-search-{{id}}">
+            {% trans "All" %}
+        </a>
+    </li>
+
+    {% for o in obj %}
+    {% verbatim %}
+    <li>
+        <a 
+            ng-click="single_choice_listener($event)" 
+            data-value="{% endverbatim %}{{o.data_value}}{% verbatim %}" 
+            title="{% endverbatim %}{{o.name}}{% verbatim %}" 
+            class=" btn-clear-link btn-search-{% endverbatim %}{{id}}{% verbatim %}">
+            
+            {% endverbatim %}
+            {{ o.name  }}
+            
+
+            {% if o.tot %}
+            <span class="badge pull-right ng-binding">
+            {{o.tot}}
+            </span>
+            {% endif %}
+            {% verbatim %}
+        </a>
+    </li>
+    {% endverbatim %}
+
+    {% endfor %}
+
+</ul>

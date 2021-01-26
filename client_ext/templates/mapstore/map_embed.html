@@ -1,0 +1,98 @@
+{% extends "./base_ms.html" %}
+{% load static %}
+{% block plugins %}
+<script type="text/javascript" src="{% static 'geonode/js/ms2/utils/ms2_base_plugins.js' %}"></script>
+<script type="text/javascript" src="{% static 'geonode/js/ms2/utils/ms2_map_embed_plugins.js' %}"></script>
+{% endblock %}
+{% block style %}
+<style>
+	body {
+        padding: 0px !important;
+        margin: 0px !important;
+	}
+</style>
+{% endblock %}
+{% block app_config %}
+{% autoescape off %}
+<script type="text/javascript">
+    const ms2_config = {{ ms2_config|default:"false"|safe }};
+    if (ms2_config && ms2_config.map.center.x === 0.0) {
+        ms2_config.map.center.x = 15.062;
+        ms2_config.map.center.y = 42.294;
+        ms2_config.map.zoom = 6;
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const userDetails = {
+            "User": user,
+            "access_token": accessToken
+        }
+        MS2_PLUGINS = window.squashMS2PlugCfg(MS2_BASE_PLUGINS, MS2_EMBED_PLUGINS);
+        MS2_PLUGINS["mobile"] = MS2_PLUGINS.desktop;
+        initMapstore2Api('edit', function(MapStore2, options) {
+            if (options && options.setLocale) {
+                options.setLocale('{{ LANGUAGE_CODE }}');
+            }
+            MapStore2.create('ms-container', {
+                config: ms2_config,
+                mapId: ms2_config.map && ms2_config.map.info && ms2_config.map.info.id,
+                initialState: {
+                    defaultState: {
+                        map: {center: {x: 15.062, y: 42.294, crs: "EPSG:4326"}, zoom: 6},
+                        maptype: {mapType: maptype},
+                        mode: "embedded",
+                        maps : {
+                            enabled: false,
+                            showMapDetails: true,
+                            errors: [],
+                            searchText: "",
+                            results: ""},
+                        mousePosition: {enabled: false},
+                        controls: {
+                            toolbar: {
+                                active: null,
+                                expanded: false
+                            }
+                        },
+                        mapInfo: {enabled: true, infoFormat: "text/html" },
+                        security: {
+                                token: "{{ ACCESS_TOKEN }}"
+                            }
+                    }
+                },
+                proxy: defaultConfig.proxy,
+                printingEnabled: defaultConfig.printingEnabled,
+                localConfig: {
+                    geonode_url: defaultConfig.localConfig.geonode_url,
+                    genode_rest_api: defaultConfig.localConfig.genode_rest_api,
+                    loadAfterTheme: defaultConfig.localConfig.loadAfterTheme,
+                    printUrl: defaultConfig.localConfig.printUrl,
+                    translations: defaultConfig.localConfig.translations,
+                    useAuthenticationRules: defaultConfig.localConfig.useAuthenticationRules,
+                    authenticationRules: defaultConfig.localConfig.authenticationRules
+                },
+                plugins: MS2_PLUGINS
+            });
+            if (user && user.id) {
+                MapStore2.triggerAction({type: "LOGIN_SUCCESS", userDetails: userDetails});
+            }
+            if (ms2_config) {
+                MapStore2.triggerAction({
+                    type: "MAP_CONFIG_LOADED",
+                    config: ms2_config,
+                    legacy: !!ms2_config.map && ms2_config.map.info && ms2_config.map.info.id,
+                    mapId: ms2_config.map && ms2_config.map.info && ms2_config.map.info.id
+                });
+            }
+        });
+    });
+</script>
+{% endautoescape %}
+{% endblock %}
+{% block map_content %}
+<div id="ms-container" class="ms2">
+        <div class="_ms2_init_spinner _ms2_init_center">
+            <div></div>
+        </div>
+        <div class="_ms2_init_text _ms2_init_center">Loading MapStore</div>
+</div>
+{% endblock %}

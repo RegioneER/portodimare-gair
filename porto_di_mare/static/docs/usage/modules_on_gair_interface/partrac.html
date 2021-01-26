@@ -1,0 +1,371 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>PARTRAC Module &mdash; GAIR  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="MUC Module" href="muc.html" />
+    <link rel="prev" title="Working with Case Studies" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html"> GAIR
+          
+
+          
+            
+            <img src="../../_static/logo-adrion-portodimare.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                European Regional Development Fund - Instrument for Pre-Accession II Fund
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/index.html">What is GAIR</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.html">Getting Started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GAIR Help</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">GAIR Users Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data/index.html">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_layers/index.html">Working with Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_maps/index.html">Working with Maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../publishing_data/index.html">Publishing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_geodatabuilder/index.html">GeoDataBuilder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../case_studies/index.html">Case Studies</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Working with Case Studies</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">PARTRAC Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prepare-input-source-layer-in-qgis">Prepare input source layer in QGIS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#request-a-token-auth">Request a token auth</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-new-case-study-and-run">Create new case study and Run</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="muc.html">MUC Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cea.html">CEA Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="aza.html">AZA Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ssf.html">SSF Module on GAIR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msf.html">MSF Module on GAIR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oil_spill.html">OIL SPILL Module on GAIR</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_documents/index.html">Working with Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../accounts_user_profile/index.html">Accounts and User Profile</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+ 
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GAIR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">GAIR Users Guide</a> &raquo;</li>
+        
+          <li><a href="index.html">Working with Case Studies</a> &raquo;</li>
+        
+      <li>PARTRAC Module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/usage/modules_on_gair_interface/partrac.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="partrac-module">
+<span id="tutorial-partrac"></span><h1>PARTRAC Module<a class="headerlink" href="#partrac-module" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-center" id="cs-menu">
+<img alt="GAIR case studies menu" src="../../_images/case_studies_menu2.png" />
+<p class="caption"><span class="caption-text">GAIR case studies menu</span></p>
+</div>
+<p>(in progress)</p>
+<p>The PARTRAC Module still doesn’t  have a complete web interface but the backend API is fully functional.</p>
+<p>You can otherwise prepare an input layer with a GIS tool and run the module using a tool for API testing like <a class="reference external" href="https://www.postman.com/">postman</a>
+or using interactive forms at <a class="reference external" href="https://api.tools4msp.eu/docs/">api.tools4msp.eu</a>.</p>
+<div class="section" id="prepare-input-source-layer-in-qgis">
+<h2>Prepare input source layer in QGIS<a class="headerlink" href="#prepare-input-source-layer-in-qgis" title="Permalink to this headline">¶</a></h2>
+<p>As already described in the <span class="xref std std-ref">partrac-module-inputs</span> section the deployment locations of
+the lagrangian particles are providede by a polygon layer.
+First of all you have to preapare this input layer in geojson format,
+then you will create a new case study and upload the layer of particle sources.
+<a class="reference external" href="https://www.qgis.org/">QGIS</a> is the most used Open Source GIS desktop software.
+You can download an example layer from <a class="reference external" href="https://api.tools4msp.eu/media/casestudy/21/inputs/partrac-PARTRACSOURCES_XS1FWNu.geojson">here</a>
+and open it in QGIS as a <a href="#id1"><span class="problematic" id="id2">`</span></a>vector layer.</p>
+<p>Delete all polygons and draw new, then export as a geoJson Layer.</p>
+<div class="figure align-center" id="qgis-save-json">
+<a class="reference internal image-reference" href="../../_images/QGIS_save_json.png"><img alt="QGIS save dialog" src="../../_images/QGIS_save_json.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-text">QGIS save dialog</span></p>
+</div>
+<p>Please be sure to export your layer with Lat/Lon Spatial Reference System (EPSG:4326).</p>
+</div>
+<div class="section" id="request-a-token-auth">
+<h2>Request a token auth<a class="headerlink" href="#request-a-token-auth" title="Permalink to this headline">¶</a></h2>
+<p>You can request a Token by sending a mail message to the Tolls4MSP Team
+wich  contact you can find on <a class="reference external" href="http://tools4msp.eu/contacts">this page</a>.</p>
+<p>Once you0ve received the Token set authentication method on api page</p>
+<div class="figure align-center" id="token-config-01">
+<a class="reference internal image-reference" href="../../_images/PARTRAC_token_auth01.png"><img alt="Auth Token configuration" src="../../_images/PARTRAC_token_auth01.png" style="width: 70%;" /></a>
+<p class="caption"><span class="caption-text">Auth Token configuration</span></p>
+</div>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../../_images/PARTRAC_token_auth02.png"><img alt="Set use token Authentication" src="../../_images/PARTRAC_token_auth02.png" style="width: 40%;" /></a>
+</div>
+</div>
+<div class="section" id="create-new-case-study-and-run">
+<h2>Create new case study and Run<a class="headerlink" href="#create-new-case-study-and-run" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Query the existing case study with the url</p>
+<blockquote>
+<div><p><a class="reference external" href="https://api.tools4msp.eu/api/casestudies/?cstype=default&amp;module=partrac">https://api.tools4msp.eu/api/casestudies/?cstype=default&amp;module=partrac</a></p>
+</div></blockquote>
+<p>Response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.tools4msp.eu/api/casestudies/21/&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span>
+    <span class="nt">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;ParTrac Case Study RER&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Tracking of particle with and without specific sinking velocity released on the sea surface. The computation is based on the SHYFEM model and considers multi-years average circulation.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;module&quot;</span><span class="p">:</span> <span class="s2">&quot;partrac&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;cstype&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;resolution&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="nt">&quot;extent&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="mf">12.240773677863121</span><span class="p">,</span>
+        <span class="mf">43.968733132355396</span><span class="p">,</span>
+        <span class="mf">13.464816805611731</span><span class="p">,</span>
+        <span class="mf">44.84709823169839</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;gair&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;created&quot;</span><span class="p">:</span> <span class="s2">&quot;2019-10-10T12:16:35.860391Z&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-14T13:57:19.937761Z&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;thumbnails&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.tools4msp.eu/api/casestudies/21/inputs/64/&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;file&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="nt">&quot;thumbnail&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.tools4msp.eu/media/casestudy/21/inputs/casestudy-CS-THUMB.png&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;coded_label&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.tools4msp.eu/api/codedlabels/CS-THUMB/&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;code&quot;</span><span class="p">:</span> <span class="s2">&quot;CS-THUMB&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Case Study Thumbanil&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>]</p>
+</li>
+<li><p class="first">Create a new case study by cloning existing case study (here 21):</p>
+<blockquote>
+<div><p><a class="reference external" href="https://api.tools4msp.eu/api/casestudies/21/clone/">https://api.tools4msp.eu/api/casestudies/21/clone/</a></p>
+</div></blockquote>
+<p>response:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;success&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.tools4msp.eu/api/casestudies/127/&quot;</span><span class="p">,</span>
+<span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="mi">127</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Read input id of the PARTRACSOURCES layer in new case study:</p>
+<blockquote>
+<div><p><a class="reference external" href="https://api.tools4msp.eu/api/casestudies/127/inputs/">https://api.tools4msp.eu/api/casestudies/127/inputs/</a></p>
+</div></blockquote>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>[..some lines trimmed..]
+
+{
+&quot;url&quot;: &quot;https://api.tools4msp.eu/api/casestudies/127/inputs/349/&quot;,
+&quot;file&quot;: &quot;https://api.tools4msp.eu/media/casestudy/127/inputs/partrac-PARTRACSOURCES.geojson&quot;,
+&quot;thumbnail&quot;: null,
+&quot;coded_label&quot;: &quot;https://api.tools4msp.eu/api/codedlabels/PARTRACSOURCES/&quot;,
+&quot;code&quot;: &quot;PARTRACSOURCES&quot;,
+&quot;label&quot;: &quot;Geojson sources for ParTrac module&quot;
+}
+</pre></div>
+</div>
+<p>url -&gt; id = 349</p>
+</li>
+<li><p class="first">Upload new layer.</p>
+<blockquote>
+<div><p><a class="reference external" href="https://api.tools4msp.eu/api/casestudies/127/inputs/349/upload/">https://api.tools4msp.eu/api/casestudies/127/inputs/349/upload/</a></p>
+</div></blockquote>
+</li>
+<li><p class="first">run module</p>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="muc.html" class="btn btn-neutral float-right" title="MUC Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Working with Case Studies" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright CC-SA
+      <span class="lastupdated">
+        Last updated on Nov 24, 2020.
+      </span>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

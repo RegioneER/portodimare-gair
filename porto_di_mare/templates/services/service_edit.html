@@ -1,0 +1,31 @@
+{% extends "services/services_base.html" %}
+{% load bootstrap_tags %}
+{% load i18n %}
+
+{% block head %}
+{{ block.super }}
+
+
+{% endblock %}
+
+{% block title %} {% trans "Edit Service" %} - {{ block.super }} {% endblock %}
+
+{% block body_outer %}
+
+<div class="container">
+
+<div class="page-header">
+  <small><a class="btn-dark-light-link breadcrumb-title" href="{% url 'services' %}?limit={{ CLIENT_RESULTS_LIMIT }}">{% trans "Explore Remote Services" %}</a> /</small>
+
+  <h1 class="page-title">{% trans "Edit Service" %}</h1>
+</div>
+<form method="POST" id="service_edit_form">
+  {% csrf_token %}
+  {{ service_form|as_bootstrap }}
+  <div class="grid-spacer">
+    <p><input type="submit" class="btn btn-info" value="{% trans "Save" %}"/></p>
+  </div>
+</form>
+</div>
+<div style="margin-top: 50px;"></div>
+{% endblock %}

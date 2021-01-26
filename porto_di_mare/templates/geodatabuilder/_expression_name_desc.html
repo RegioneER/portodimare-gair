@@ -1,0 +1,35 @@
+
+{% load i18n %} 
+
+
+<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+    <div class="form-group required">
+        <label for="id_label">
+        {% trans "Name" %}
+        </label><br />
+        {{ form.label }} 
+    </div>
+</div>
+
+<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+    <div id="expression_casestudy_edit"
+        data-id="{{ geodatabuilder.casestudy_api_id }}" 
+        class="form-group required">
+        <label for="casestudy">
+        {% trans "Case Study" %} 
+        </label><br />
+        {{ form.casestudy_api_id }}
+        <!--select class="form-control" id="casestudy"></select-->
+    </div>
+</div>
+
+
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="form-group required">
+        <label for="expression_text">{% trans 'Description' %}</label><br />
+        {{ form.desc_expression }}
+        </div>
+    </div>    
+
+<div class="clearfix"></div>

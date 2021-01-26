@@ -1,0 +1,445 @@
+{% load i18n %}
+
+
+<div class="page-header">
+    <style>
+    #paneltbar {
+        margin-top: 1px !important;
+        }
+    </style>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-left">
+
+                {% if resource.category %}
+                <div {% if resource.category.description %} data-toggle="tooltip" data-placement="auto" title="{{ resource.category.description }}" {% endif %}>
+                    <a href="{% url "search" %}?category__identifier__in={{ resource.category.identifier }}">
+                    {{ resource.category }}</a> 
+                    {% if resource.category.description %}								
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                <h1 class="page-title">{{ resource.title|default:resource.alternate }}</h1>
+                {% if storeType == 'remoteStore' %}<em><i class="fa fa-power-off {% if online %}text-success{% else %}text-danger{% endif %}"></i> {% trans "Service is" %} {% if online %}{% trans "online" %}{% else %}{% trans "offline" %}{% endif %} </em>{% endif %}						
+            </div>
+            {% if DISPLAY_RATINGS %}
+            <action class="pull-right">
+                
+                {% block social_links %}
+                {% if DISPLAY_SOCIAL %}
+                {% include "social_links.html" %}
+                {% endif %}
+                {% endblock %}
+                
+                <!-- TODO: Move this to a reusable template snippet -->
+                {% if request.user.is_authenticated %}
+                <!-- <h4>{% trans "Rate this layer" %}</h4> -->
+                {% user_rating request.user resource "layer" as user_layer_rating %}
+                <div id="user_rating" class="category-layer" data-score="{{ user_layer_rating }}"></div>
+                {% endif %}
+                <!-- <h4>{% trans 'Average Rating' %}</h4>
+                {% overall_rating resource "layer" as layer_rating %}
+                {% num_ratings resource as num_votes %}
+                <div class="overall_rating" data-score="{{ layer_rating }}"></div> ({{num_votes}}) -->
+            </action>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+        {% if resource.display_type %}
+        <div class="pull-left icon-list" data-toggle="tooltip" data-placement="bottom" title="{% trans "Type" %}">
+            <span class="fa fa-folder-open"></span> 
+            {{ resource.display_type }}
+        </div>									
+        {% endif %}
+
+        
+        {% if resource.date %}
+        {% if resource.date_type == 'creation' %}
+        <div class="pull-left icon-list" data-toggle="tooltip" data-placement="bottom" title="{% trans resource.date_type|title %} {% trans "Date" %}"
+            itemprop="dateCreated" datetime="{{ resource.date|date:"c"}}">
+            <span class="fa fa-calendar"></span> 
+            {{ resource.date }}
+        </div>
+        {% elif resource.date_type == 'publication' %}
+        <div class="pull-left icon-list" data-toggle="tooltip" data-placement="bottom" data-original-title="{% trans resource.date_type|title %} {% trans "Date" %}" 
+            itemprop="datePublished" datetime="{{ resource.date|date:"c"}}">
+            <span class="fa fa-calendar"></span>
+            {{ resource.date }}
+        </div>
+        {% else %}
+        <div class="pull-left icon-list" data-toggle="tooltip" data-placement="bottom" data-original-title="{% trans resource.date_type|title %} {% trans "Date" %}" 
+            itemprop="dateModified" datetime="{{ resource.date|date:"c"}}">
+            <span class="fa fa-calendar"></span>
+            {{ resource.date }}
+        </div>
+        {% endif %}
+        {% endif %}
+        
+
+        {% if LICENSES_ENABLED and LICENSES_DETAIL == 'above' and resource.license %}
+        <div class="pull-left icon-list" data-toggle="tooltip" data-placement="bottom" title="" 
+            data-original-title="{% trans 'License' %}">
+            <span class="glyphicon glyphicon-copyright-mark"></span>
+            {{ resource.license.name_long }} <a href="#license-more-above" data-toggle="collapse" data-target=".license-more-above"><i class="fa fa-info-circle"></i></a>
+            <div class="license-more-above collapse">
+            {% for bullet in resource.license.description_bullets %}
+                {{ bullet }}<br/><br/>
+            {% endfor %}
+            {% if resource.license.url %}
+                For more info see <a href="{{ resource.license.url }}">{{ resource.license.url }}</a>.
+            {% endif %}
+            </div>
+        </div>				
+        {% endif %}
+
+
+        {% if resource.regions.all %}
+        <div class="pull-left icon-list" data-toggle="tooltip" data-placement="bottom" data-original-title="{% trans 'Regions' %}">
+            <span class="glyphicon glyphicon-map-marker"></span>
+            {% for region in resource.regions.all %}
+            <a class="" itemscope itemtype="http://schema.org/Text" href="{% url "search" %}?regions__name__in={{ region.name }}">
+                {{ region.name }}
+            </a>
+            {% if not forloop.last %},{% endif %}
+            {% endfor %}
+        </div>	
+        {% endif %}
+
+        {% if resource.owner %}
+        <div class="pull-left icon-list" data-toggle="tooltip" data-placement="bottom" data-original-title="{% trans 'Owner' %}">
+            <span class="fa fa-user"></span>
+            <a itemprop="author" href="{{ resource.owner.get_absolute_url }}">{{ resource.owner.username }}</a>
+        </div>
+        {% endif %}
+    
+        {% if resource.poc.user %}
+        <div class="pull-left icon-list" data-toggle="tooltip" data-placement="bottom" data-original-title="{% trans 'Point of Contact' %}">
+            <span class="fa fa-user"></span>
+            <a href="{{ resource.poc.user.get_absolute_url }}">{{ resource.poc.user.username }}</a>
+        </div>					
+        {% endif %}
+    
+        {% if resource.group %}
+        <div class="pull-left icon-list" data-toggle="tooltip" data-placement="bottom" data-original-title="{% trans 'Group' %}">
+            <span class="fa fa-user-friends"></span>
+            <a href="/groups/group/{{ resource.group.name }}/activity/">{{ group }}</a>
+        </div>
+        {% endif %}									
+
+        <!--
+        {% if resource.keywords.count > 0 %}
+        <div class="pull-left icon-list" data-toggle="tooltip" data-placement="bottom" data-original-title="{% trans 'Keywords' %}">
+            <i class="glyphicon glyphicon-tags"></i>
+            {% for keyword in resource.keywords.all %}
+            <a itemscope itemtype="http://schema.org/Text" href="{% url "search" %}?keywords__slug__in={{ keyword.slug }}" >
+                {{ keyword.name }}
+            </a>
+            {% if not forloop.last %},{% endif %}
+            {% endfor %}
+        </div>			
+        {% endif %}
+        -->
+        
+    </div>			
+    
+    
+    
+
+    
+
+    
+    <div class="col-md-9 abstract">
+        <div style="margin-top: 30px;"></div>
+        <h4>
+            {% trans "Abstract" %}
+        </h4>
+        <p>
+            {{ resource.abstract|escape|urlize|linebreaks|safe|truncatechars:500 }}
+        </p>
+        <div style="margin-top: 50px;"></div>
+        {% if USE_GEOSERVER and DISPLAY_WMS_LINKS %}
+        <p>
+            {% if request.user.is_authenticated and 'access_token' in request.session %}
+            <a class="btn-info btn-md btn" target="_blank" href="{% url 'capabilities_layer' resource.id %}?access_token={{ request.session.access_token }}">
+            {% else %}
+            <a class="btn-info btn-md btn" target="_blank" href="{% url 'capabilities_layer' resource.id %}">
+            {% endif %}
+            <span class="fa fa-map"></span> {% trans 'Layer WMS GetCapabilities document' %}</a>
+        </p>
+        {% endif %}
+        <div style="margin-top: 50px;"></div>
+
+        <div class="layer-actions">
+                {% include "_actions.html" %}
+                </div>
+        
+                <div class="tab-content">
+
+                        {% if resource.is_mosaic %}
+                        <article id="granules" class="description tab-pane {% if tab and tab == 'granules' %}active{% endif %}">
+                        <div class="paginate-contents">
+        
+                        <form method="GET" action="{% url "layer_detail" resource.layer.service_typename %}">
+                            {% csrf_token %}
+                            <input type="text" id="filter" name="filter" style="witdh:400px"/>&nbsp;<input type="submit" value='{% trans "Filter Granules" %}'/>
+                            <br />
+                            {% if filter %}
+                            <strong>{% trans "Active Filter:" %}</strong> <em>{{ filter }}</em>
+                            {% endif %}
+                        </form>
+                        
+                        
+                        
+                        <table class="table table-striped table-bordered table-condensed">
+                        <thead>
+                        <tr>
+                            <!-- th>{% trans "Granule ID" %}</th -->
+                            <th>{% trans "Bounding Box" %} (minX,minY,maxX,maxY)</th>
+                            <th>{% trans "Time" %}</th>
+                            <!-- th>{% trans "Elevation" %}</th -->
+                            <th>{% trans "Actions" %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% autopaginate all_granules.features 10 %}
+                        {% for feature in granules.features %}
+                            <tr>
+                            <!-- td>{{ feature.id }}</td -->
+                            <td><script language="Javascript">var bbox = JSON.parse('{{ feature.geometry.coordinates }}'); document.write('{{ granules.crs.properties.name }};' + bbox[0][0][0] + ',' + bbox[0][0][1] + ',' + bbox[0][2][0] + ',' + bbox[0][2][1]);</script></td>
+                            <td>{% if feature.properties.time %}{{ feature.properties.time }}{% endif %}</td>
+                            <!-- td>{% if feature.properties.elevation %}{{ feature.properties.elevation }}{% endif %}</td -->
+                            <td>
+                                <a class="btn btn-xs" href="#" onclick="doPreview('{{ resource.service_typename }}', '{{ feature.id }}', '{{ granules.crs.properties.name }}', '{{ feature.geometry.coordinates }}', {% if feature.properties.time %}'{{ feature.properties.time }}'{% else %}null{% endif %});"><img alt="Granule Preview" title="Granule Preview" src="/static/lib/img/map_go.png"/></a>
+                                <a class="btn btn-xs" href="{% url "layer_granule_remove" feature.id resource.service_typename %}"><img alt="Granule Remove" title="Granule Remove" src="/static/lib/img/cancel-on.png"/></a>
+                                <script language="Javascript">
+                                    function doPreview(layer_name, feature_id, srs, the_geom, time) {
+                                        var map = app.mapPanel.map;
+                                        for (var ll = 0; ll < app.map.layers.length; ll++) {
+                                            var layer = app.map.layers[ll];
+                                            if (layer.name == layer_name) {
+                                                if (time) {
+                                                    var re = new RegExp("(\\+[0-9]{4})", "gm");
+                                                    var timePosition = time;
+                                                    if (re.test(time)) timePosition = time.replace(re, 'Z');
+                                                    map.layers[ll].mergeNewParams({"TIME" : timePosition, "CQL_FILTER" : "IN ('" + feature_id + "')"});
+                                                }
+                                                else {
+                                                    map.layers[ll].mergeNewParams({"CQL_FILTER" : "IN ('" + feature_id + "')"});
+                                                }
+        
+                                                map.layers[ll].addOptions({
+                                                    singleTile: true
+                                                });
+        
+                                                bbox = JSON.parse(the_geom);
+                                                bbox = new OpenLayers.Bounds(bbox[0][0][0],bbox[0][0][1],bbox[0][2][0],bbox[0][2][1]).transform(srs, map.projection);
+        
+                                                //map.maxExtent = bbox;
+                                                //map.restrictedExtent = bbox;
+                                                map.maxExtent = new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34);
+                                                map.restrictedExtent = map.maxExtent;
+        
+                                                map.zoomToExtent(bbox);
+                                            }
+                                        }
+                                    }
+                                </script>
+                            </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% paginate %}
+                        </article>
+                        {% endif %}
+        
+                        <article id="attributes" class="tab-pane active">
+                    {% if resource.is_mosaic %}
+                    <table class="table table-striped table-bordered table-condensed">
+                        <thead>
+                        <tr>
+                            <th>{% trans "Dimension" %}</th>
+                            <th>{% trans "Enabled" %}</th>
+                            <th>{% trans "Regex" %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td title="TIME">{% trans "TIME" %}</td>
+                            <td>{% if resource.has_time %}{% trans "True" %}{% else %}{% trans "False" %}{% endif %}</td>
+                            <td>{% if resource.time_regex %}{{ resource.time_regex }}{% else %}&nbsp;{% endif %}</td>
+                            </tr>
+                            <!-- tr>
+                            <td title="ELEVATION">{% trans "ELEVATION" %}</td>
+                            <td>{% if resource.has_elevation %}{% trans "True" %}{% else %}{% trans "False" %}{% endif %}</td>
+                            <td>{% if resource.elevation_regex %}{{ resource.elevation_regex }}{% else %}&nbsp;{% endif %}</td>
+                            </tr -->
+                        </tbody>
+                    </table>
+                {% endif %}
+                {% if resource.attribute_set.all %}
+                    <table class="table table-striped table-bordered table-condensed">
+                        <thead>
+                        <tr>
+                            <th>{% trans "Attribute Name" %}</th>
+                            <th>{% trans "Label" %}</th>
+                            <th>{% trans "Description" %}</th>
+                            {% if wps_enabled %}
+                            <th>{% trans "Range" %}</th>
+                            <th>{% trans "Average" %}</th>
+                            <th>{% trans "Median" %}</th>
+                            <th>{% trans "Standard Deviation" %}</th>
+                            {% endif %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for attribute in resource.attributes %}
+                            <tr>
+                            <td {% if attribute.attribute_label and attribute.attribute_label != attribute.attribute %}title="{{ attribute.attribute }}"{% endif %}>{{ attribute.attribute }}</td>
+                            <td {% if attribute.attribute_label and attribute.attribute_label != attribute.attribute %}title="{{ attribute.attribute }}"{% endif %}>{{ attribute.attribute_label|default:"" }}</td>
+                            <td>{{ attribute.description|default:"" }}</td>
+                            {% if wps_enabled %}
+                                {% if attribute.unique_values == "NA" %}
+                                <td>{{ attribute.unique_values }}</td>
+                                {% else %}
+                                <td>
+                                <select name="unique_values">
+                                {% for value in attribute.unique_values_as_list %}
+                                    <option value="{{ value }}">{{ value }}</option>
+                                {% endfor %}
+                                </select>
+                                </td>
+                                {% endif %}
+                                <td>{{ attribute.average|floatformat:"2" }}</td>
+                                <td>{{ attribute.median|floatformat:"2" }}</td>
+                                <td>{{ attribute.stddev|floatformat:"2" }}</td>
+                            {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+                        </article>
+        
+                
+        
+                    {% if DISPLAY_COMMENTS %}
+                    <article id="comments" class="tab-pane">
+                        {% with resource as obj %}
+                        {% include "_comments.html" %}
+                        {% endwith %}
+                    </article>
+                    {% endif %}
+        
+                    {% if GEOGIG_ENABLED and resource.link_set.geogig %}
+                    {% with "_geogig_layer_detail.html" as geogig_template %}
+                    <article id="geogig" class="tab-pane">
+                    {% with resource as obj %}
+                        {% include geogig_template %}
+                    {% endwith %}
+                    </article>
+                    {% endwith %}
+                    {% endif %}
+            
+                </div>
+                
+    </div>
+
+
+
+
+
+    <div class="col-md-3 info">
+
+    
+            <dl class="dl-vertical">
+                <div class="more active collapse in">
+            
+                {% if resource.srid and SRID_DETAIL == 'below' %}
+                <dt>{% trans "SRID" %}</dt>
+                <dd>{{ resource.srid }}</dd>
+                {% endif %}
+            
+                {% if LICENSES_ENABLED and LICENSES_DETAIL == 'below' and resource.license %}
+                <dt>{% trans "License" %}</dt>
+                <dd>{{ resource.license.name_long }} <a href="#license-more-below" data-toggle="collapse" data-target=".license-more-below"><i class="fa fa-info-circle"></i></a></dd>
+                    <dd class="license-more-below collapse">
+                    {% for bullet in resource.license.description_bullets %}
+                        {{ bullet }}<br/><br/>
+                    {% endfor %}
+                    {% if resource.license.url %}
+                        + For more info see <a href="{{ resource.license.url }}">{{ resource.license.url }}</a>.
+                    {% endif %}
+                    </dd>
+                {% endif %}
+            
+                {% if resource.maintenance_frequency %}
+                <dt>{% trans "Maintenance Frequency" %}</dt>
+                <dd>{{ resource.maintenance_frequency_title }}</dd>
+                {% endif %}
+            
+                {% if resource.restriction_code_type or resource.constraints_other %}
+                <dt>{% trans "Restrictions" %}</dt>
+                <dd>{% if resource.constraints_other %}
+                        {{ resource.constraints_other }}
+                    {% else %}
+                        {{ resource.restriction_code_type }}
+                    {% endif %}</dd>
+                {% endif %}
+            
+                {% if resource.edition %}
+                <dt>{% trans "Edition" %}</dt>
+                <dd>{{ resource.edition}}</dd>
+                {% endif %}
+            
+                {% if resource.purpose %}
+                <dt>{% trans "Purpose" %}</dt>
+                <dd>{{ resource.purpose|escape|urlize|linebreaks|safe|truncatechars:160 }}</dd>
+                {% endif %}
+            
+                {% if resource.language %}
+                <dt>{% trans "Language" %}</dt>
+                <dd>{{ resource.language_title }}</dd>
+                {% endif %}
+            
+                {% if resource.temporal_extent_start and resource.temporal_extent_end %}
+                <dt>{% trans "Temporal Extent" %}</dt>
+                <dd>{{ resource.temporal_extent_start }} - {{ resource.temporal_extent_end }}</dd>
+                {% endif %}
+            
+                {% if resource.data_quality_statement %}
+                <dt>{% trans "Data Quality" %}</dt>
+                <dd>{{ resource.data_quality_statement }}</dd>
+                {% endif %}
+            
+                {% if resource.supplemental_information %}
+                <dt>{% trans "Supplemental Information" %}</dt>
+                <dd>{{ resource.supplemental_information|truncatechars:160|escape|urlize|linebreaks|safe }}</dd>
+                {% endif %}
+            
+                {% if resource.spatial_representation_type %}
+                <dt>{% trans "Spatial Representation Type" %}</dt>
+                <dd>{{ resource.spatial_representation_type }}</dd>
+                {% endif %}
+            
+                </div>
+            
+            </dl>
+
+            <!-- <a class="btn btn-info" href="#more" data-toggle="collapse" data-target=".more">{% trans "More info" %}</a> -->
+
+
+    </div>
+
+
+</div>
+
+
+
+

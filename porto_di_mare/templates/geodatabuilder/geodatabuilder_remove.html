@@ -1,0 +1,38 @@
+{% extends "geodatabuilder/geodatabuilder_base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Remove GeoDataBuilder' %} — {{ block.super }}{% endblock %}
+
+{% block body_outer %}
+<div class="container">
+	<div class="page-header">
+		
+
+			<small><a class="btn-dark-light-link breadcrumb-title" 
+				href="{% url "geodatabuilder_detail" geodatabuilder.id %}">{{ geodatabuilder.label }}</a> /</small>
+
+
+		<h1 class="page-title">{% trans "Remove GeoDataBuilder" %}</h1>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			<p class="lead">
+
+				{% trans "Are you sure you want to remove" %} <strong>{{ geodatabuilder.label }}</strong> ?
+
+			</p>
+			
+			<form action="{% url "geodatabuilder_remove" geodatabuilder.id %}" method="POST">
+				{% csrf_token %}
+				<input type="hidden" value="{{ geodatabuilder.id }}" />
+				<div class="form-actions">
+					<input type="submit" value="{% trans "Yes, I am sure" %}" class="btn btn-danger" />
+					<a href="{% url "geodatabuilder_detail" geodatabuilder.id %}" class="btn btn-default">{% trans "No, don't remove it" %}</a>
+				</div>
+			</form>
+		</div>
+		
+	</div>
+	<div class="row" style="margin-top: 50px;"></div>
+</div>
+{% endblock %}

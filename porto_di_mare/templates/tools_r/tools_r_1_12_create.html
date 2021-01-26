@@ -1,0 +1,453 @@
+{% extends "tools_r/tools_r_base.html" %}
+{% load i18n %}
+
+{% block title %} Tools R 1.12 | {{ block.super }} {% endblock %}
+
+
+{% block body_class %}ToolsR create{% endblock %}
+
+{%comment%}
+{% block sidebar %}
+
+{% endblock %}
+{%endcomment%}
+
+{% block body_outer %}
+
+<div class="container" id="ToolsR">
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="pull-left">
+                    <small><a class="btn-dark-light-link breadcrumb-title" 
+                        href="{% url "tools_r_1_12_list" %}">{% trans "Explore MSF" %}</a> /</small>
+
+                    <h1 class="page-title"> 
+                        {% if tool_r.id > 0 %}
+                        {% trans "Edit Medium Scale Fisheries (MSF)" %}
+                        {% else %}
+                        {% trans "Create Medium Scale Fisheries (MSF)" %}
+                        {% endif %}
+
+
+                    </h1>
+                    <h2 class="h3">Tools R 1.12 </h2>
+                    
+                </div>
+            </div>
+        </div>
+    </div>    
+    
+
+<!-- Modal Alert -->
+<div id="tools_r_alert" class="modal fade" role="dialog">
+    <div class="modal-dialog">  
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <span class="modal-title h4">
+                <span class="hide error-layer">
+                    {% trans "You can't add a layer" %}
+                </span>
+            </h4>
+        </div>        
+    </div>
+</div>
+
+
+    
+    <form id="tools_r_1_12_form"  
+        method="post" 
+        enctype="multipart/form-data" 
+        action="{% if tool_r.id > 0%}{% url "tools_r_1_12_edit" id=tool_r.id %}{% else %}{% url "tools_r_1_12_create" %}{% endif %}">
+        </form>
+
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+    <div class="row">
+
+         
+         <div class="clearfix"></div>
+
+        <div class="col-md-6 col-lg-8 col-sm-6 col-xs-12">
+            <div class="form-group required">
+                <label for="id_label">{% trans "Label" %}</label><br/>
+                {{ form.label }} 
+            </div>
+            <div class="sr-only form_type"> 
+            {{ form.type }} 
+            </div>
+            <div class="sr-only form_inputLayers"> 
+                <label for="input_layers_id">{% trans "Input Layers" %}</label><br/>
+                {{ form.input_layers }} </div>
+            <div class="sr-only form_inputCriteria"> 
+                <label for="id_input_criteria">{% trans "Input criteria" %}</label><br/>
+                {{ form.input_criteria }} </div>
+            <div class="sr-only form_pairwiseMatrixPS"> 
+                <label for="pairwise_matrix_ps_id">{% trans "Pairwise Matrix PS" %}</label><br/>
+                {{ form.pairwise_matrix_ps }} </div>
+            <div class="sr-only form_pairwiseMatrixTR"> 
+                <label for="pairwise_matrix_tr_id">{% trans "Pairwise Matrix TR" %}</label><br/>
+                {{ form.pairwise_matrix_tr }} </div>
+            <div class="sr-only form_fishingGear_PS"> 
+                <label for="fishing_gear_ps_id">{% trans "Fishing Gear PS" %}</label><br/>
+                {{ form.fishing_gear_ps }} </div>
+            <div class="sr-only form_fishingGear_TR1224"> 
+                 <label for="fishing_gear_tr1224_id">{% trans "Fishing Gear TR1224" %}</label><br/>
+                 {{ form.fishing_gear_tr1224}} </div>
+            <div class="sr-only form_fishingGear_TR2440"> 
+                 <label for="fishing_gear_tr2440_id">{% trans "Fishing Gear TR2440" %}</label><br/>
+                {{ form.fishing_gear_tr2440 }} </div>
+            <div class="sr-only response_inputLayers"> 
+                {{ response }} </div>
+        </div>
+
+        {% if user.is_superuser %}
+
+        <div class="col-md-3 col-lg-2 col-sm-3 col-xs-12">
+            <div class="form-group">
+
+                <label for="id_type" class="form-label">
+                    {% trans "Type" %}
+                </label>
+
+                <select id="id_form_type" class="form-control">
+                {% for m in type %}  
+                {% verbatim %}	
+                    <option 
+                        
+                        {% endverbatim %}
+                            {% if form.type.value == m.id %}  
+                            selected = "selected"
+                            {% endif %}
+                        {% verbatim %}
+                        
+                        class=""
+                        value="{% endverbatim %}{{m.id}}{% verbatim %}"
+                    >
+                    {% endverbatim %}{{m.name}}{% verbatim %}
+                    </option>
+                {% endverbatim %}
+                {% endfor %}
+                </select>
+            </div>
+        </div>
+        {% endif%}
+
+        <div class="col-md-3 col-lg-2 col-sm-3 col-xs-12">
+            <div class="form-group">
+                
+               
+                <label for="id_public">               
+                     <div class="hidden-xs" style="margin-bottom: 30px;"></div>     
+                    {{ form.public }} 
+                    &nbsp;
+                    {% trans "Public" %}
+                </label>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 15px;"></div>
+
+        <div class="clearfix"></div>
+        
+        {% include 'tools_r/_tools_r_layers.html' %}
+
+        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 15px;"></div>
+
+        
+        <div class="col-md-12 col-sm-12 col-xs-12">
+
+            <ul  class="nav nav-tabs">   
+                
+                <li class="active">
+                    <a data-toggle="tab" href="#layers">
+                        {% trans "Layers" %}</a>
+                </li>			
+
+                <li class="">
+                    <a data-toggle="tab" href="#matrix-ps">
+                        {% trans "Matrix PS" %}</a>
+                </li>
+                <li class="">
+                    <a data-toggle="tab" href="#matrix-tr">
+                        {% trans "Matrix TR" %}</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#fishing-gear-ps">
+                        {% trans "Fishing Gear PS" %}</a>
+                </li>	
+                <li>
+                    <a data-toggle="tab" href="#fishing-gear-tr1224">
+                        {% trans "Fishing Gear TR1224" %}</a>
+                </li>	
+                <li>
+                    <a data-toggle="tab" href="#fishing-gear-tr2440">
+                        {% trans "Fishing Gear TR2440" %}</a>
+                </li>							
+            </ul>
+
+        </div>
+
+        <div class="tab-content col-md-12 col-sm-12 col-xs-12">		
+
+            <div class="tab-pane row active" id="layers">
+                
+                <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 15px;"></div>
+            
+                <!-- Layers filter -->
+                <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12 pull-left form-group required">
+                    {% include "base/_mod_layer_list.html" %}
+                </div>
+                <!-- Layers -->
+                <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12 pull-left">
+                    <div style="margin-bottom: 31px"></div>
+                    
+                    
+                    <div id="list-layers">
+                        {% include "search/_search_content.html" %}                
+                    </div>
+                    
+                </div>
+            </div>
+
+
+            <div class="tab-pane row active_" id="matrix-ps">
+                {% include "tools_r/_tool_r_12_matrix_ps.html" %}
+            </div>
+            <div class="tab-pane row active_" id="matrix-tr">
+                {% include "tools_r/_tool_r_12_matrix_tr.html" %}
+            </div>
+
+
+
+            <div class="tab-pane row active_" id="fishing-gear-ps">
+                {% include "tools_r/_tool_r_12_fishinggear_ps.html" %}
+            </div>
+            <div class="tab-pane row active_" id="fishing-gear-tr1224">
+                {% include "tools_r/_tool_r_12_fishinggear_tr1224.html" %}
+            </div>
+            <div class="tab-pane row active_" id="fishing-gear-tr2440">
+                {% include "tools_r/_tool_r_12_fishinggear_tr2440.html" %}
+            </div>
+
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 50px;"></div>
+
+    </div>    
+    </form>
+
+   
+    <!-- popover template -->
+    <div id="expr_template_popover_title" class="">
+
+            <div class="popover" role="tooltip">
+                <div class="arrow"></div>
+                <span class="popover-title h3"></span>
+                <div class="popover-content"></div>
+            </div>                    
+    </div>
+
+    <div id="expr_template_popover_content" class="hide">
+        <div class="popover-editor">
+            <button type="button" class="remove btn btn-clear btn-xs hide" aria-label="{% trans 'EDIT' %}">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                {% trans 'EDIT' %}
+            </button>
+            <button type="button" class="remove btn btn-danger btn-xs" aria-label="{% trans 'REMOVE' %}">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- cursore a fine espressione -->
+    <div id="inputLayers_cursor_template" class="hide"></div>
+
+</div>
+
+
+<style></style>
+    
+
+
+{% endblock %} 
+
+
+{% block extra_script %}
+{{ block.super }}
+  {% if GEONODE_SECURITY_ENABLED %}
+    {% include "_permissions_form_js.html" %}
+  {% endif %}
+
+  {% include "tools_r/_tools_r_script_1_12.html" %}
+
+  <script type="text/javascript">
+    // questa variabile indica al file search.js di inizializzare lo script con la funzione "initToolsR()", al callback del caricamento dei layers
+    is_tool_r = true;
+    is_first_load = true;
+
+    var tools_r_id = 0;
+    var tools_r_str_id = "{{ tool_r.id }}";
+    if (tools_r_str_id.trim().length > 0) {
+        tools_r_id = parseInt(tools_r_str_id);
+    }
+
+    var hasLayerUsed = false;
+    var hasPopover = true;
+    var hasWriteinputLayers = true;
+
+
+function initStickyExpression() {
+    var expression_editor = $("#expression_editor");
+    var div_sticky = $("#expression_editor_content");
+    var nav_navbar = $("nav.navbar");
+    // var to = expression_editor.position().top + nav_navbar.height();
+    if (expression_editor.length){
+        var to = expression_editor.position().top + $(".inputLayers_label").height();
+        var h = div_sticky.height() + $(".inputLayers_label").height();
+        setSticky(expression_editor, to, div_sticky, h);
+        $(window).scroll(function() {
+            setSticky(expression_editor, to , div_sticky, h);
+        });
+    }
+}      
+
+  $(document).ready(function() { 
+
+
+    setTypeSelect();
+
+
+
+    $('#tools_r_1_12_form').on('keyup keypress', function(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13) { 
+            e.preventDefault();
+            return false;
+        }
+    });
+
+
+    $("#tools_r_1_12_form").submit(function(e) {
+        e.stopImmediatePropagation();
+        // e.preventDefault();
+        $(".save_tools_r_btn")
+            .attr("disabled" , true)
+        $(".save_tools_r_btn .text-btn")
+            .text("{% trans  'wait, run process...' %}");
+        $(".save_tools_r_btn")
+            .find(".run_icon").removeClass("hidden");
+        $(".inputLayers_footer .text").empty();
+
+
+        // Crea e Valida l'oggetto json dal template
+        // se valido inserisce la stringa nel campo del form.
+        var fishing_gear_ps_obj = validFishingGearObj("#fishing-gear-content-ps");
+        var fishing_gear_tr1224_obj = validFishingGearObj("#fishing-gear-content-tr1224");
+        var fishing_gear_tr2440_obj = validFishingGearObj("#fishing-gear-content-tr2440");
+        
+        if ( fishing_gear_ps_obj.is_valid && fishing_gear_tr1224_obj.is_valid && fishing_gear_tr2440_obj.is_valid ) {
+            // se la stringa del json è inferiore al max length impostato
+            if (JSON.stringify( fishing_gear_ps_obj.data ).length <= parseInt($("#fishing_gear_ps_id").attr("maxlength")) )
+                $("#fishing_gear_ps_id").val( JSON.stringify( fishing_gear_ps_obj.data ) );
+            else {
+                alert("{% trans  'ERROR: fishing_gear_ps_id too long' %}");
+                return false;
+            }
+
+            if (JSON.stringify( fishing_gear_tr1224_obj.data ).length <= parseInt($("#fishing_gear_tr1224_id").attr("maxlength")) )
+                $("#fishing_gear_tr1224_id").val( JSON.stringify( fishing_gear_tr1224_obj.data ) );
+            else {
+                alert("{% trans  'ERROR: fishing_gear_tr1224_id too long' %}");
+                return false;
+            }
+
+            if (JSON.stringify( fishing_gear_tr2440_obj.data ).length <= parseInt($("#fishing_gear_tr2440_id").attr("maxlength")) )
+                $("#fishing_gear_tr2440_id").val( JSON.stringify( fishing_gear_tr2440_obj.data ) );
+            else {
+                alert("{% trans  'ERROR: fishing_gear_tr2440_id too long' %}");
+                return false;
+            }
+        }
+        else {
+            alert("{% trans  'An Error Occurred' %}");
+            return false;
+        }
+
+        // valida che i Parameters siano impostati correttamente
+        return isValidForm();
+
+    });
+
+    inputLayersBtn();
+    showFilter();
+});
+
+
+function initToolsR() {
+    // questa variabile evita che si ripeti la funzione di init quando vengono filtrati i layers
+    if (!is_first_load)
+        return;
+
+    is_first_load = false;
+
+    if ($(".response_inputLayers").text().indexOf('fail') > -1) {
+
+        var exp = $("#input_layers_id").text().trim();
+        array = eval("[" + exp + "]");
+        var array_unique = [];        
+        array_unique = unique(array);
+        inputLayers_obj.obj = [];
+        inputLayers_obj.id = array;
+
+        var criteria = $("#id_input_criteria").val().trim().split(',');
+        criteria.forEach(function(item) {
+                var crit = item.split(';');
+                inputLayers_obj.array_msf.push({
+                    isTiff: crit[1]?true:false,
+                    id: crit[0],
+                    value: crit[1]?crit[1]:null
+                });
+            });  
+
+        // prendo l'array di id dal div, lo converto in array
+        getInputLayersObj(array);
+        inputLayersWrite();
+        
+        $(".inputLayers_footer .text").html("<strong>"+$(".response_inputLayers").text()+"</strong> ");
+        $(".inputLayers_footer .text").addClass("text-danger").removeClass("text-success");
+            
+
+
+     
+    }
+    else {
+        writeParseInputLayers();
+    
+        $(".inputLayers_footer .text").text("");
+        $(".inputLayers_footer .text").addClass("text-success").removeClass("text-danger");
+
+    }
+
+    var pairwise_matrix_ps = JSON.parse($("#pairwise_matrix_ps_id").text().trim());
+    setTableMatrix(pairwise_matrix_ps, "#module_r_12_table_ps", "option.setMatrixPS");
+    var pairwise_matrix_tr = JSON.parse($("#pairwise_matrix_tr_id").text().trim());
+    setTableMatrix(pairwise_matrix_tr, "#module_r_12_table_tr", "option.setMatrixTR");
+    var fishing_gear_ps_obj = JSON.parse( $("#fishing_gear_ps_id").val()) ;
+    setFishingGearMatrix(fishing_gear_ps_obj, "fishing-gear-content-ps"); 
+    var fishing_gear_tr1224_obj = JSON.parse( $("#fishing_gear_tr1224_id").val()) ;
+    setFishingGearMatrix(fishing_gear_tr1224_obj, "fishing-gear-content-tr1224"); 
+    var fishing_gear_tr2440_obj = JSON.parse( $("#fishing_gear_tr2440_id").val()) ;
+    setFishingGearMatrix(fishing_gear_tr2440_obj, "fishing-gear-content-tr2440"); 
+
+    initStickyExpression();
+
+
+}
+</script>
+
+  {% with include_spatial='true' %}
+  {% include 'search/search_scripts.html' %}
+  {% endwith %}
+{% endblock extra_script %}
+

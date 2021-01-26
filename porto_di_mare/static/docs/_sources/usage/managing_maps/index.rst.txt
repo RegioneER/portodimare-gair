@@ -1,0 +1,21 @@
+.. _working-with-maps:
+
+Working with Maps
+=================
+
+| Maps are sets of layers displayed together on an interactive web map.
+  Maps can be composed in the map composer and saved as GAIR resources.
+| This section shows how to explore and manage maps, create a new map and share it.
+
+.. warning::
+	| Be careful: remember that publicly maps are visible for un-registerd user, other contents are aviable for signed users, according with user profile permission.
+	| Also interface can be different for un-registerd user and signed users.
+
+.. toctree::
+    :maxdepth: 1
+
+    map_info
+    map_metadata
+    map_permissions
+    creating_maps
+    exploring_maps/index

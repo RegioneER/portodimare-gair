@@ -1,0 +1,47 @@
+{% extends "geonode_base.html" %}
+
+{% load i18n %}
+{% load bootstrap_tags %}
+
+{% block title %}{% trans "Create Message" %} — {{ block.super }}{% endblock %}
+{% block nav_user_isactive %}active_menu{% endblock nav_user_isactive %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header">
+            <h1 class="page-title">{%  trans "Create Message" %}</h1>
+        </div>
+    </div>
+</div>
+    
+
+	
+<div class="row">
+        <div class="col-md-12">
+    
+<form method="post" action="{% url 'message_create' %}">
+  {% csrf_token %}
+  <table width=100%>
+    {{ form|as_bootstrap }}
+  </table>
+  <div class="form-actions">
+    <input type="submit" value="{% trans "Send message" %}"  class="btn btn-info" type="button"/>
+  </div>
+</form>
+
+<div style="margin-top: 50px;"></div>
+
+</div>
+</div>
+
+{% endblock %}
+
+{% block sidebar %}
+<div class="list-group">
+    <div class="list-group-item">
+        <a href="{% url "messages_inbox" %}" class="btn btn-info btn-block" type="button">{% trans "Back to Inbox" %}</a>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,1914 @@
+[
+	{
+		"pk": 1,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Aquaculture",
+			"gn_description": "Aquaculture",
+			"is_choice": true,
+			"fa_class": "fa-tint",
+			"identifier": "aquaculture"
+		}
+	},
+	{
+		"pk": 2,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Biological Characteristics",
+			"gn_description": "Biological Characteristics",
+			"is_choice": true,
+			"fa_class": "fa-leaf",
+			"identifier": "biological_characteristics"
+		}
+	},
+	{
+		"pk": 3,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Submarine cable & pipeline routes",
+			"gn_description": "Submarine cable & pipeline routes",
+			"is_choice": true,
+			"fa_class": "fa-ils",
+			"identifier": "cables_and_pipelines"
+		}
+	},
+	{
+		"pk": 4,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Coastal defence",
+			"gn_description": "Coastal defence",
+			"is_choice": true,
+			"fa_class": "fa-flag-o",
+			"identifier": "coastal_defence"
+		}
+	},
+	{
+		"pk": 5,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Coastal land uses / activities",
+			"gn_description": "Coastal land uses / activities",
+			"is_choice": true,
+			"fa_class": "fa-square-o",
+			"identifier": "coastal_land_uses_activities"
+		}
+	},
+	{
+		"pk": 6,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Underwater cultural heritage",
+			"gn_description": "Underwater cultural heritage",
+			"is_choice": true,
+			"fa_class": "fa-university",
+			"identifier": "cultural_heritage"
+		}
+	},
+	{
+		"pk": 7,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Economic indicators",
+			"gn_description": "Economic indicators",
+			"is_choice": true,
+			"fa_class": "fa-line-chart",
+			"identifier": "economic_indicators"
+		}
+	},
+	{
+		"pk": 8,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Raw material extraction areas",
+			"gn_description": "Raw material extraction areas",
+			"is_choice": true,
+			"fa_class": "fa-diamond",
+			"identifier": "extraction_areas"
+		}
+	},
+	{
+		"pk": 9,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Fishing",
+			"gn_description": "Fishing",
+			"is_choice": true,
+			"fa_class": "fa-qq",
+			"identifier": "fishing"
+		}
+	},
+	{
+		"pk": 10,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Human population",
+			"gn_description": "Human population",
+			"is_choice": true,
+			"fa_class": "fa-users",
+			"identifier": "human_population"
+		}
+	},
+	{
+		"pk": 11,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Maritime boundaries",
+			"gn_description": "Maritime boundaries",
+			"is_choice": true,
+			"fa_class": "fa-ellipsis-h",
+			"identifier": "maritime_boundaries"
+		}
+	},
+	{
+		"pk": 12,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Maritime transport and traffic flows",
+			"gn_description": "Maritime transport and traffic flows",
+			"is_choice": true,
+			"fa_class": "fa-ship",
+			"identifier": "maritime_transport_and_traffic_flows"
+		}
+	},
+	{
+		"pk": 13,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Military",
+			"gn_description": "Military",
+			"is_choice": true,
+			"fa_class": "fa-fighter-jet",
+			"identifier": "military"
+		}
+	},
+	{
+		"pk": 14,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Oil and gas",
+			"gn_description": "Oil and gas",
+			"is_choice": true,
+			"fa_class": "fa-fire",
+			"identifier": "oil_and_gas"
+		}
+	},
+	{
+		"pk": 15,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Physical characteristics",
+			"gn_description": "Physical characteristics",
+			"is_choice": true,
+			"fa_class": "fa-connectdevelop",
+			"identifier": "physical_characteristics"
+		}
+	},
+	{
+		"pk": 16,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Ports",
+			"gn_description": "Ports",
+			"is_choice": true,
+			"fa_class": "fa-anchor",
+			"identifier": "ports"
+		}
+	},
+	{
+		"pk": 17,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Pressures impacts",
+			"gn_description": "Pressures impacts",
+			"is_choice": true,
+			"fa_class": "fa-tachometer",
+			"identifier": "pressures_impacts"
+		}
+	},
+	{
+		"pk": 18,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Nature and species conservation sites & protected areas",
+			"gn_description": "Nature and species conservation sites & protected areas",
+			"is_choice": true,
+			"fa_class": "fa-picture-o",
+			"identifier": "protected_areas"
+		}
+	},
+	{
+		"pk": 19,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Renewable energies",
+			"gn_description": "Renewable energies",
+			"is_choice": true,
+			"fa_class": "fa-bolt",
+			"identifier": "renewable_energies"
+		}
+	},
+	{
+		"pk": 20,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Scientific research",
+			"gn_description": "Scientific research",
+			"is_choice": true,
+			"fa_class": "fa-flask",
+			"identifier": "scientific_research"
+		}
+	},
+	{
+		"pk": 21,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Social indicators",
+			"gn_description": "Social indicators",
+			"is_choice": true,
+			"fa_class": "fa-share-alt",
+			"identifier": "social_indicators"
+		}
+	},
+	{
+		"pk": 22,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Source of pollution",
+			"gn_description": "Source of pollution",
+			"is_choice": true,
+			"fa_class": "fa-industry",
+			"identifier": "source_of_pollution"
+		}
+	},
+	{
+		"pk": 23,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Spatial policy",
+			"gn_description": "Spatial policy",
+			"is_choice": true,
+			"fa_class": "fa-space-shuttle",
+			"identifier": "spatial_policy"
+		}
+	},
+	{
+		"pk": 24,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Terrestrial boundaries",
+			"gn_description": "Terrestrial boundaries",
+			"is_choice": true,
+			"fa_class": "fa-globe",
+			"identifier": "terrestrial_boundaries"
+		}
+	},
+	{
+		"pk": 25,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Tourism & recreation",
+			"gn_description": "Tourism & recreation",
+			"is_choice": true,
+			"fa_class": "fa-map-signs",
+			"identifier": "tourism"
+		}
+	},
+	{
+		"pk": 26,
+		"model": "base_ext.maincategory",
+		"fields": {
+			"description": "Types of habitat",
+			"gn_description": "Types of habitat",
+			"is_choice": true,
+			"fa_class": "fa-tree",
+			"identifier": "types_of_habitat"
+		}
+	},
+	{
+		"pk": 1,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 11,
+			"description": "Geopolitical boundaries (legal status)",
+			"gn_description": "Geopolitical boundaries (legal status)",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "geopolitical_boundaries"
+		}
+	},
+	{
+		"pk": 2,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 11,
+			"description": "Physiographic boundaries",
+			"gn_description": "Physiographic boundaries",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "physiographic_boundaries"
+		}
+	},
+	{
+		"pk": 3,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 24,
+			"description": "National",
+			"gn_description": "National",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "national"
+		}
+	},
+	{
+		"pk": 4,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 24,
+			"description": "Regional",
+			"gn_description": "Regional",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "regional"
+		}
+	},
+	{
+		"pk": 5,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 24,
+			"description": "Local (counties/municipalities)",
+			"gn_description": "Local (counties/municipalities)",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "local"
+		}
+	},
+	{
+		"pk": 6,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 15,
+			"description": "Bathymetry",
+			"gn_description": "Bathymetry",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "bathymetry"
+		}
+	},
+	{
+		"pk": 7,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 15,
+			"description": "Oceanographic parameters",
+			"gn_description": "Oceanographic parameters",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "oceanographic_parameters"
+		}
+	},
+	{
+		"pk": 8,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 15,
+			"description": "Sedimentology",
+			"gn_description": "Sedimentology",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "sedimentology"
+		}
+	},
+	{
+		"pk": 9,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 15,
+			"description": "Underwater noise",
+			"gn_description": "Underwater noise",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "underwater_noise"
+		}
+	},
+	{
+		"pk": 10,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 15,
+			"description": "Hydrographic network",
+			"gn_description": "Hydrographic network",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "hydrographic_network"
+		}
+	},
+	{
+		"pk": 11,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 26,
+			"description": "Benthic",
+			"gn_description": "Benthic",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "benthic"
+		}
+	},
+	{
+		"pk": 12,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 26,
+			"description": "Pelagic",
+			"gn_description": "Pelagic",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "pelagic"
+		}
+	},
+	{
+		"pk": 13,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 2,
+			"description": "Macroalgae/seaweed",
+			"gn_description": "Macroalgae/seaweed",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "macroalgae_seaweed"
+		}
+	},
+	{
+		"pk": 14,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 2,
+			"description": "Fish",
+			"gn_description": "Fish",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "fish"
+		}
+	},
+	{
+		"pk": 15,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 2,
+			"description": "Sea mammals",
+			"gn_description": "Sea mammals",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "sea_mammals"
+		}
+	},
+	{
+		"pk": 16,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 2,
+			"description": "Reptiles",
+			"gn_description": "Reptiles",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "reptiles"
+		}
+	},
+	{
+		"pk": 17,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 2,
+			"description": "Marine birds",
+			"gn_description": "Marine birds",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "marine_birds"
+		}
+	},
+	{
+		"pk": 18,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 2,
+			"description": "Cephalopods",
+			"gn_description": "Cephalopods",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "cephalopods"
+		}
+	},
+	{
+		"pk": 19,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 2,
+			"description": "Species listed under Community legislation or international conventions",
+			"gn_description": "Species listed under Community legislation or international conventions",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "species_listed"
+		}
+	},
+	{
+		"pk": 20,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 2,
+			"description": "Endangered species",
+			"gn_description": "Endangered species",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "endangered_species"
+		}
+	},
+	{
+		"pk": 21,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 17,
+			"description": "Pollution sources (land and sea-based)",
+			"gn_description": "Pollution sources (land and sea-based)",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "pollution_sources"
+		}
+	},
+	{
+		"pk": 22,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 17,
+			"description": "Pollution distribution",
+			"gn_description": "Pollution distribution",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "pollution_distribution"
+		}
+	},
+	{
+		"pk": 23,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 17,
+			"description": "Other impacts",
+			"gn_description": "Other impacts",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "other_impacts"
+		}
+	},
+	{
+		"pk": 24,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 1,
+			"description": "Governance and planning of aquaculture",
+			"gn_description": "Governance and planning of aquaculture",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "governance_planning_aquaculture"
+		}
+	},
+	{
+		"pk": 25,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 1,
+			"description": "Aquaculture areas",
+			"gn_description": "Aquaculture areas",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "aquaculture_areas"
+		}
+	},
+	{
+		"pk": 26,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 1,
+			"description": "Farms",
+			"gn_description": "Farms",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "farms"
+		}
+	},
+	{
+		"pk": 27,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 1,
+			"description": "Socio-economics of aquaculture",
+			"gn_description": "Socio-economics of aquaculture",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "socio_economics_aquaculture"
+		}
+	},
+	{
+		"pk": 28,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 9,
+			"description": "Governance and planning of fishing activity",
+			"gn_description": "Governance and planning of fishing activity",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "governance_planning_fishing"
+		}
+	},
+	{
+		"pk": 29,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 9,
+			"description": "Regulation",
+			"gn_description": "Regulation",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "regulation"
+		}
+	},
+	{
+		"pk": 30,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 9,
+			"description": "Spatial distribution of fishing activity",
+			"gn_description": "Spatial distribution of fishing activity",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "spatial_distribution_fishing"
+		}
+	},
+	{
+		"pk": 31,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 9,
+			"description": "Fishing fleet",
+			"gn_description": "Fishing fleet",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "fishing_fleet"
+		}
+	},
+	{
+		"pk": 32,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 9,
+			"description": "Landings",
+			"gn_description": "Landings",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "landings"
+		}
+	},
+	{
+		"pk": 33,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 9,
+			"description": "Socio-economics of fisheries",
+			"gn_description": "Socio-economics of fisheries",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "socio_economics_fisheries"
+		}
+	},
+	{
+		"pk": 34,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 19,
+			"description": "Governance and planning of marine renewables",
+			"gn_description": "Governance and planning of marine renewables",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "governance_planning_renewable"
+		}
+	},
+	{
+		"pk": 35,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 19,
+			"description": "Wind energy",
+			"gn_description": "Wind energy",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "wind_energy"
+		}
+	},
+	{
+		"pk": 36,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 19,
+			"description": "Wave energy",
+			"gn_description": "Wave energy",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "wave_energy"
+		}
+	},
+	{
+		"pk": 37,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 19,
+			"description": "Socio-economics of marine renewables",
+			"gn_description": "Socio-economics of marine renewables",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "socio_economics_marine_renewables"
+		}
+	},
+	{
+		"pk": 38,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 14,
+			"description": "Governance and planning of O&G",
+			"gn_description": "Governance and planning of O&G",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "governance_planning_og"
+		}
+	},
+	{
+		"pk": 39,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 14,
+			"description": "Research areas",
+			"gn_description": "Research areas",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "research_areas"
+		}
+	},
+	{
+		"pk": 40,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 14,
+			"description": "O&G extraction areas",
+			"gn_description": "O&G extraction areas",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "og_extraction_areas"
+		}
+	},
+	{
+		"pk": 41,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 14,
+			"description": "O&G related infrastructures",
+			"gn_description": "O&G related infrastructures",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "og_related_infrastructures"
+		}
+	},
+	{
+		"pk": 42,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 14,
+			"description": "Socio-economics of O&G",
+			"gn_description": "Socio-economics of O&G",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "socio_economics_og"
+		}
+	},
+	{
+		"pk": 43,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 12,
+			"description": "Governance and planning of maritime traffic",
+			"gn_description": "Governance and planning of maritime traffic",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "governance_planning_maritime_traffic"
+		}
+	},
+	{
+		"pk": 44,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 12,
+			"description": "Maritime routes and areas",
+			"gn_description": "Maritime routes and areas",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "maritime_routes_areas"
+		}
+	},
+	{
+		"pk": 45,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 12,
+			"description": "Maritime traffic",
+			"gn_description": "Maritime traffic",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "maritime_traffic"
+		}
+	},
+	{
+		"pk": 46,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 12,
+			"description": "Socio-economics of maritime traffic",
+			"gn_description": "Socio-economics of maritime traffic",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "socio_economics_maritime_traffic"
+		}
+	},
+	{
+		"pk": 47,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 16,
+			"description": "Governance and planning of ports",
+			"gn_description": "Governance and planning of ports",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "governance_planning_ports"
+		}
+	},
+	{
+		"pk": 48,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 16,
+			"description": "Port locations",
+			"gn_description": "Port locations",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "port_locations"
+		}
+	},
+	{
+		"pk": 49,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 16,
+			"description": "Port traffic",
+			"gn_description": "Port traffic",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "port_traffic"
+		}
+	},
+	{
+		"pk": 50,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 16,
+			"description": "Socio-economics of ports",
+			"gn_description": "Socio-economics of ports",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "socio_economics_ports"
+		}
+	},
+	{
+		"pk": 51,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 18,
+			"description": "International Protected Areas (marine and coastal)",
+			"gn_description": "International Protected Areas (marine and coastal)",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "international_protected_areas_marine_coastal"
+		}
+	},
+	{
+		"pk": 52,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 18,
+			"description": "Natura 2000 sites (marine and costal)",
+			"gn_description": "Natura 2000 sites (marine and costal)",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "natura_sites_marine_costal"
+		}
+	},
+	{
+		"pk": 53,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 18,
+			"description": "National Protected Areas (marine and costal)",
+			"gn_description": "National Protected Areas (marine and costal)",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "national_protected_areas_marine_costal"
+		}
+	},
+	{
+		"pk": 54,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 18,
+			"description": "Sub-national protected areas (marine and costal)",
+			"gn_description": "Sub-national protected areas (marine and costal)",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "subnational_protected_areas_marine_costal"
+		}
+	},
+	{
+		"pk": 55,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 18,
+			"description": "Socio-economics of marine protected areas",
+			"gn_description": "Socio-economics of marine protected areas",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "socio_economics_marine_protected_areas"
+		}
+	},
+	{
+		"pk": 56,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 13,
+			"description": "Military areas",
+			"gn_description": "Military areas",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "military_areas"
+		}
+	},
+	{
+		"pk": 57,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 13,
+			"description": "Other military sites",
+			"gn_description": "Other military sites",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "other_military_sites"
+		}
+	},
+	{
+		"pk": 58,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 8,
+			"description": "Governance and planning of raw material extraction",
+			"gn_description": "Governance and planning of raw material extraction",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "governance_planning_raw_material"
+		}
+	},
+	{
+		"pk": 59,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 8,
+			"description": "Raw materials",
+			"gn_description": "Raw materials",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "raw_materials"
+		}
+	},
+	{
+		"pk": 60,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 8,
+			"description": "Socio-economics of raw material extraction",
+			"gn_description": "Socio-economics of raw material extraction",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "socio_economics_raw_material"
+		}
+	},
+	{
+		"pk": 61,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 20,
+			"description": "Areas and sites for research",
+			"gn_description": "Areas and sites for research",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "areas_sites_research"
+		}
+	},
+	{
+		"pk": 62,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 3,
+			"description": "Telecommunication",
+			"gn_description": "Telecommunication",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "telecommunication"
+		}
+	},
+	{
+		"pk": 63,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 3,
+			"description": "High Voltage Cables",
+			"gn_description": "High Voltage Cables",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "high_voltage_cables"
+		}
+	},
+	{
+		"pk": 64,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 25,
+			"description": "Governance and planning of tourism",
+			"gn_description": "Governance and planning of tourism",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "governance_planning_tourism"
+		}
+	},
+	{
+		"pk": 65,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 25,
+			"description": "Recreation and touristic areas and facilities",
+			"gn_description": "Recreation and touristic areas and facilities",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "recreation_touristic_areas_facilities"
+		}
+	},
+	{
+		"pk": 66,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 25,
+			"description": "Touristic presence",
+			"gn_description": "Touristic presence",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "touristic_presence"
+		}
+	},
+	{
+		"pk": 67,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 25,
+			"description": "Socio-economics of tourism",
+			"gn_description": "Socio-economics of tourism",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "socio_economics_tourism"
+		}
+	},
+	{
+		"pk": 68,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 6,
+			"description": "Underwater sites",
+			"gn_description": "Underwater sites",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "underwater_sites"
+		}
+	},
+	{
+		"pk": 69,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 6,
+			"description": "Facilities",
+			"gn_description": "Facilities",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "facilities"
+		}
+	},
+	{
+		"pk": 70,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 4,
+			"description": "Governance and planning of coastal defence",
+			"gn_description": "Governance and planning of coastal defence",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "governance_planning_coastal_defence"
+		}
+	},
+	{
+		"pk": 71,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 4,
+			"description": "Flood risk management",
+			"gn_description": "Flood risk management",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "flood_risk_management"
+		}
+	},
+	{
+		"pk": 72,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 4,
+			"description": "Erosion management",
+			"gn_description": "Erosion management",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "erosion_management"
+		}
+	},
+	{
+		"pk": 73,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 4,
+			"description": "Requalification",
+			"gn_description": "Requalification",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "requalification"
+		}
+	},
+	{
+		"pk": 74,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 5,
+			"description": "Land use",
+			"gn_description": "Land use",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "land_use"
+		}
+	},
+	{
+		"pk": 75,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 5,
+			"description": "Urban areas",
+			"gn_description": "Urban areas",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "urban_areas"
+		}
+	},
+	{
+		"pk": 76,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 5,
+			"description": "Terrestrial routes and railways",
+			"gn_description": "Terrestrial routes and railways",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "terrestrial_routes_railways"
+		}
+	},
+	{
+		"pk": 77,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 10,
+			"description": "Total population",
+			"gn_description": "Total population",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "total_population"
+		}
+	},
+	{
+		"pk": 78,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 10,
+			"description": "Residents",
+			"gn_description": "Residents",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "residents"
+		}
+	},
+	{
+		"pk": 79,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 7,
+			"description": "Economic indicators (NUTS3 level)",
+			"gn_description": "Economic indicators (NUTS3 level)",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "economic_indicators_nuts3"
+		}
+	},
+	{
+		"pk": 80,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 21,
+			"description": "Social indicators (NUTS 3 level)",
+			"gn_description": "Social indicators (NUTS 3 level)",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "social_indicators_nuts3"
+		}
+	},
+	{
+		"pk": 81,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 23,
+			"description": "European spatial policies",
+			"gn_description": "European spatial policies",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "european_spatial_policies"
+		}
+	},
+	{
+		"pk": 82,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 23,
+			"description": "National coastal and marine planning",
+			"gn_description": "National coastal and marine planning",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "national_coastal_marine_planning"
+		}
+	},
+	{
+		"pk": 83,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 23,
+			"description": "Sub-national coastal and marine planning",
+			"gn_description": "Sub-national coastal and marine planning",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "subnational_coastal_marine_planning"
+		}
+	},
+	{
+		"pk": 84,
+		"model": "base.topiccategory",
+		"fields": {
+			"main_category": 23,
+			"description": "Governance of spatial planning on land and at sea",
+			"gn_description": "Governance of spatial planning on land and at sea",
+			"is_choice": true,
+			"fa_class": "fa-caret-right",
+			"identifier": "governance_spatial_planning_land_sea"
+		}
+	},
+	{
+		"pk": 1,
+		"model": "base.spatialrepresentationtype",
+		"fields": {
+			"is_choice": true,
+			"gn_description": "vector data is used to represent geographic data",
+			"identifier": "vector",
+			"description": "vector data is used to represent geographic data"
+		}
+	},
+	{
+		"pk": 2,
+		"model": "base.spatialrepresentationtype",
+		"fields": {
+			"is_choice": true,
+			"gn_description": "grid data is used to represent geographic data",
+			"identifier": "grid",
+			"description": "grid data is used to represent geographic data"
+		}
+	},
+	{
+		"pk": 3,
+		"model": "base.spatialrepresentationtype",
+		"fields": {
+			"is_choice": true,
+			"gn_description": "textual or tabular data is used to represent geographic data",
+			"identifier": "textTable",
+			"description": "textual or tabular data is used to represent geographic data"
+		}
+	},
+	{
+		"pk": 4,
+		"model": "base.spatialrepresentationtype",
+		"fields": {
+			"is_choice": true,
+			"gn_description": "triangulated irregular network",
+			"identifier": "tin",
+			"description": "triangulated irregular network"
+		}
+	},
+	{
+		"pk": 5,
+		"model": "base.spatialrepresentationtype",
+		"fields": {
+			"is_choice": true,
+			"gn_description": "three-dimensional view formed by the intersecting homologous rays of an overlapping pair of images",
+			"identifier": "stereoModel",
+			"description": "three-dimensional view formed by the intersecting homologous rays of an overlapping pair of images"
+		}
+	},
+	{
+		"pk": 6,
+		"model": "base.spatialrepresentationtype",
+		"fields": {
+			"is_choice": true,
+			"gn_description": "scene from a video recording",
+			"identifier": "video",
+			"description": "scene from a video recording"
+		}
+	},
+	{
+		"pk": 1,
+		"model": "base.license",
+		"fields": {
+			"identifier": "not_specified",
+			"name": "Not Specified",
+			"abbreviation": "",
+			"description": "The original author did not specify a license.",
+			"url": "",
+			"license_text": "Not applicable"
+		}
+	},
+	{
+		"pk": 2,
+		"model": "base.license",
+		"fields": {
+			"identifier": "varied_original",
+			"name": "Varied / Original",
+			"abbreviation": "",
+			"description": "This item is either licensed under multiple licenses.  See the item's abstract for more information or contact the distributor.",
+			"url": "",
+			"license_text": "Not applicable"
+		}
+	},
+	{
+		"pk": 3,
+		"model": "base.license",
+		"fields": {
+			"identifier": "varied_derived",
+			"name": "Varied / Derived",
+			"abbreviation": "",
+			"description": "The constituent parts of this item have different licenses.  Go to each part to see license information.",
+			"url": "",
+			"license_text": "Not applicable"
+		}
+	},
+	{
+		"pk": 4,
+		"model": "base.license",
+		"fields": {
+			"identifier": "public_domain",
+			"name": "Public Domain",
+			"abbreviation": "PD",
+			"description": "Works in the public domain may be used freely without the permission of the former copyright owner.",
+			"url": "http://www.copyright.gov/help/faq/faq-definitions.html",
+			"license_text": "The public domain is not a place. A work of authorship is in the “public domain” if it is no longer under copyright protection or if it failed to meet the requirements for copyright protection. Works in the public domain may be used freely without the permission of the former copyright owner."
+		}
+	},
+	{
+		"pk": 5,
+		"model": "base.license",
+		"fields": {
+			"identifier": "public_domain_usg",
+			"name": "Public Domain / USG",
+			"abbreviation": "PD/USG",
+			"description": "This project constitutes a work of the United States Government and is not subject to domestic copyright protection under 17 USC § 105.",
+			"url": "https://raw.githubusercontent.com/state-hiu/cybergis-licenses/master/licenses/PUBLICDOMAIN-LICENSE-RAW.txt",
+			"license_text": "This project constitutes a work of the United States Government and is not subject to domestic copyright protection under 17 USC § 105."
+		}
+	},
+	{
+		"pk": 6,
+		"model": "base.license",
+		"fields": {
+			"identifier": "odbl",
+			"name": "Open Data Commons Open Database License / OSM",
+			"abbreviation": "ODbL/OSM",
+			"description": "You are free to copy, distribute, transmit and adapt our data, as long as you credit OpenStreetMap and its contributors\nIf you alter or build upon our data, you may distribute the result only under the same licence.",
+			"url": "http://www.openstreetmap.org/copyright",
+			"license_text": ""
+		}
+	},
+	{
+		"pk": 7,
+		"model": "base.license",
+		"fields": {
+			"identifier": "nextview",
+			"name": "NextView",
+			"abbreviation": "NV",
+			"description": "This data is licensed for use by the US Government (USG) under the NextView (NV) license and copyrighted by Digital Globe or GeoEye. The NV license allows the USG to share the imagery and Literal Imagery Derived Products (LIDP) with entities outside the USG when that entity is working directly with the USG, for the USG, or in a manner that is directly beneficial to the USG. The party receiving the data can only use the imagery or LIDP for the original purpose or only as otherwise agreed to by the USG. The party receiving the data cannot share the imagery or LIDP with a third party without express permission from the USG. At no time should this imagery or LIDP be used for other than USG-related purposes and must not be used for commercial gain. The copyright information should be maintained at all times. Your acceptance of these license terms is implied by your use.\nIn other words, you may only use NextView imagery linked from this site for digitizing OpenStreetMap data for humanitarian purposes.",
+			"url": "https://raw.githubusercontent.com/state-hiu/cybergis-licenses/master/licenses/NEXTVIEW-LICENSE-RAW.txt",
+			"license_text": ""
+		}
+	},
+	{
+		"pk": 1,
+		"model": "base.restrictioncodetype",
+		"fields": {
+			"is_choice": true,
+			"gn_description": "exclusive right to the publication, production, or sale of the rights to a literary, dramatic, musical, or artistic work, or to the use of a commercial print or label, granted by law for a specified period of time to an author, composer, artist, distributor",
+			"identifier": "copyright",
+			"description": "exclusive right to the publication, production, or sale of the rights to a literary, dramatic, musical, or artistic work, or to the use of a commercial print or label, granted by law for a specified period of time to an author, composer, artist, distributor"
+		}
+	},
+	{
+		"pk": 6,
+		"model": "base.restrictioncodetype",
+		"fields": {
+			"is_choice": true,
+			"gn_description": "rights to financial benefit from and control of distribution of non-tangible property that is a result of creativity",
+			"identifier": "intellectualPropertyRights",
+			"description": "rights to financial benefit from and control of distribution of non-tangible property that is a result of creativity"
+		}
+	},
+	{
+		"pk": 5,
+		"model": "base.restrictioncodetype",
+		"fields": {
+			"is_choice": true,
+			"gn_description": "formal permission to do something",
+			"identifier": "license",
+			"description": "formal permission to do something"
+		}
+	},
+	{
+		"pk": 8,
+		"model": "base.restrictioncodetype",
+		"fields": {
+			"is_choice": true,
+			"gn_description": "otherRestrictions",
+			"identifier": "limitation not listed",
+			"description": "otherRestrictions"
+		}
+	},
+	{
+		"pk": 2,
+		"model": "base.restrictioncodetype",
+		"fields": {
+			"is_choice": true,
+			"gn_description": "government has granted exclusive right to make, sell, use or license an invention or discovery",
+			"identifier": "patent",
+			"description": "government has granted exclusive right to make, sell, use or license an invention or discovery"
+		}
+	},
+	{
+		"pk": 3,
+		"model": "base.restrictioncodetype",
+		"fields": {
+			"is_choice": true,
+			"gn_description": "produced or sold information awaiting a patent",
+			"identifier": "patentPending",
+			"description": "produced or sold information awaiting a patent"
+		}
+	},
+	{
+		"pk": 7,
+		"model": "base.restrictioncodetype",
+		"fields": {
+			"is_choice": true,
+			"gn_description": "withheld from general circulation or disclosure",
+			"identifier": "restricted",
+			"description": "withheld from general circulation or disclosure"
+		}
+	},
+	{
+		"pk": 4,
+		"model": "base.restrictioncodetype",
+		"fields": {
+			"is_choice": true,
+			"gn_description": "a name, symbol, or other device identifying a product, officially registered and legally restricted to the use of the owner or manufacturer",
+			"identifier": "trademark",
+			"description": "a name, symbol, or other device identifying a product, officially registered and legally restricted to the use of the owner or manufacturer"
+		}
+	},
+	{
+		"pk": 1,
+		"model": "base.region",
+		"fields": {
+			"rght": 516,
+			"code": "GLO",
+			"name": "Global",
+			"parent": null,
+			"level": 0,
+			"lft": 1,
+			"tree_id": 90,
+			"bbox_x0": -180,
+			"bbox_x1": 180,
+			"bbox_y0": -90,
+			"bbox_y1": 90
+		}
+	},
+	{
+		"pk": 5,
+		"model": "base.region",
+		"fields": {
+			"rght": 433,
+			"code": "EUR",
+			"name": "Europe",
+			"parent": null,
+			"level": 1,
+			"lft": 318,
+			"tree_id": 90,
+			"bbox_x0": -31.266001,
+			"bbox_x1": 39.869301,
+			"bbox_y0": 27.636311,
+			"bbox_y1": 81.008797
+		}
+	},
+	{
+		"pk": 43,
+		"model": "base.region",
+		"fields": {
+			"rght": 336,
+			"code": "BIH",
+			"name": "Bosnia and Herzegovina",
+			"parent": 5,
+			"level": 2,
+			"lft": 335,
+			"tree_id": 90,
+			"bbox_x0": 15.74909,
+			"bbox_x1": 19.62907,
+			"bbox_y0": 42.56451,
+			"bbox_y1": 45.276001
+		}
+	},
+	{
+		"pk": 69,
+		"model": "base.region",
+		"fields": {
+			"rght": 342,
+			"code": "HRV",
+			"name": "Croatia",
+			"parent": 5,
+			"level": 2,
+			"lft": 341,
+			"tree_id": 90,
+			"bbox_x0": 13.48972,
+			"bbox_x1": 19.44722,
+			"bbox_y0": 42.392208,
+			"bbox_y1": 46.554981
+		}
+	},
+	{
+		"pk": 99,
+		"model": "base.region",
+		"fields": {
+			"rght": 364,
+			"code": "GRC",
+			"name": "Greece",
+			"parent": 5,
+			"level": 2,
+			"lft": 363,
+			"tree_id": 90,
+			"bbox_x0": 19.37431,
+			"bbox_x1": 29.70056,
+			"bbox_y0": 34.809502,
+			"bbox_y1": 41.757111
+		}
+	},
+	{
+		"pk": 121,
+		"model": "base.region",
+		"fields": {
+			"rght": 378,
+			"code": "ITA",
+			"name": "Italy",
+			"parent": 5,
+			"level": 2,
+			"lft": 377,
+			"tree_id": 90,
+			"bbox_x0": 6.62665,
+			"bbox_x1": 18.520281,
+			"bbox_y0": 35.49308,
+			"bbox_y1": 47.091999
+		}
+	},
+	{
+		"pk": 156,
+		"model": "base.region",
+		"fields": {
+			"rght": 396,
+			"code": "MNE",
+			"name": "Montenegro",
+			"parent": 5,
+			"level": 2,
+			"lft": 395,
+			"tree_id": 90,
+			"bbox_x0": 18.43705,
+			"bbox_x1": 20.41608,
+			"bbox_y0": 41.84808,
+			"bbox_y1": 43.542912
+		}
+	},
+	{
+		"pk": 212,
+		"model": "base.region",
+		"fields": {
+			"rght": 418,
+			"code": "SVN",
+			"name": "Slovenia",
+			"parent": 5,
+			"level": 2,
+			"lft": 417,
+			"tree_id": 90,
+			"bbox_x0": 13.37551,
+			"bbox_x1": 16.59656,
+			"bbox_y0": 45.416,
+			"bbox_y1": 46.87788
+		}
+	},
+	{
+		"model": "base.menuplaceholder",
+		"pk": 1,
+		"fields": {
+			"name": "TOPBAR_MENU"
+		}
+	},
+	{
+		"pk": 1,
+		"model": "base_ext.domainarea",
+		"fields": {
+			"description": "Adriatic Sea",
+			"gn_description": "Adriatic Sea",
+			"is_choice": true,
+			"identifier": "adriatic_sea"
+			}
+		},
+		{
+			"pk": 2,
+			"model": "base_ext.domainarea",
+			"fields": {
+				"description": "Ionian Sea",
+				"gn_description": "Ionian Sea",
+				"is_choice": true,
+				"identifier": "ionian_sea"
+			}
+		},
+		{
+			"pk": 3,
+			"model": "base_ext.domainarea",
+			"fields": {
+				"description": "Emilia-Romagna marine area",
+				"gn_description": "Emilia-Romagna marine area",
+				"is_choice": true,
+				"identifier": "emilia_romagna_marine_area"
+			}
+		},
+		{
+			"pk": 4,
+			"model": "base_ext.domainarea",
+			"fields": {
+				"description": "Italian terrestrial area",
+				"gn_description": "Italian terrestrial area",
+				"is_choice": true,
+				"identifier": "italian_terrestrial_area"
+			}
+		},
+		{
+			"pk": 5,
+			"model": "base_ext.domainarea",
+			"fields": {
+				"description": "Emilia-Romagna region",
+				"gn_description": "Emilia-Romagna region",
+				"is_choice": true,
+				"identifier": "emilia_romagna_region"
+			}
+		},
+		{
+			"pk": 6,
+			"model": "base_ext.domainarea",
+			"fields": {
+				"description": "Italian seas",
+				"gn_description": "Italian seas",
+				"is_choice": true,
+				"identifier": "italian_seas"
+			}
+		},
+		{
+			"pk": 7,
+			"model": "base_ext.domainarea",
+			"fields": {
+				"description": "European seas",
+				"gn_description": "European seas",
+				"is_choice": true,
+				"identifier": "european_seas"
+			}
+		},
+		{
+			"pk": 8,
+			"model": "base_ext.domainarea",
+			"fields": {
+				"description": "Europe",
+				"gn_description": "Europe",
+				"is_choice": true,
+				"identifier": "europe"
+			}
+		},
+		{
+			"pk": 9,
+			"model": "base_ext.domainarea",
+			"fields": {
+				"description": "Istria marine area",
+				"gn_description": "Istria marine area",
+				"is_choice": true,
+				"identifier": "istria_marine_area"
+			}
+		},
+		{
+			"pk": 10,
+			"model": "base_ext.domainarea",
+			"fields": {
+				"description": "Italian Adriatic Sea",
+				"gn_description": "Italian Adriatic Sea",
+				"is_choice": true,
+				"identifier": "italian_adriatic_sea"
+			}
+		},
+		{
+			"pk": 11,
+			"model": "base_ext.domainarea",
+			"fields": {
+				"description": "Kephalonia island",
+				"gn_description": "Kephalonia island",
+				"is_choice": true,
+				"identifier": "kephalonia_island"
+			}
+		},
+		{
+			"pk": 12,
+			"model": "base_ext.domainarea",
+			"fields": {
+				"description": "Mediterranean Sea",
+				"gn_description": "Mediterranean Sea",
+				"is_choice": true,
+				"identifier": "mediterranean_sea"
+			}
+		},
+		{
+			"pk": 13,
+			"model": "base_ext.domainarea",
+			"fields": {
+				"description": "Sacca di Goro",
+				"gn_description": "Sacca di Goro",
+				"is_choice": true,
+				"identifier": "sacca_goro"
+			}
+		},
+		{
+			"pk": 1,
+			"model": "base_ext.dataportal",
+			"fields": {
+				"description": "ADRIPLAN",
+				"gn_description": "ADRIPLAN",
+				"is_choice": true,
+				"identifier": "adriplan"
+			}
+		},
+		{
+			"pk": 2,
+			"model": "base_ext.dataportal",
+			"fields": {
+				"description": "WebGIS DGS-UNMIG",
+				"gn_description": "WebGIS DGS-UNMIG",
+				"is_choice": true,
+				"identifier": "webgis_dgs_unmig"
+			}
+		},
+		{
+			"pk": 3,
+			"model": "base_ext.dataportal",
+			"fields": {
+				"description": "Adriplan data Portal",
+				"gn_description": "Adriplan data Portal",
+				"is_choice": true,
+				"identifier": "adriplan_data_portal"
+			}
+		},
+		{
+			"pk": 4,
+			"model": "base_ext.dataportal",
+			"fields": {
+				"description": "EMODnet Human Activities",
+				"gn_description": "EMODnet Human Activities",
+				"is_choice": true,
+				"identifier": "emodnet_human_activities"
+			}
+		},
+		{
+			"pk": 5,
+			"model": "base_ext.dataportal",
+			"fields": {
+				"description": "SHAPE Atlas",
+				"gn_description": "SHAPE Atlas",
+				"is_choice": true,
+				"identifier": "shape_atlas"
+			}
+		},
+		{
+			"pk": 6,
+			"model": "base_ext.dataportal",
+			"fields": {
+				"description": "EEA Data and Maps",
+				"gn_description": "EEA Data and Maps",
+				"is_choice": true,
+				"identifier": "eea_data_maps "
+			}
+		},
+		{
+			"pk": 7,
+			"model": "base_ext.dataportal",
+			"fields": {
+				"description": "in_Sea - Sistema informativo degli usi del mare",
+				"gn_description": "in_Sea - Sistema informativo degli usi del mare",
+				"is_choice": true,
+				"identifier": "in_sea"
+			}
+		},
+		{
+			"pk": 8,
+			"model": "base_ext.dataportal",
+			"fields": {
+				"description": "Blue Hub WebGIS",
+				"gn_description": "Blue Hub WebGIS",
+				"is_choice": true,
+				"identifier": "blue_hub_webgis"
+			}
+		},
+		{
+			"pk": 9,
+			"model": "base_ext.dataportal",
+			"fields": {
+				"description": "Geoportal Istria",
+				"gn_description": "Geoportal Istria",
+				"is_choice": true,
+				"identifier": "geoportal_istria"
+			}
+		},
+		{
+			"pk": 10,
+			"model": "base_ext.dataportal",
+			"fields": {
+				"description": "HCMR",
+				"gn_description": "HCMR",
+				"is_choice": true,
+				"identifier": "hcmr"
+			}
+		},
+		{
+			"pk": 1,
+			"model": "base_ext.validationlevel",
+			"fields": {
+				"description": "research",
+				"gn_description": "research",
+				"is_choice": true,
+				"identifier": "research"
+			}
+		},
+		{
+			"pk": 2,
+			"model": "base_ext.validationlevel",
+			"fields": {
+				"description": "official",
+				"gn_description": "official",
+				"is_choice": true,
+				"identifier": "official"
+			}
+		}
+
+]

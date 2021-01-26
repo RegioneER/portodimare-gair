@@ -1,0 +1,174 @@
+.. _tutorial-aza:
+
+AZA Module
+===========
+
+The AZA (Allocated Zones for Aquaculture - FAO, 2012) module implemented a spatially explicit Multi-Criteria methodology, namely SMCE (Spatial Multi-Criteria Evaluation) for identifying AZAs, 
+i.e. marine areas where the development of aquaculture is prior to other uses. The SMCE applied for the AZA module can be carried out following the framework developed in Brigolin et al. 
+(2017; Figure 2) throughout three steps: i) criteria normalization; ii) weight assignment to each criterion; iii) suitability index calculation (see Radiarta et al., 2008).
+All the criteria to run the AZA module, together with the weights and the constraints, are in the PORTODIMARE geoportal and are available for the users. In order to run the Module AZA, 
+the user should click on Case Studies and, subsequently on Module AZA.
+
+From :guilabel:`Case studies` select the  :guilabel:`Module AZA` menu item to explore
+the list of available case studies for that module.
+
+
+.. figure:: ../case_studies/img/case_studies_menu.png
+   :alt: GAIR case studies menu
+   :align: center
+   :name: cs_menu
+
+   GAIR case studies menu
+
+.. figure:: img/AZA_case_studies_list.png
+   :alt: AZA case studies list
+   :align: center
+   :name: aza-cs-list
+
+   AZA case studies list
+
+Each list item for AZA related case studies present a Case study title and brief description.
+
+A dedicated case study for the AZA module was developed and run for the Emilia Romagna region applying the instruction are reported in the following paragraph.
+
+
+Emilia-Romagna case study
+--------------------------
+
+The input data (Figures 2, 3 and 4) of the AZA module for the specific case study were:
+
+1.	Optimal growth models' outputs:
+
+a.	Mussels-days to market size 5 cm
+
+2.	Economic factors:
+
+b.	Distance to harbour;
+
+c.	Significant wave height.
+
+3.	Environment interactions:
+
+d.	Extent of sediment organic enrichment due to shellfish farms;
+
+4.	Weights.
+
+5.	Constraints: Polygon shapefile of constraints are superimposed in the final suitability maps by using a Boolean classification scheme (suitable areas 1, unsuitable areas 0). 
+In order to run the AZA module, the user should upload at least two shapefiles. The layers include: Aquaculture farms, Marine Protected Areas, biological conservation zone, military areas, 
+Touristic maritime traffic, cable and pipelines, offshore sand deposit, seabed mining, oil and gas extraction, Posidonia oceanica meadows. 
+
+.. figure:: img/AZA_input_criteria_to_run.png
+   :alt: AZA input 
+   :align: center
+   :name: aza-input
+
+   Input criteria to run the AZA module
+
+.. figure:: img/AZA_weights_criterion_suitability_analysis.png
+   :alt:  Weights assigned to each criterion for the AZA suitability analysis
+   :align: center
+   :name: aza-weights
+
+   Weights assigned to each criterion for the AZA suitability analysis
+
+.. figure:: img/AZA_constraints_potential_farming_activity_RER.png
+   :alt:  Constraints to potential farming activity in the Emilia Romagna coastal areas
+   :align: center
+   :name: aza-weights
+
+   Constraints to potential farming activity in the Emilia Romagna coastal areas
+
+The user can download the obtains output layers in different format, in details:
+1 raster map, both in pdf and geotiff format, of the suitability index of the areas potentially available for the shellfish aquaculture activity (Figure 5);
+1 pdf document with two histograms representing the percentage of suitability clustered in five classes;
+1 raster map in geotiff format of the suitability index of the areas potentially available of the whole area available for the aquaculture activity, with the super-imposed 
+constraints and the buffer of the sensitive areas. 
+
+.. figure:: img/AZA_suitability_index_shellfish_aquaculture_RER.png
+   :alt:  Suitability index for shellfish aquaculture in the Emilia Romagna coastal area.
+   :align: center
+   :name: aza-weights
+
+   Suitability index for shellfish aquaculture in the Emilia Romagna coastal area
+
+Create a new case study
+--------------------------
+
+The authenticated user can create a new case study clicking on Case Study and subsequently on Create AZA.
+
+.. figure:: img/AZA_create_cs.png
+   :alt: Create a new case study using the Module AZA
+   :align: center
+   :name: aza-create-cs
+
+   Create a new case study using the Module AZA
+
+A new window will be open where the user can assign a title to the new project and select the criteria and the constraints to be used in the AZA analysis. 
+Both can be searched directly in the "Filters" box 
+(i.e.: searching by text, categories, domain area, etc…), otherwise can be selected choosing directly from the whole list of available datasets.
+
+.. figure:: img/AZA_create_new_analysis.png
+   :alt: Create a new AZA analysis
+   :align: center
+   :name: aza-create-new-analysis
+
+   Create a new AZA analysis
+
+First of all, the user has to select the criteria and assign a weight with a value comprised between 0 to 1, where values close to 1 indicate the highest suitability. 
+The sum of the weights given to the criteria must be equal to one, if this condition is not achieved the user will receive the following error message:
+"WARNING: the sum of the criteria must be equal to 1!".
+
+In the application showed, to create a new AZA analysis, the AZA module was run for the Greece area and three criteria were used:
+
+(i) optimal growth, expressed in terms of the days required by seabass to reach the commercial size of 350 g;
+
+(ii) distance to harbour, representing the distance between the centroids of each pixel and the nearest port;
+
+(iii) significant wave height, representing the 90th percentile of the significant wave height.
+
+.. figure:: img/AZA_criteria_weights_assigned.png
+   :alt: Criteria selected to run the AZA module and the weights assigned
+   :align: center
+   :name: aza-criteria-weights-assigned
+
+   Criteria selected to run the AZA module and the weights assigned
+
+A weight has to be assigned by the user to each criterion, in this case we selected 0.6 to the seabass growth, 0.2 to the distance to harbour and 0.2 to the significant wave height.
+After the criteria selection, the user has to select the actual use and constraints at sea for the AZA implementation, at least two shapefiles. In the following figure the national 
+marine protected areas, the underwater cables around Kephalonia island and the Posidonia meadows distribution. As last step the user has to click on “RUN TOOL” and waiting until the process 
+will be completed and the analysis run.
+
+.. figure:: img/AZA_criteria_constraints_selected_analysis.png
+   :alt: Criteria and constraints selected for the AZA analysis
+   :align: center
+   :name: aza-criteria-constraints-selected-analysis
+
+   Criteria and constraints selected for the AZA analysis
+
+
+When the tool will end to run the outputs will be presented in a new page where the user can find the recap of the input data and can download the aquaculture suitability, 
+both in pdf and geotiff format, a pdf named “Aquaculture suitability histogram”, representing the percentage of suitability clustered in five classes, and 
+the aquaculture suitability in geotiff with the actual uses and constraints over-imposed in the selected area.
+
+.. figure:: img/AZA_outputs_module.png
+   :alt: Outputs of AZA module
+   :align: center
+   :name: aza-outputs-module
+
+   Outputs of AZA module
+
+.. figure:: img/AZA_aquaculture_suitability_maps.png
+   :width: 70%
+   :alt: Outputs of AZA module
+   :align: center
+   :name: aza-aquaculture-suitability-maps
+
+   Aquaculture suitability maps not considering (top) and considering (bottom) the constraints 
+
+.. figure:: img/AZA_aquaculture_suitability_percentage.png
+   :width: 70%
+   :alt: Aquaculture suitability percentage per class not considering (top) and considering (bottom) the constraints and actual uses
+   :align: center
+   :name: aza-aquaculture-suitability-percentage
+
+   Aquaculture suitability percentage per class not considering (top) and considering (bottom) the constraints and actual uses

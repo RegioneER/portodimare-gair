@@ -1,0 +1,52 @@
+{% extends "geonode_base.html" %}
+{% load i18n %}
+
+{% block title %} {% blocktrans %}Announcements : {{ announcement }}{% endblocktrans %} {{ block.super }} {% endblock %}
+
+{% block body_outer %}
+<div class="container">
+
+  	<div class="page-header">
+  		<div class="row">
+    		<div class="col-md-12 col-sm-12 col-xs-12">
+        		<div class="pull-left">
+            		<small><a class="btn-dark-light-link breadcrumb-title" href="{% url 'announcements_list' %}">{% trans "Explore Announcements" %}</a> /</small>
+            		<h1 class="page-title"> 
+                    	{{ announcement.title }} ({{ announcement.level_label }})
+            		</h1>
+        		</div>
+        		{% if user.is_authenticated %}
+        		<div class="pull-right">
+            		<a href="{% url 'announcements_create' %}" class="btn btn-info">{%trans 'New Announcement' %}</a>
+        		</div>
+        		{% endif %}
+    		</div>
+			<div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 25px;"></div>
+			<div class="col-md-12 col-sm-12 col-xs-12">
+					
+					<div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" 
+                    data-original-title="{% trans 'Owner' %}">
+                        <span class="fa fa-user"></span>
+                        {{ announcement.creator }}
+                    </div>
+
+					<div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" 
+					data-original-title="{% trans 'Created' %}">
+						<span class="fa fa-calendar"></span>
+						{{ announcement.creation_date }}
+					</div>
+			</div>
+  		</div>		
+  	</div>
+  	<div class="row">
+    	<div class="col-md-12 col-sm-12 col-xs-12">
+				
+			
+			<p>{{ announcement.content }}</p>
+		</div>
+  </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 50px;"></div>
+</div>
+{% endblock %}

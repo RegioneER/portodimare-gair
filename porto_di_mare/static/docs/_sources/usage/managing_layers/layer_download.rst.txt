@@ -1,0 +1,44 @@
+.. _layer-download:
+
+Downloading Layers
+==================
+
+| If you are GAIR singed in user (according user permission), at the top-left of the *Layer Page* there is the :guilabel:`Download Layer` button (see :ref:`layer-info`). 
+| It provides access to the ability to extract geospatial data, aviable for downloading, from within Geoportal.
+
+.. figure:: img/download_layer_link.png
+   :alt: Download Layer link
+   :align: center
+   :name: download_layer_link
+
+   Download Layer link
+
+You will see a list of options of the supported export formats. 
+In the *Images* tab you can choose the images formats ``PNG``, ``PDF``, ``JPEG`` if you want to save a "screenshot-like" image of the layer.
+
+.. figure:: img/download_layer_image.png
+   :alt: Downloading Layers as Images
+   :align: center
+   :name: download_layer_image
+
+   Downloading Layers as Images
+
+You can also download the layer data, the supported export formats will be listed in the *Data* tab. Click on your desired format to trigger the download.
+
+.. figure:: img/download_layer_data.png
+   :alt: Downloading the Layer Data
+   :align: center
+   :name: download_layer_data
+
+   Downloading the Layer Data
+
+As shown in the image above, GAIR allows you to download a subset of data (only for vector data). Click on :guilabel:`Do you want to filter it?` to filter 
+the layer data by attributes, is possible select one or more attributes and operators clicking on :guilabel:`Attributes`, :guilabel:`Operator` and :guilabel:`+` button, before *Pick your download format*.
+The picture below shows an example.
+
+.. figure:: img/download_filtered_data.*
+   :alt: Downloading the Layer Data
+   :align: center
+   :name: download_filtered_data
+
+   Downloading filtered Layer Data

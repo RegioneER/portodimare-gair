@@ -1,0 +1,58 @@
+{% load i18n %}
+
+<div class="_sort_filters btn-group pull-right" role="group" aria-label="tools">
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <div ng-if="dataValue == 'title' || dataValue == 'username'" ng-cloak>
+        <span class="fa fa-sort-alpha-asc fa-lg"></span>
+        <span class="fa fa-angle-down fa-lg"></span>
+      </div>
+      <div ng-if="dataValue == '-title' || dataValue == '-username'" ng-cloak>
+        <span class="fa fa-sort-alpha-desc fa-lg"></span>
+        <span class="fa fa-angle-down fa-lg"></span>
+      </div>
+      <div ng-if="dataValue == 'date' || dataValue == 'last_modified' || dataValue == 'date_joined'" ng-cloak>
+        <span class="fa fa-clock-o"></span>
+        <span class="fa fa-clock-o fa-level-up"></span>
+        <span class="fa fa-angle-down fa-lg"></span>
+      </div>
+      <div ng-if="dataValue == '-date' || dataValue == '-last_modified' || dataValue == '-date_joined'" ng-cloak>
+        <span class="fa fa-clock-o"></span>
+        <span class="fa fa-clock-o fa-level-down"></span>
+        <span class="fa fa-angle-down fa-lg"></span>
+      </div>
+      <div ng-if="dataValue == '-popular_count'" ng-cloak>
+        <span class="fa fa-fire fa-lg"></span>
+        <span class="fa fa-angle-down fa-lg"></span>
+      </div>
+      <div ng-if="dataValue == '-starred'" ng-cloak>
+        <span class="fa fa-star fa-lg"></span>
+        <span class="fa fa-angle-down fa-lg"></span>
+      </div>
+      <div ng-if="dataValue == null" ng-cloak>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-angle-down fa-lg"></span>
+      </div>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" id="sort">
+      {% if facet_type != 'groups' and facet_type != 'people' and facet_type != 'groupcategories' %}
+          <li><a target="_self" data-value="-date" data-filter="order_by" ng-click="single_choice_listener($event)" title="{% trans "Most recent" %}">{% trans "Most recent" %}</a></li>
+          <li><a target="_self" data-value="date" data-filter="order_by" ng-click="single_choice_listener($event)" title="{% trans "Less recent" %}">{% trans "Less recent" %}</a></li>
+          <li><a target="_self" data-value="title" data-filter="order_by" ng-click="single_choice_listener($event)" title="{% trans "A - Z" %}">{% trans "A - Z" %}</a></li>
+          <li><a target="_self" data-value="-title" data-filter="order_by" ng-click="single_choice_listener($event)" title="{% trans "Z - Z" %}">{% trans "Z - A" %}</a></li>
+          <li><a target="_self" data-value="-popular_count" data-filter="order_by" ng-click="single_choice_listener($event)" title="{% trans "Most popular" %}">{% trans "Most popular" %}</a></li>
+          <li><a target="_self" data-value="-starred" data-filter="order_by" class="selected" ng-click="single_choice_listener($event)" title="{% trans "Starred" %}">{% trans "Starred" %}</a></li>
+      {% elif facet_type == 'groups' %}
+          <li><a target="_self" data-value="-last_modified" data-filter="order_by" class="selected" ng-click="single_choice_listener($event)" title="{% trans "Most recent" %}">{% trans "Most recent" %}</a></li>
+          <li><a target="_self" data-value="last_modified" data-filter="order_by" ng-click="single_choice_listener($event)" title="{% trans "Less recent" %}">{% trans "Less recent" %}</a></li>
+          <li><a target="_self" data-value="title" data-filter="order_by" ng-click="single_choice_listener($event)" title="{% trans "A - Z" %}">{% trans "A - Z" %}</a></li>
+          <li><a target="_self" data-value="-title" data-filter="order_by" ng-click="single_choice_listener($event)" title="{% trans "Z - Z" %}">{% trans "Z - A" %}</a></li>
+      {% elif facet_type == 'people' %}
+          <li><a target="_self" data-value="-date_joined" data-filter="order_by" class="selected" ng-click="single_choice_listener($event)" title="{% trans "Most recent" %}">{% trans "Most recent" %}</a></li>
+          <li><a target="_self" data-value="date_joined" data-filter="order_by" ng-click="single_choice_listener($event)" title="{% trans "Less recent" %}">{% trans "Less recent" %}</a></li>
+          <li><a target="_self" data-value="username" data-filter="order_by" ng-click="single_choice_listener($event)" title="{% trans "A - Z" %}">{% trans "A - Z" %}</a></li>
+          <li><a target="_self" data-value="-username" data-filter="order_by" ng-click="single_choice_listener($event)" title="{% trans "Z - Z" %}">{% trans "Z - A" %}</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+{% load i18n %}
+<h2 class="h5 h-label">
+    {% trans "Layers" %}
+</h2>
+<div id="filter-layers">
+
+    <div class="header-filer">
+
+        <div class="selections">
+            <h3>
+                {% trans "Filters" %}
+
+                <small class="hidden-sm hidden-xs"><a id="clear-search"
+                        class="pull-right btn-link">{% trans "Clear" %}</a></small>
+
+                <small class="visible-sm visible-xs"><a href="./create" id="show-search"
+                        class="pull-right btn-link">{% trans "Show" %}</a></small>
+            </h3>
+        </div>
+
+        <div id="div-filter" class="hidden-sm hidden-xs">
+
+            {% if SEARCH_FILTERS.TEXT_ENABLED %}
+            {% include "search/_mod_text_filter.html" %}
+            {% endif  %}
+    
+            <div class="visible-xs" style="margin-top: 15px;"></div>
+            
+            <div id="slide-pane" class="row">
+                
+    
+                {% if SEARCH_FILTERS.T_KEYWORDS_ENABLED %} 
+                {% include "search/_t_keywords_filter.html" %}
+                {% endif %}
+    
+                {% if SEARCH_FILTERS.TYPE_ENABLED and include_type_filter == 'true' %}
+                {% include "search/_type_filters.html" %}
+                {% endif %}
+    
+                {% include "search/_general_filters.html" %}
+    
+                {% if SEARCH_FILTERS.REGION_ENABLED %}
+                {% include "search/_region_filter.html" %}
+                {% endif %}
+    
+                {% if SEARCH_FILTERS.EXTENT_ENABLED %}
+                {% include "search/_extent_filter.html" %}
+                {% endif %}
+    
+            </div>
+            
+        </div>
+    </div>
+
+</div>

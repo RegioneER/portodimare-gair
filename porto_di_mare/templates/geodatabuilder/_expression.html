@@ -1,0 +1,114 @@
+
+{% load i18n %} 
+    
+<div id="expression_editor">
+    <div class="col-md-12 col-sm-12 col-xs-12 ">
+
+      
+        <div class="form-group required expression_label">
+            <label for="expression_id">{% trans "Expression" %}</label>        
+        </div>
+    
+        <div id="expression_editor_content">
+            <div class="container">
+                
+                
+                {% comment %}
+                <!-- <button type="button" 
+                    class="btn btn-xs pull-right expression_raw_btn">
+                    {% trans "RAW" %}</button>
+                <button type="button"
+                    class="btn btn-xs btn-dark pull-right hide expression_edit_btn">
+                    {% trans "EDIT" %}</button> 
+                <div class="hide expression_raw">
+                    <pre>&nbsp;</pre>
+                </div>
+                -->
+                {% endcomment %}
+
+
+
+
+                <div class="bg-info expression">
+                    <div class="loader"></div>
+                    <div class="expression_view hide">
+                        
+                    </div>      
+                </div>
+
+                
+                <div class="bg-function {% if detail != false %}hide{% endif %}" style="background-color: #2a2a2a;">
+                    
+                    <div class="col-md-12_ text-center_ padding" style="line-height: 42px;">
+                        <p class="expression_tip">
+                            <em>
+                                <small>
+                                {% trans "Select layers, operators, numbers, functions to start. Drag and drop the expression's items to reorder. Click on item to remove." %}</em>
+                                </small>
+                        </p>
+                        {% include 'geodatabuilder/_expression_operators.html' %}  
+
+                        {% include 'geodatabuilder/_expression_functions.html' %}  
+                    </div>
+
+                </div>
+                
+
+
+
+
+
+
+                <div class="expression_footer"> 
+                    <div class="row">
+                        <div class="col-md-9 col-sm-8 col-xs-12 pull-left">
+                            <!-- <small class="expression_tip"><em>{% trans "Select layers and operators to start, drag and drop the expression's items to reorder, click on item to remove." %}</em><br /></small> -->
+                            <small class="text validator-text hide">&nbsp;</small>
+                
+                            <!-- snippet html del singolo elemento dell'espressione -->
+                            <div class="expr_template_clone hide show_popover is-close" 
+                                rel='popover'></div>
+
+
+
+                            <div class="expr_template_number_resize_clone hide show_popover is-close" 
+                                rel='popover'>
+                                    <span class="comma"> , </span>
+
+                                    <input type='text' value="" 
+                                        data-orig-value="0.0" 
+                                        data-decimal="1"
+                                        class='geodatabuilder_number' />        
+                                
+                            </div>
+                            
+                            <!-- snippet html del numero -->                 
+                            <input type='text' value="" id="exp_number_template" 
+                                data-orig-value="0.0" 
+                                data-decimal="1"
+                                class='geodatabuilder_number hidden' />
+
+                        </div>
+                        <div class="col-md-3 col-sm-4 col-xs-12 pull-right">
+                            <div class="expression_footer_save">
+                                <button type="submit" 
+                                    disabled="disabled"
+                                    id="expression_save_btn"
+                                    class="btn btn-info btn-block save_geodatabuilder_btn">{% trans "SAVE EXPRESSION" %}</button>            
+                            </div>
+                            {% if  user.id == geodatabuilder.owner.id   %}
+                            <div class="expression_footer_new">
+                                <a href="{% url 'geodatabuilder_edit' id=geodatabuilder.id %}" 
+                                    class="btn btn-dark btn-block edit_geodatabuilder_btn">{% trans "EDIT EXPRESSION" %}</a>            
+                            </div>
+                            {% endif %}
+                        </div>
+                        <pre class="hide col-md-12 col-sm-12 col-xs-12 geodatabuilder_expression">{{geodatabuilder.expression}}</pre>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>    
+    </div>
+</div> 

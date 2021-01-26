@@ -1,0 +1,20 @@
+Working with Layers
+====================
+
+| Layers are published resources representing raster o vector spatial data sources. 
+| Layers can also be associated with metadata, ratings, and comments.
+| This guide's section explains how to navigate layers in GAIR, how to explore detailed information, and of course if you are an authenticated user, how to create a new layer by uploading 
+| a local data set, add layer info, change the style of the layer and share the results.
+
+.. toctree::
+    :maxdepth: 1
+
+    layer_info
+    layer_permissions
+    layer_download
+    layer_editing
+    layer_metadata
+    layer_styling
+    uploading_layers
+    new_layer_from_scratch
+    using_remote_services

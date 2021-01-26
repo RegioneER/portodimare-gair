@@ -1,0 +1,52 @@
+{% load i18n %}
+
+
+<form type="GET" id="filter-form" action="{% url 'geodatabuilder_list' %}">
+	<input type="hidden" name="label" id="filter-label" value=""/>
+	<input type="hidden" name="owner" id="filter-owner" value=""/>
+	<input type="hidden" name="order_by" id="filter-order_by" value=""/>
+	<input type="hidden" name="page" id="filter-page" value=""/>
+</form>
+
+<nav class="filter">
+	
+	<h4 class="padding-LR">
+		<span href="#" class="toggle toggle-nav">
+			<span class="fa fa-chevron-right"></span>{% trans "Owners" %}
+		</span>
+	</h4>
+	
+	<ul class="nav open node-treeview-content" id="owners">
+
+		<li>
+			<a 
+				data-value="" 
+				title="{% trans "All" %}"
+				class=" btn-clear-link btn-search-owner">
+				{% trans "All" %}
+			</a>
+		</li>
+
+		{% for  o in owners %}
+		{% verbatim %}
+		<li>
+			<a data-value="{% endverbatim %}{{o.username}}{% verbatim %}" data-filter="owner"
+				title="{% endverbatim %}{{o.username}}{% verbatim %}" ng-click="single_choice_listener($event)"
+				class=" btn-clear-link btn-search-owner">
+				{% endverbatim %}
+				
+				{{ o.full_name  }}
+				
+				{% verbatim %}
+				<span class="badge pull-right ng-binding">
+				{% endverbatim %}{{o.tot}}{% verbatim %}
+				</span>
+			</a>
+		</li>
+		{% endverbatim %}
+
+		{% endfor %}
+
+	</ul>
+
+</nav>

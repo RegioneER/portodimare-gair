@@ -1,0 +1,60 @@
+{% extends "geonode_base.html" %}
+
+{% load i18n %}
+{% load bootstrap_tags %}
+
+{% block body_class %}announcements{% endblock %}
+
+{% block body_outer %}
+
+
+
+<div  class="container">
+
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="pull-left">
+            		<small><a class="btn-dark-light-link breadcrumb-title" href="{% url 'announcements_list' %}">{% trans "Explore Announcements" %}</a> /</small>
+                    <h1 class="page-title"> 
+                        {% if announcement %}
+							{% trans "Edit Announcement" %}
+						{% else %}
+							{% trans "Create Announcement" %}
+						{% endif %}
+                    </h1>
+                    
+                </div>                
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 25px;"></div>
+            
+        </div>
+    </div>
+
+	<div class="row_">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+
+			{% if announcement %}
+			{% url "announcements_update" pk=announcement.pk as post_url %}
+			{% else %}
+			{% url "announcements_create" as post_url %}
+			{% endif %}
+
+			<form action="{{ post_url }}" method="POST" class="form form-horizontal">
+			{% csrf_token %}
+			{{ form|as_bootstrap }}
+			<div class="form-actions">
+				<a href="{% url "announcements_list" %}" class="btn btn-default">{% trans "Cancel" %}</a>
+				{% if announcement %}
+				<a href="{% url "announcements_delete" pk=announcement.pk %}" class="btn btn-danger">{% trans "Delete" %}</a>
+				{% endif %}
+				<button type="submit" class="btn btn-info">{% trans "Save" %}</button>
+			</div>
+			</form>
+
+			<div style="margin-top: 50px;"></div>
+		</div>
+	</div>
+</div>
+{% endblock %}

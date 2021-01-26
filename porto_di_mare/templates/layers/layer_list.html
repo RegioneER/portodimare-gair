@@ -1,0 +1,79 @@
+{% extends "layers/layer_base.html" %}
+{% load i18n %} 
+{% load staticfiles %}
+
+{% block title %} {% trans "Explore Layers" %} - {{ block.super }} {% endblock %}
+
+{% block body_class %}{% trans "layers explore" %}{% endblock %}
+
+
+
+
+{% block sidebar %}
+<div class="list-group">
+	<div class="list-group-item">
+
+		<a target="_self" href="{% url "layer_upload" %}" class="btn btn-info btn-md btn-block">
+			{% trans "Upload Layers" %}</a>
+		<div style="margin-top: 30px;"></div>
+	</div>
+</div>
+{% include "search/_search_filter_sidebar.html" %}
+
+{% endblock %}
+
+
+
+
+{% block body %}
+
+  {% with include_type_filter='true' %}
+  {% with header='Type' %}
+  {% with filter='type__in' %}
+
+		<div class="page-header">
+			<h1>
+					{% trans "Explore Layers" %} 
+          <span ng-if="text_query.length  > 0"> / </span> 
+          <span ng-bind="text_query"></span> 
+			</h1>
+
+			<!-- {% trans "Explore Documents" %} -->
+			
+		</div>
+	
+
+
+{% include "search/_search_content.html" %}
+
+  {% endwith %}
+  {% endwith %}
+  {% endwith %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+{% block extra_script %}
+{{ block.super }}
+  {% if GEONODE_SECURITY_ENABLED %}
+    {% include "_permissions_form_js.html" %}
+  {% endif %}
+  <script type="text/javascript">
+      {% if HAYSTACK_SEARCH %}
+          SEARCH_URL = '{% url 'api_get_search' api_name='ext' resource_name='base' %}?type__in=layer'
+      {% else %}
+          SEARCH_URL = '{% url 'api_dispatch_list' api_name='ext' resource_name='layers' %}';
+      {% endif %}
+    FILTER_TYPE = 'layer';
+  </script>
+
+  {% with include_spatial='true' %}
+  {% include 'search/search_scripts.html' %}
+  {% endwith %}
+{% endblock extra_script %}

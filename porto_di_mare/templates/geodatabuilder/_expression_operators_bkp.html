@@ -1,0 +1,56 @@
+{% load i18n %} 
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <h2 class="h5">
+        {% trans "Operators" %} 
+    </h2>
+</div>
+
+<div class="col-md-12" style="margin-bottom: 11px"></div>
+<div class="col-md-12" style="">
+
+    <div class="col-md-6 col-sm-6 col-xs-3 grid-view no-gutter">
+        <a 
+            href="#"
+            data-name="{% trans "ADDITION" %}"
+            data-code="+"
+            data-text="+"
+            class="btn-lg btn btn-dark-link btn-block operator_btn">
+            &plus;
+            <span class="hidden">{% trans "ADDITION" %}</span>
+        </a>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-3 grid-view no-gutter">
+        <a 
+            href="#"
+            data-name="{% trans "SUBTRACTION" %}"
+            data-code="-"
+            data-text="-"
+            class="btn-lg btn btn-dark-link btn-block operator_btn">
+            &minus;
+            <span class="hidden">{% trans "SUBTRACTION" %}</span>
+        </a>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-3 grid-view no-gutter">
+            <a 
+            href="#"
+            data-name="{% trans "MOLTIPLICATION" %}"
+            data-code="*"
+            data-text="*"
+            class="btn-lg btn btn-dark-link btn-block operator_btn expression_obj">
+            &times;
+            <span class="hidden">{% trans "MOLTIPLICATION" %}</span>
+        </a>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-3 grid-view no-gutter">
+        <a 
+            href="#"
+            data-name="{% trans "DIVISION" %}"
+            data-code="/"
+            data-text="/"
+            class="btn-lg btn btn-dark-link btn-block operator_btn expression_obj">
+            &divide;
+            <span class="hidden">{% trans "DIVISION" %}</span>
+        </a>
+    </div>
+</div>

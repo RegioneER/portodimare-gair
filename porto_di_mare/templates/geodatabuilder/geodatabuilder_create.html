@@ -1,0 +1,261 @@
+{% extends "geodatabuilder/geodatabuilder_base.html" %}
+{% load i18n %}
+
+{% block title %} GeoDataBuilder | {{ block.super }} {% endblock %}
+
+
+
+{% block body_class %}GeoDataBuilder create{% endblock %}
+ 
+
+
+ 
+
+
+
+{%comment%}
+{% block sidebar %}
+
+{% endblock %}
+{%endcomment%}
+
+{% block body_outer %}
+
+
+<div class="container" id="GeoDataBuilder">
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="pull-left">
+
+                    {% if geodatabuilder == null  %}
+                    <small><a class="btn-dark-light-link breadcrumb-title" 
+                        href="{% url 'geodatabuilder_list' %}">{% trans "Explore GeoDataBuilder" %}</a> /</small>
+                    {% else %}
+                    <small><a class="btn-dark-light-link breadcrumb-title" 
+                        href="{% url 'geodatabuilder_detail' geodatabuilder.id %}">{{ geodatabuilder.label }}</a> /</small>
+                    {% endif %}
+
+                    <h1 class="page-title"> 
+                    {% if geodatabuilder == null  %}
+                    {% trans "Create Expression" %}
+                    {% else %}
+                    {% trans "Edit Expression" %}
+
+                    {% endif %}
+                    </h1>
+                </div>
+            </div>
+            <!-- <div class="col-md-12">
+                    <div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" 
+                    data-original-title="{% trans 'Owner' %}">
+                        <span class="fa fa-user"></span>
+
+                    </div>
+            </div> -->
+        </div>
+    </div>    
+    
+
+<!-- Modal Alert -->
+<div id="expression_alert" class="modal fade" role="dialog">
+    <div class="modal-dialog">  
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <span class="modal-title h4">
+                <span class="hide error-layer">
+                    {% trans "You can't add a layer" %}
+                </span>
+                <span class="hide error-operator">
+                    {% trans "You can't add an operator" %}
+                </span>
+            </span>
+        </div>        
+    </div>
+</div>
+
+
+    <form id="geodatabuilder_form"  method="post" enctype="multipart/form-data" 
+    action="{% if geodatabuilder.id > 0%}{% url "geodatabuilder_edit" id=geodatabuilder.id %}{% else %}{% url "geodatabuilder_create" %}{% endif %}">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+
+    <div class="sr-only"> {{ form.expression }} </div>
+    <div class="sr-only"><label for="expression_id_string">expression id string</label> {{ form.expression_id_string }} </div>
+
+
+    <div class="row">
+       
+
+    <!-- EXPRESSION  -->
+        
+        {% include 'geodatabuilder/_expression.html' %}
+        
+        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 15px;"></div>
+    
+        <!-- Operators -->
+        <div id="operators_div" class="col-md-4 col-lg-4 col-sm-3 col-xs-12 pull-right">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        {% include 'geodatabuilder/_expression_name_desc.html' %}  
+                        <div class="col-md-12" style="margin-top: 15px;"></div>
+
+
+
+
+                    </div>
+                </div>
+                <div class="visible-xs col-xs-12" style="margin-top: 15px;"></div>
+
+            </div>
+        </div>
+
+        <!-- Layers filter -->
+        <div class="col-md-3 col-lg-3 col-sm-9 col-xs-12 pull-left form-group required">
+            {% include "base/_mod_layer_list.html" %}
+        </div>
+        <!-- Layers -->
+        <div class="col-md-5 col-lg-5 col-sm-9 col-xs-12 pull-left">
+            <div style="margin-bottom: 31px"></div>
+            
+            <div id="list-layers">
+                {% include "search/_search_content.html" %}                
+            </div>
+            
+        </div>
+
+        <div class="col-md-12" style="margin-top: 50px;"></div>
+
+    </div>    
+    </form>
+
+   
+    <!-- popover template -->
+    <div id="expr_template_popover_title" class="">
+
+            <div class="popover" role="tooltip">
+                <div class="arrow"></div>
+                <h3 class="popover-title"></h3>
+                <div class="popover-content"></div>
+            </div>                    
+    </div>
+
+    <div id="expr_template_popover_content" class="hide">
+        <div class="popover-editor">
+            <button type="button" class="remove btn btn-clear btn-xs hide" aria-label="{% trans 'EDIT' %}">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                {% trans 'EDIT' %}
+            </button>
+            <button type="button" class="remove btn btn-danger btn-xs" aria-label="{% trans 'REMOVE' %}">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- cursore a fine espressione -->
+    <div id="expression_cursor_template" class="hide"></div>
+
+</div>
+
+
+<style></style>
+    
+
+
+{% endblock %} 
+
+
+
+
+
+
+{% block extra_script %}
+{{ block.super }}
+
+    {% if GEONODE_SECURITY_ENABLED %}
+        {% include "_permissions_form_js.html" %}
+    {% endif %}
+
+    
+    {% include "geodatabuilder/_geodatabuilder_object.html" %}
+    {% include "geodatabuilder/_geodatabuilder_script_v2.html" %}
+
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+
+            $("#expression_id").val("");
+            $("#expression_id_string").val("");
+
+
+            initGeodataBuilder();            
+
+            // carica i layer e i filtri.
+            showFilter();
+
+            // popola la select con i CS
+            
+            // btn nel popover dell'elemento dell'espressione per cancellarlo
+            $(document).on( "click" , ".remove-btn", function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                removeExpressionElement($(this));
+            });
+            
+
+            // click sul nome del layer
+            $(document).on( "click" , ".item-details a.title", function(e) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                $(this).attr("data-tpl" , "#tpl_layer")
+                    .attr("data-obj" , "obj_layer")
+                    .attr("data-type" , "layer");
+                var t = expressionBtn($(this));
+                layerBtn(t);
+            });
+
+            // click sui tasti di creazione espressione
+            $(".operator_btn").click(function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var t = expressionBtn($(this));
+                operatorBtn(t);                
+            });
+            $(".number_btn").click(function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var t = expressionBtn($(this));
+                numberBtn(t);
+            });
+            $(".bracket_btn").click(function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var t = expressionBtn($(this));
+                bracketsBtn(t , 0); // apertura
+                bracketsBtn(t , 1); // chiusura
+            });
+            $(".function_btn").click(function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                var t = expressionBtn($(this));
+                functionsBtn(t, 0); // apertura
+                functionsBtn(t, 1); // chiusura
+            });
+
+            
+
+        });
+
+    </script>
+
+
+
+  {% with include_spatial='true' %}
+  {% include 'search/search_scripts.html' %}
+  {% endwith %}
+{% endblock extra_script %}
+

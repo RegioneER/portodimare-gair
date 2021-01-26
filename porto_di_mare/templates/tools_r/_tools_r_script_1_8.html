@@ -1,0 +1,449 @@
+{% load i18n %}
+
+<script type="text/javascript">
+        
+    {% if HAYSTACK_SEARCH %}
+        SEARCH_URL = '{% url 'api_get_search' api_name='ext' resource_name='base' %}?type__in=layer'; //&keywords__slug__in=aza';
+    {% else %}
+        SEARCH_URL = '{% url 'api_dispatch_list' api_name='ext' resource_name='layers' %}'; //?keywords__slug__in=aza';
+    {% endif %}
+
+
+    var tool_r = {
+        isTiff: false,
+        value: ""
+    }
+
+    var array = [];
+    var array_tiff = [];
+    var outputFiles = "";
+    var inputLayers_obj = {
+        input_criteria: [],
+        array_tiff: [],
+        obj: [],
+        id: [],
+        errorCode: [],
+        canLayer: true,
+        isEmpty: function() {
+            return inputLayers_obj.id == 0;
+        },
+        isValid: false,
+        isValidLayerStatus: true,
+        write: function() {
+     
+            parseInputLayers();  
+            // init del plugin popover
+            if (hasPopover)
+                setPopoverEvents();
+            // recupera la lista dei layer usati
+            if (hasLayerUsed)
+                setLayerUsed();
+            
+        }
+    }
+    
+
+    function unique(list) {
+        var result = [];
+        $.each(list, function(i, e) {
+            if ($.inArray(e, result) == -1) result.push(e);
+        });
+        return result;
+    }
+
+    // set the click on layers and operators
+    /*
+        1. se posso aggiungere, pusho il layer o l'operator nell'array dell'espressione        
+        2. avvio la validazione
+        3. nel loop della validazione eseguo 2 funzioni
+        3.1. 
+    */
+    function inputLayersBtn() {
+
+        $(".inputLayers").hover(function() {
+            $(".show_popover.is-open").popover("hide");
+            $(".show_popover").removeClass("ui-state-disabled");
+        })
+
+        $(document).on( "click" , ".item-details a.title, .icons-snippet .icon-add button", function(e) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            
+            var b = $(this);     
+            insertLayer(b);
+
+            
+        });
+
+    }
+
+
+    function insertLayer(b) {
+        var isTiff = false;
+        var keywords = JSON.parse(b.attr("data-keywords").toLowerCase());            
+        if ( $.inArray( "geotiff".toLowerCase() , keywords ) >= 0) {
+            isTiff = true;
+        }
+        
+        var add_btn = $(".icon-add-btn[data-id='"+b.attr("data-id")+"']");
+
+
+        if (array.indexOf(Number(b.attr("data-id"))) > -1) {
+            // remove
+            add_btn
+                .attr("title" , add_btn.attr("data-title-plus"))
+                .attr("data-original-title" , add_btn.attr("data-title-plus"))
+                .find(".icon-add-fa")
+                .addClass("fa-plus")
+                .removeClass("fa-minus");
+            var _splice = array.indexOf(Number(b.attr("data-id")));
+            array.splice( _splice , 1 );
+            inputLayers_obj.array_tiff.splice( _splice , 1 );
+        }
+        else {
+            // add 
+            
+            add_btn
+                .attr("title" , add_btn.attr("data-title-minus"))
+                .attr("data-original-title" , add_btn.attr("data-title-minus"))
+                .find(".icon-add-fa")
+                .addClass("fa-minus")
+                .removeClass("fa-plus");
+            array.push(Number(b.attr("data-id")));
+            inputLayers_obj.array_tiff.push({
+                isTiff: isTiff,
+                index: inputLayers_obj.array_tiff.length ,
+                id: b.attr("data-id")
+            });
+        }
+        
+        var array_unique = [];        
+        array_unique = unique(array);
+        inputLayers_obj.obj = [];
+        inputLayers_obj.id = array_unique;
+
+
+        getInputLayersObj(array_unique);
+        inputLayersWrite();
+        setPopoverEvents();
+
+        $('.inputLayers_view').scrollTop($('.inputLayers_view')[0].scrollHeight);
+
+
+    }
+
+
+    function setLayerUsed() {
+        $.each( inputLayers_obj.obj , function( index, value ) {
+            
+            var exp_list = $("#tools_r_layers");
+            var exp_obj = $("#tools_r_layers_template .item").clone();
+            exp_obj.find(".item_title").text(value.text); 
+            var url = "{% url 'layer_detail'  layername='@layername' %}";
+            url = url.replace('@layername' , value.data.alternate);      
+            exp_obj.find(".item_detail_url").attr("href" , url + "");
+            exp_obj.find(".abstract").text(value.data.abstract);
+            exp_obj.find(".item_thumbnail_url").css("background-image" , "url('" + value.data.thumbnail_url + "')");
+            exp_obj.find(".item_not_approved").addClass("hide");
+            exp_obj.find(".item_is_approved").addClass("hide");
+            exp_obj.find(".start-spacer").addClass("hide");
+
+            if (!value.isValid) {
+                exp_obj.find(".item_detail_url").remove();
+                exp_obj.find(".item_thumbnail_url").remove();
+                exp_obj.find(".icons-snippet-item").remove();
+                var str = "";
+                var code_arr = value.code.split(":")
+                var id = code_arr[0].split("'").join("");
+                var error_code = code_arr[1].split("'").join("");
+                str += "Layer id " + id + " ";
+                str += value.text;
+                exp_obj.find(".item_title").text(str).addClass("text-danger"); 
+                exp_obj.find(".start-spacer").removeClass("hide");
+                exp_obj.find(".item-details").attr("class" , "item-details col-md-12 not-valid-layer");
+
+            }
+
+
+            exp_obj.appendTo(exp_list);
+        });
+    }
+
+
+    function inputLayersWrite() {
+        var inputLayers_view = "&nbsp;";
+        
+        $(".inputLayers_view").empty();
+        $(".inputLayers_footer .text").text("");
+        $(".inputLayers_footer .text").addClass("text-success").removeClass("text-danger");
+        for(var i = 0 ; i < inputLayers_obj.obj.length; i++) {
+            var obj = inputLayers_obj.obj[i];
+           
+            if (!obj.isValid) {
+                $(".inputLayers_footer .text").html("<strong>ERROR: some layers not found!</strong>");
+                $(".inputLayers_footer .text").addClass("text-danger").removeClass("text-success");
+            }
+
+
+            var expr_template = $(".expr_template_clone").clone(); 
+            expr_template.removeClass("expr_template_clone").addClass("expr_template");
+            $(".inputLayers_view").append(expr_template);
+            $(".inputLayers_view").append("<div class='d-block' />"); 
+            var class_layer = "is-" + obj.type;
+            if (inputLayers_obj.array_tiff.length > 0 && inputLayers_obj.array_tiff[i].isTiff)
+                class_layer += "-geotiff";
+            expr_template.removeClass("hide").addClass(class_layer);
+            expr_template.attr("data-index" , i);
+            expr_template.attr("id" , "inputLayers_data_" + i );
+            
+            if (inputLayers_obj.array_tiff.length > 0 && !inputLayers_obj.array_tiff[i].isTiff)
+                expr_template.html(obj.text + "&nbsp;&nbsp;&nbsp;");        
+            else if (inputLayers_obj.array_tiff.length > 0) {
+                var _value = inputLayers_obj.array_tiff[i].value;
+                if (!_value) {
+                    inputLayers_obj.array_tiff[i].value = _value = 0.2;
+                }
+                expr_template.html(obj.text + ": <input type='text' maxlength='4' "+(!hasPopover?"readonly":"")+" data-index='"+i+"' data-min='0' data-max='1' value='"+ _value +"' class='tool_r_tiff' id='tiff_value_" + i + "' />&nbsp;&nbsp;&nbsp;"); 
+            }
+
+            $(".tool_r_tiff").on("blur" , function(e) {
+                var _val = $(this).val();
+                var min = parseInt( $(this).attr("data-min") ); 
+                var max = parseInt( $(this).attr("data-max") );
+                var i = parseInt( $(this).attr("data-index") );
+
+                if (isNaN(_val) || _val < min || _val > max) {
+                    $(this).val("0");
+                    return false;
+                }
+                $(this).val(roundToTwo(_val));
+                if (inputLayers_obj.array_tiff.length > 0)
+                    inputLayers_obj.array_tiff[i].value = parseFloat($(this).val());
+                setInputCriteria();
+            })
+        }
+
+        setInputCriteria();
+
+        $("#input_layers_id").text(inputLayers_obj.id.toString());
+       
+    }
+
+    function setInputCriteria () {
+            inputLayers_obj.input_criteria = new Array();
+            var totCriteria = 0;
+            for (var i=0; i<inputLayers_obj.array_tiff.length; i++) {
+                var a = inputLayers_obj.array_tiff[i];
+                if (a.isTiff) {
+                    inputLayers_obj.input_criteria.push(a.id+";"+a.value);
+                    totCriteria += parseFloat(a.value);
+                }
+                else {
+                    inputLayers_obj.input_criteria.push(a.id);
+                }
+            }
+            $("#id_input_criteria").val(inputLayers_obj.input_criteria);
+
+            $(".save_tools_r_btn").attr("disabled" , !inputLayers_obj.isValid || inputLayers_obj.input_criteria.length == 0 || totCriteria != 1);
+
+            //""
+            if (totCriteria != 1) {
+                $(".inputLayers_footer .text").html("<strong>WARNING: the sum of the criteria must be equal to 1!</strong>");
+                $(".inputLayers_footer .text").addClass("text-danger").removeClass("text-success");
+            }
+            else {
+                $(".inputLayers_footer .text").text("");
+                $(".inputLayers_footer .text").addClass("text-success").removeClass("text-danger");
+            }
+        }
+
+    function setPopoverEvents() {
+        
+        $(".show_popover").popover({   
+                html:true,
+                template: $("#expr_template_popover_title").html(), 
+                content: $("#expr_template_popover_content").html(), 
+                title: "",
+                placement: "top"
+            });
+            
+        $('.show_popover').on('show.bs.popover', function (e) {  
+            e.stopImmediatePropagation();
+            $(".show_popover.is-open").popover("hide");
+            $(this).addClass("is-opening").removeClass("is-close");  
+            $(".show_popover").addClass("ui-state-disabled");
+            $(this).removeClass("ui-state-disabled");
+        })
+        $('.show_popover').on('shown.bs.popover', function (e) {  
+            e.stopImmediatePropagation();
+            $(this).removeClass("is-opening").addClass("is-open");  
+            setEditorPopover($(this));
+        })
+        $('.show_popover').on('hide.bs.popover', function (e) {  
+            e.stopImmediatePropagation();
+            $(this).removeClass("is-open").addClass("is-closing");  
+        })
+        $('.show_popover').on('hidden.bs.popover', function (e) {  
+            e.stopImmediatePropagation();
+            $(this).removeClass("is-closing").addClass("is-close");  
+            $(".show_popover").removeClass("ui-state-disabled");
+        })
+    }
+
+
+    function setEditorPopover(b) {
+        $(".popover-editor .remove").attr("data-remove" , "inputLayers_obj").attr("data-index" , b.attr("data-index") );
+        $(document).on("click" , '.popover-editor .remove[data-remove="inputLayers_obj"]' , function(e) {
+            e.stopImmediatePropagation();
+            var index = $(this).attr("data-index");
+            var arr = inputLayers_obj.obj;
+            $(".show_popover").removeClass("ui-state-disabled");
+            var _splice = array.indexOf(Number(arr[index].code));
+            array.splice( _splice , 1 );
+            inputLayers_obj.array_tiff.splice( _splice , 1 );
+            inputLayers_obj.obj = [];
+            inputLayers_obj.id = array;
+            getInputLayersObj(array);
+            inputLayersWrite();
+            setPopoverEvents();
+
+        });
+    }
+
+    
+    function getLayerById(item) {
+        // se è un livello, recupero dal ws get_layer_by_id i campi del livello
+        var url = "{% url 'get_layer_by_id'  id='@id' %}";
+        url = url.replace('@id' , item); 
+        var exp_obj = {};
+             
+        $.ajax({
+            type: "GET",
+            url: url,
+            async: false,
+            dataType: 'json',
+
+            success: function(data)
+            {
+                exp_obj = {
+                    code: data.id,
+                    text: data.title,
+                    type: "layer", 
+                    isValid: true,
+                    data: data
+                };
+            },
+            error: function (resp, status) {
+                console.log(resp, status);
+                exp_obj = {
+                    code: "'"+item+":"+resp.status+"'",
+                    text: resp.statusText,
+                    type: "layer",
+                    isValid: false,
+                    data : false
+                };
+                
+
+            }
+        });
+        return exp_obj;
+    }
+
+    function showFilter() {
+        var btn = $("#show-search");
+        if (btn.length) {
+            var filter = $("#div-filter");
+
+            btn.click(function(e) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                if (filter.hasClass("hidden-sm"))
+                    filter.removeClass("hidden-sm").removeClass("hidden-xs").hide().slideDown();
+                else 
+                    filter.slideUp("fast" , function() {
+                        filter.addClass("hidden-sm").addClass("hidden-xs").show();
+                    });
+            });
+        }
+
+    }
+
+    function parseInputLayers() {
+        if ($(".tools_r_inputLayers").length) {
+            
+            var exp = $(".tools_r_inputLayers").text().trim();
+            var arr = eval("[" + exp + "]");
+            inputLayers_obj.id = arr;
+
+            var criteria = $(".tools_r_inputCriteria").text().trim().split(',');
+            criteria.forEach(function(item) {
+                var crit = item.split(';');
+
+                var add_btn = $(".icon-add-btn[data-id='"+crit[0]+"']");
+                console.log(add_btn);
+                add_btn
+                    .attr("title" , add_btn.attr("data-title-plus"))
+                    .attr("data-original-title" , add_btn.attr("data-title-plus"))
+                    .find(".icon-add-fa")
+                    .removeClass("fa-plus")
+                    .addClass("fa-minus");
+                
+                // array.push(Number(crit[0]));
+
+                
+                inputLayers_obj.array_tiff.push({
+                    isTiff: crit[1]?true:false,
+                    id: crit[0],
+                    value: crit[1]?crit[1]:null
+                });
+            });   
+                
+            // prendo l'array di id dal div, lo converto in array
+            getInputLayersObj(inputLayers_obj.id);
+            inputLayersWrite();
+     
+        }        
+    }
+
+    function checkOutputFiles() {
+        if ($(".tools_r_outputFiles").length) {
+            
+            outputFiles = $(".tools_r_outputFiles").text().trim();
+            if (outputFiles)
+                return true;
+            else     
+                return false; 
+            
+        } else {
+            return false;
+        }
+    }
+
+    
+
+    function getInputLayersObj(arr) {
+        
+        // loop interno agli item dell'espressione per l'array di id
+        var validLayers = true;
+        for( var i = 0 ; i < arr.length ; i++) {
+            var item = arr[i];
+            var exp_obj = {};
+            
+            exp_obj = getLayerById(item);  
+            if (!exp_obj.isValid)
+                validLayers = false;
+            inputLayers_obj.obj.push( exp_obj );  
+                
+        }
+        inputLayers_obj.isValid = validLayers;
+        
+    }
+
+    // function runTool() {
+    //     $(".save_tools_r_btn").attr("disabled" , true);
+    //     $(".inputLayers_footer .text").html('<strong><div class="comment-loading" ><img src="/static/geonode/img/loading.gif" alt="loading" /> wait, run process... </div></strong> ');
+    // }
+
+    
+
+  </script>

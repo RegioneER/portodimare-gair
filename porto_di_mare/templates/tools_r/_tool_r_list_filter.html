@@ -1,0 +1,60 @@
+{% load i18n %}
+
+ 
+<div class="list-group">
+	<div class="list-group-item">
+
+		<a href="{{ cta_create_new }}" class="btn btn-info btn-md btn-block">
+            {% blocktrans  %}
+			{{ cta_text }}</a>
+            {% endblocktrans %}
+		<div style="margin-top: 30px;"></div> 
+	</div>
+</div>
+
+
+
+<div class="row">
+        <div class="col-md-12">
+            <div class="padding-LR">
+                <div class="selections">
+                    <h4>{% trans "Filters" %}
+                        <small><a href="." id="clear-search"
+                                class="pull-right btn-link">{% trans "Clear" %}</a></small>
+                    </h4>
+                </div>
+
+                {% if SEARCH_FILTERS.TEXT_ENABLED %}
+                {% include "search/_cs_text_filter.html" %}
+                {% endif  %}
+
+            </div>
+    
+            <div id="slide-pane">
+
+                                
+                <form type="GET" id="filter-form" action="{{tool_r_list_url}}">
+                    <input type="hidden" name="label" id="filter-label" value=""/>
+                    <input type="hidden" name="owner" id="filter-owner" value=""/>
+                    <input type="hidden" name="order_by" id="filter-order_by" value=""/>
+                    <input type="hidden" name="page" id="filter-page" value=""/>
+                    <input type="hidden" name="cstype" id="filter-type" value=""/>
+                </form>
+
+                <nav class="filter">
+                    
+                    {% with label="Type" id="type" obj=type %}
+                    {% include "search/_list_items_search.html" %}
+                    {% endwith %}
+
+                    {% with label="Owners" id="owner" obj=owners %}
+                    {% include "search/_list_items_search.html" %}
+                    {% endwith %}
+
+                </nav>
+
+
+            </div>
+        </div>
+    </div>
+ 

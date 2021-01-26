@@ -1,0 +1,69 @@
+.. _layer-info:
+
+Layer Information
+=================
+
+| The following paragraphs describe more about layers. The :ref:`finding-layers` section explains how to find layers, now we want to go more in depth showing you how to explore detailed information about that.
+
+| From the layers list page, click on the layer you are interested in. The *Layer Page* will open.
+
+.. figure:: img/layer_info.png
+   :alt: Layer Information
+   :align: center
+   :name: layer_info
+
+   Layer Information
+
+As shown in the picture above, the *Layer Page* is divided into three main sections:
+
+1. the *Layer Preview* section, over the title
+2. the *Tabs* section, under the title
+3. the *Tools* section, on the left side of the page
+
+Layer Preview
+-------------
+
+The *Layer Preview* shows the layer in a map with very basic functionalities:
+
+* the *Zoom in/out* tool to enlarge and decrease the view;
+* the *Zoom to max extent* tool for the zoom to fit the layer size;
+* the *Query Objects* tool to retrieve information about the map objects by clicking on the map;
+* the *Print* tool to print the preview.
+
+.. figure:: img/layer_preview.*
+   :alt: Layer Preview
+   :align: center
+   :name: layer_preview
+
+   Layer Preview
+
+The *Layer Page* shows you some useful information about the layer, such as its title, layer owner, what are the topic categories and subcategory the layer belongs to and which regions are affected. 
+The metadata also indicates the abstract, date of publication, licence, and in the right panel: temporal extention and other supplemental information.
+
+The *Attributes* section shows the data structure behind the layer. All the attributes are listed.
+.. and for each of them some statistics (e.g. the range of values) are estimated (if possible).
+
+The *Share* section provides the links for the layer to share through social media or email.
+.. * Also you can *Rate* the layer through the *Rating system*.
+
+
+Layer Tools
+-----------
+
+| In the left side of the *Layer Page* there are some buttons and information that can help you to manage your layer.
+| You nedd to sign in, in order to some function be aviable.
+| This paragraph will cover only those tools which show layers information. The *Editing Tools* will be explored in the :ref:`layer-editing` section.
+
+* through the :guilabel:`Download Layer` button you can download your layer with some options, see :ref:`layer-download`;
+* the :guilabel:`Metadata Detail` button to see the layer metadata, see :ref:`layer-metadata` to read more;
+* the :guilabel:`Editing Tools` button allows you to access to many editing tools. Those functionalities will be explained in the :ref:`layer-editing` section;
+* the :guilabel:`View Layer` button opens the layer loaded in a map, see the :ref:`map-info` for more details;
+* the :guilabel:`Download Metadata` button allows you to download the layer metadata in various formats;
+* the *Legend* shows what the symbols and styles on the map are referring to;
+* in the *Map using this layer* section all the map which uses the layer are listed;
+* in the *Create a map using this layer*, the :guilabel:`Create a Map` button allows you to create a map from scratch using the layer;
+* if you are owner of an exiting map, the section *Add the layer to an existing map* shows you a dropdown menu in which all the maps the user can view are listed. The button :guilabel:`Add to Map` allows you to add the layer to the map you have selected in the previous menu;
+* the *Styles* section shows all the styles associated with the layer. If there are more than one style, you can click on the checkbox corresponding to one of the styles listed to apply it the preview;
+* in the *Refresh Attributes and Statistics of this layer* section the :guilabel:`Refresh Attributes and Statistics` allows GeoNode to refresh the list of available Layer Attributes. If the option 'WPS_ENABLED' has been also set on the backend, it will recalculate their statistics too;
+* in the *Clear the Server Cache of this layer* section the :guilabel:`Empty Tiled-Layer Cache` allows to wipe the tile-cache of this layer;
+* the *About* section shows you the layer *Owner*, the *Contact* user and the *Metadata Author*.

@@ -1,0 +1,13 @@
+.. _editing-profile:
+
+User Profile
+=====================
+
+Once having an account you can enrich your profile with useful information, you can also edit or delete the existing ones.
+You can connect the account with your social network, associate many e-mail addresses to it and manage many options.
+
+You can update these information anytime, after sign in, from your *Profile* page, it is accessible from the user menu.
+
+So, click on your user name in the top right of the screen. A drop-down list will show. Click on :guilabel:`Profile` to enter the *Profile* settings page.
+
+( in progress )

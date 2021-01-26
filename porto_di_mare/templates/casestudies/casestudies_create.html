@@ -1,0 +1,271 @@
+{% extends "casestudies/casestudies_base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load dialogos_tags %}
+{% load agon_ratings_tags %}
+{% load bootstrap_tags %}
+{% load pagination_tags %}
+{% load base_tags %}
+{% load guardian_tags %}
+{% load client_ext_lib_tags %}
+
+
+{% block title %}{% trans "Create Case Study" %}{% endblock %}
+
+
+{% block body_class %}casestudies{% endblock %} 
+
+
+{%comment%}
+{% block sidebar %}
+
+{% endblock %}
+{%endcomment%}
+
+{% block body_outer %}
+
+<div class="container">
+
+        <div class="row" id="row-page-header">
+            <div class="col-md-12">
+                <div class="page-header">
+                    <div class="pull-left">
+
+                        <small><a class="btn-dark-light-link breadcrumb-title" 
+                            href="{% url "casestudies" %}?limit={{ CLIENT_RESULTS_LIMIT }}">{% trans "Explore Casestudies" %}</a> /</small>
+
+                            
+                    <h1 class="page-title"> 
+                    {% trans "Create Case Study" %}
+                    </h1>
+                </div>
+            </div>
+
+            <div class="col-md-12" style="margin-top: 25px;"></div>
+
+            
+
+        </div>
+    </div>        
+
+
+
+
+    <form id="form_casestudy_create" class="no-gutter">        
+        <div class="row">
+            <div class="col-md-8 col-sm-8 col-md-offset-2 col-sm-offset-2 col-xs-12">
+                <div class="row">
+                    <div class="col-md-8 col-sm-8">
+                    
+                        <div id="form_group_label"
+                            class="form-group required">
+                            <label for="label">
+                            {% trans "Label" %}
+                            </label>
+                            <input id="label" 
+                                class="form-control" style="width: 75%;"
+                                placeholder="{% trans "Insert the Case Study Label" %}"
+                                type="text" />
+                            <small><em class="text-danger">
+                                    {% trans "This field is mandatory" %}  
+                            </em></small>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        {% if modules  %}
+                        <div id="form_group_module"     
+                            class="form-group required">
+                            <label for="module">
+                            {% trans "Module" %}                    
+                            </label>
+                            <select id="module" class="form-control">
+                                <option value="">-- {% trans "Select Module" %} --</option>
+                                {% for m in modules %}
+                                <option value="{{m.slug}}">{{m.name}}</option>                       
+                                {% endfor %}
+                            </select>
+                            <small><em class="text-danger">
+                                {% trans "This field is mandatory" %}  
+                            </em></small>
+                        </div>
+                        {% endif %}
+
+                        {% if cstype  %}                
+                            <input type="hidden" value="customized" id="cstype" class="form-control" />
+                        {% endif %}
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="description">
+                            {% trans "Description" %}                    
+                            </label>
+                            <textarea id="description" style="height: 321px;"
+                                class="form-control"></textarea>
+                        </div>
+                        
+                    </div>
+
+                    <div class="col-md-12">
+
+                
+
+                        <div id="form_group_resolution" 
+                            class="form-group required">
+                            <label for="resolution">
+                            {% trans "Resolution" %}                    
+                            </label>
+                            <input type="number" id="resolution" 
+                            class="form-control" value="0" />
+                            <small><em class="text-danger">
+                                {% trans "This field is mandatory" %}  
+                            </em></small>
+                        </div>
+        
+        
+                        {%comment%}
+                        <!-- <div id="form_group_domain_area" 
+                            class="form-group">
+                            <label for="domain_area">
+                            {% trans "Domain Area" %}
+                            </label>
+                            <textarea  id="domain_area" class="form-control"></textarea>
+                            
+                        </div>
+        
+        
+        
+                        <div id="form_group_domain_area_terms" 
+                            class="form-group">
+                            <label for="domain_area_terms">
+                            {% trans "Domain Area Terms" %}                    
+                            </label>
+                            <textarea  id="domain_area_terms" class="form-control"></textarea>                   
+                        </div> -->
+                        {%endcomment%}
+                    </div>
+
+                    <div class="col-md-12">
+                        <div style="margin-top: 25px;"></div>
+                        
+                        <button 
+                            id="save_casestudy_btn"
+                            class="btn btn-info">
+                            <span class='hidden run_icon fa fa-circle-o-notch fa-spin'></span>
+                            {% trans "SAVE CASE STUDY" %}                    
+                        </button>
+                        <label class="sr-only" for="reset_form">{% trans "Reset Form" %}</label>
+                        <input type="reset" id="reset_form" class="btn btn-danger" value="{% trans "Reset Form" %}" />
+                    </div>
+        
+                    <div class="col-md-12">
+                        <hr />
+                        <small>
+                            <span class="text-danger">*</span> {% trans "Mandatory Field" %}                      
+                        </small>
+                        <div class="col-md-12" style="margin-top: 15px;"></div>
+                    </div>
+        
+
+                </div>
+            </div>
+            
+        </div>
+
+           
+    </form>
+
+    <div style="margin-top: 50px;"></div>
+
+</div>
+
+
+
+{% endblock %} 
+
+
+
+
+{% block extra_script %}
+
+<script type="text/javascript">
+    var SET_CONTEXT_ENDPOINT = "{% url 'api_casestudy_set_context' %}"
+    var CREATE_CASESTUDIES_ENDPOINT = "{% url 'api_casestudy_create' %}";
+    // var SAVE_CASESTUDIES_ENDPOINT = "{ url 'api_casestudy_save' }";
+    var SAVE_CASESTUDIES_ENDPOINT = "'api_casestudy_save'";
+    var casestudy_id = 0;
+
+    $(document).ready(function() {    
+
+        $(".form-control").on('change blur keypress keyenter' , function(e) {
+            $(this).parent().removeClass("is-not-valid");
+        });
+
+        $("#form_casestudy_create").on('reset' , function(e) {
+            $(".form-control").parent().removeClass("is-not-valid");
+        });
+
+        $("#save_casestudy_btn").click(function(e) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            
+            var domain_area_terms_arr = [];
+
+            callApiCasestudies(
+                CREATE_CASESTUDIES_ENDPOINT , 
+                {
+                    "label": $("#label").val(),
+                    "description": $("#description").val(),
+                    "module": $("#module").val(),
+                    "cstype": $("#cstype").val(),
+                    "resolution": $("#resolution").val(),
+                    "domain_area": $("#domain_area").val(),
+                    "domain_area_terms": domain_area_terms_arr //$("#domain_area_terms").val(),
+                } 
+                , createCaseStudy);
+        });
+    });
+
+
+    function createCaseStudy(resp) {
+
+        if (!resp.data.success) {
+            // alert("Si sono verificati degli errori");
+            if (resp.data.objects != null) {
+                var error_arr = resp.data.objects.error_code;
+                for(var i = 0; i < error_arr.length; i++) {
+                    $("#form_group_" +  error_arr[i]).addClass("is-not-valid");
+                    console.log("error_arr" , error_arr[i]);
+                }
+            }
+            else {
+                alert("Si è verificato un errore imprevisto");
+                console.log("Error: " , resp);
+            }
+        }
+        else {
+            setContext(resp.data.objects.id);            
+        }
+    }
+
+
+    function setContext(id) {
+        casestudy_id = id;
+        callApiCasestudies(
+            SET_CONTEXT_ENDPOINT , 
+            {
+                id: id,
+                context_label: 'AIR'
+            } 
+            , setContextCb);
+    }
+
+    function setContextCb() {
+        var CASESTUDIES_DETAIL_ENDPOINT = "{% url 'casestudies_detail' '@id' %}";
+        CASESTUDIES_DETAIL_ENDPOINT = CASESTUDIES_DETAIL_ENDPOINT.replace('@id' , casestudy_id);
+        location.href = CASESTUDIES_DETAIL_ENDPOINT;
+    }
+
+
+</script>
+
+{% endblock extra_script %}

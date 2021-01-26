@@ -1,0 +1,30 @@
+What is GAIR
+===============
+
+.. figure:: img/logo-adrion-portodimare.png
+   :alt: Logo Adrion PORTODIMARE
+   :align: center
+   :name: logo-adrion-portodimare
+
+The Geo data portal of Adriatic Ionian Region (GAIR) is a community-based, open source portal based on GeoNode (http://geonode.org/), a web-based Content Management System (CMS) for developing geospatial information systems (GIS) and for deploying spatial data infrastructure (SDI). 
+
+GAIR provides access to numerous datasets related to coastal and marine areas and to several modules for Integrated Coastal Zone Management (ICZM) and Maritime Spatial Planning (MSP) analysis and risk assessment. 
+
+In particular, the already implemented tools are:
+
+- Module for Cumulative Effects Assessment (CEA)
+- Module for Maritime Use Synergy and Conflict Analysis Tool (MUSC)
+- Module for Supporting Allocated Zones for Aquaculture (AZA) identification
+- Module for particle/conservative contaminants dispersion (PAR TRAC)
+- Module for Coastal Oil Spill Vulnerability Assessment
+- Module for Small Scale Fishery Footprint (SSF)
+- Module on Medium Scale Fishery Footprint (MSF) & Cumulative Effects Assessment on SSF & MSF.
+
+The Geoportal capitalizes data from other projects (e.g. Shape, Adriplan) and integrates existing databases/portals developed at European and national level.
+GAIR thus represents a relevant and original instrument that improves concretely the support to  transparent and efficient decision-making processes and transnational cooperation between the Adriatic and Ionian Region Countries on maritime and marine governance and services and on the implementation of ICZM/MSP processes. For the same reason, GAIR is an important support to the EUSAIR Action Plan implementation, cross-cutting to the 4 Pillars of the Strategy. 
+
+GAIR is developed under *geoPORtal of TOols & Data for sustaInable Management of coAstal and maRine Environment* (https://portodimare.adrioninterreg.eu/) *ADRION* programme.
+
+.. warning::
+	| The Geo data portal of Adriatic-Ionian region is currently in a development phase and only registrations made by PORTODIMARE project partners and their collaborators will be accepted. 
+	| For more information please write an e-mail to supportGAIR@regione.emilia-romagna.it

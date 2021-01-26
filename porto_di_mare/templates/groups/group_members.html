@@ -1,0 +1,181 @@
+{% extends "groups/group_base.html" %}
+{% load i18n %}
+{% load bootstrap_tags %}
+
+
+
+
+
+{% block sidebar %}
+
+<div class="list-group">
+	
+	{% if member_form %}
+	<div class="list-group-item">
+		
+		<div class="row">
+			<div class="col-md-12">
+				<h4>{% trans "Add new members" %}</h4>
+				<form method="POST" action="{% url "group_members_add" group.slug %}">
+					{% csrf_token %}
+					<div id="member_form_container">
+						{{ member_form|as_bootstrap }}
+					</div>
+					<input type="submit" value="{% trans "Add Group Members" %}" class="btn btn-info btn-block" />
+				</form>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+
+	
+	<!-- <div class="list-group-item">
+		<ul class="nav_ nav-tabs_">
+			<li class="btn-block active"><a class="btn btn-block btn-default" href="#all" data-toggle="tab"><i class=""></i>{% trans "All" %}</a></li>
+			<li class="btn-block "><a class="btn btn-block btn-default" href="#managers" data-toggle="tab"><i class=""></i> {% trans "Managers" %}</a></li>
+			<li class="btn-block "><a class="btn btn-block btn-default" href="#members" data-toggle="tab"><i class=""></i> {% trans "Members" %}</a></li>
+		</ul>
+	</div> -->
+
+</div>
+
+{% endblock %}
+
+
+
+
+{% block label_class %}
+
+{% if member.role == 'manager' %}
+	label-info
+	{% else %}
+	label-default
+	{% endif %}
+{% endblock %} 
+
+
+{% block body %}
+<div class="row">
+	<div class="col-md-12">
+		<div class="page-header">
+			<small>
+					<a class="btn-dark-light-link breadcrumb-title"
+					href="{% url "group_detail" group.slug %}">{{ group.title }}</a>
+				 /
+			</small>
+			<h1 class="page-title">{%  trans "Edit Members"  %}</h1>
+		</div>
+		
+		<p >{%  trans "Current Members of: " %}
+			<strong>{{ group.title }}</strong>
+		</p>
+		<div class="row" style="margin-top: 25px;"></div>
+		<div class="row">
+			<div class="col-md-12">
+					<ul class="nav nav-tabs">
+							<li class="active"><a href="#all" data-toggle="tab"><i class=""></i>{% trans "All" %}</a></li>
+							<li><a href="#managers" data-toggle="tab"><i class=""></i> {% trans "Managers" %}</a></li>
+							<li><a href="#members" data-toggle="tab"><i class=""></i> {% trans "Members" %}</a></li>
+						  </ul>
+				<div class="tab-content">
+					<article id="all" class="tab-pane active">
+						<ul class="no-style-list">
+							{% for member in members %}
+							<li>
+							<h4>
+								<form style="display: inline;" method="POST"
+									action="{% url "group_member_remove" group.slug member.user.username %}">
+									{% csrf_token %}
+									<button type="submit" class="btn btn-danger btn-xs">{% trans 'Remove' %}</button>
+								</form>
+								<div style="margin: 0 15px; display: inline-block;">|</div>
+								<!-- <span class="fa fa-user"></span>  -->
+								
+								<span class="label label-default ">{{ member.role }}</span>
+
+								<a
+									href="{{ member.user.get_absolute_url }}">{{ member.user.username }}</a>
+								{% if member.user.email %}
+								<a href="mailto:{{ member.user.email }}"><i class="fa fa-envelope-o"></i></a>
+								{% endif %}
+								
+															
+							</h4>
+							<hr>
+							</li>
+							{% endfor %}
+						</ul>
+					</article>
+					<article id="managers" class="tab-pane">
+						<ul class="no-style-list">
+							{% for member in members %}
+							{% if member.role == 'manager' %}
+							<li>
+								<h4>
+									<form style="display: inline;" method="POST"
+										action="{% url "group_member_remove" group.slug member.user.username %}">
+										{% csrf_token %}
+										<button type="submit" class="btn btn-danger btn-xs">{% trans 'Remove' %}</button>
+									</form>
+										
+									<div style="margin: 0 15px; display: inline-block;">|</div>
+
+									 <a
+										href="{{ member.user.get_absolute_url }}">{{ member.user.username }}</a>
+									{% if member.user.email %}
+									<a href="mailto:{{ member.user.email }}"><i class="fa fa-envelope-o"></i></a>
+									{% endif %}
+									
+									<h4>
+											<hr>
+								</li>
+								
+									
+									{% endif %}
+									{% endfor %} 
+						</ul>
+					</article>
+					<article id="members" class="tab-pane">
+						<ul class="no-style-list">
+							{% for member in members %}
+							{% if member.role == 'member' %}
+
+							<li>
+									<h4>
+										<form style="display: inline;" method="POST"
+											action="{% url "group_member_remove" group.slug member.user.username %}">
+											{% csrf_token %}
+											<button type="submit" class="btn btn-danger btn-xs">{% trans 'Remove' %}</button>
+										</form>
+											
+										<div style="margin: 0 15px; display: inline-block;">|</div>
+	
+										 <a
+											href="{{ member.user.get_absolute_url }}">{{ member.user.username }}</a>
+										{% if member.user.email %}
+										<a href="mailto:{{ member.user.email }}"><i class="fa fa-envelope-o"></i></a>
+										{% endif %}
+										
+										<h4>
+												<hr>
+									</li>
+																			
+										
+									{% endif %}
+									{% endfor %}
+						</ul>
+					</article>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+{% endblock %}
+
+{% block extra_script %}
+{{ block.super }}
+{% with "none" as layer %}
+{% include "_permissions_form_js.html" %}
+{% endwith %}
+{% endblock extra_script %}

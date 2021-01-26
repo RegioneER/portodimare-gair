@@ -1,0 +1,238 @@
+{% load i18n %}
+{% if SEARCH_FILTERS.CATEGORIES_ENABLED %}
+<nav class="filter" ng-cloak id="categories">
+  <h4 class="padding-LR"><a target="_self" href="#" class="toggle toggle-nav" ><span class="fa fa-chevron-right"></span>{% trans "Categories" %}</a></h4>
+  <ul class="nav closed node-treeview-content" id="maincategory">
+  {% if facet_type == 'layers' %}
+    {% verbatim %}
+      <li ng-repeat="main_category in maincategory" ng-if="main_category.layers_count > 0">
+        <a target="_self" data-value="{{ main_category.identifier }}" data-filter="category__main_category__identifier__in" title="{{ main_category.gn_description }}"
+         ng-click="multiple_choice_listener($event)" class="{{main_category.active}} btn-clear-link"><div class="fa-stack fa-1g"><span class="fa fa-square-o fa-stack-2x"></span><span class="fa {{main_category.fa_class}} fa-stack-1x"></span></div>{{ main_category.gn_description | limitTo: 20 }}{{ main_category.gn_description.length > 20 ? '...' : ''}}
+          <span class="badge pull-right">{{ main_category.count }}</span>
+		</a>
+		<ul class="nav node-treeview-content">
+			<li ng-repeat="category in categories" ng-if="category.layers_count > 0 && category.main_category.identifier === main_category.identifier">
+				<a target="_self" data-value="{{ category.identifier }}" data-filter="category__identifier__in" title="{{ category.gn_description }}"
+				 ng-click="multiple_choice_listener($event)" class="{{category.active}} btn-clear-link"><div class="fa-stack fa-1g"><span class="fa {{category.fa_class}} fa-stack-1x"></span></div>{{ category.gn_description | limitTo: 20 }}{{ category.gn_description.length > 20 ? '...' : ''}}
+				  <span class="badge pull-right">{{ category.layers_count }}</span>
+				</a>
+			 </li>			
+		</ul>
+      </li>
+	{% endverbatim %}
+  {% elif facet_type == 'documents' %}
+  {% verbatim %}
+  <li ng-repeat="main_category in maincategory" ng-if="main_category.documents_count > 0">
+	<a target="_self" data-value="{{ main_category.identifier }}" data-filter="category__main_category__identifier__in" title="{{ main_category.gn_description }}"
+	 ng-click="multiple_choice_listener($event)" class="{{main_category.active}} btn-clear-link"><div class="fa-stack fa-1g"><span class="fa fa-square-o fa-stack-2x"></span><span class="fa {{main_category.fa_class}} fa-stack-1x"></span></div>{{ main_category.gn_description | limitTo: 20 }}{{ main_category.gn_description.length > 20 ? '...' : ''}}
+	  <span class="badge pull-right">{{ main_category.documents_count }}</span>
+	</a>
+	<ul class="nav node-treeview-content">
+		<li ng-repeat="category in categories" ng-if="category.count > 0 && category.main_category.identifier === main_category.identifier">
+			<a target="_self" data-value="{{ category.identifier }}" data-filter="category__identifier__in" title="{{ category.gn_description }}"
+			 ng-click="multiple_choice_listener($event)" class="{{category.active}} btn-clear-link"><div class="fa-stack fa-1g"><span class="fa {{category.fa_class}} fa-stack-1x"></span></div>{{ category.gn_description | limitTo: 20 }}{{ category.gn_description.length > 20 ? '...' : ''}}
+			  <span class="badge pull-right">{{ category.count }}</span>
+			</a>
+		 </li>	
+	</ul>
+  </li>
+  {% endverbatim %}
+  {% else %}
+    {% verbatim %}
+      <li ng-repeat="main_category in maincategory">
+        <a target="_self" data-value="{{ main_category.identifier }}" data-filter="category__main_category__identifier__in" title="{{ main_category.gn_description }}"
+         ng-click="multiple_choice_listener($event)" class="{{main_category.active}} btn-clear-link"><div class="fa-stack fa-1g"><span class="fa fa-square-o fa-stack-2x"></span><span class="fa {{main_category.fa_class}} fa-stack-1x"></span></div>{{ main_category.gn_description | limitTo: 20 }}{{ main_category.gn_description.length > 20 ? '...' : ''}}
+		 <span class="badge pull-right">{{ main_category.count }}</span>
+		</a>
+		<ul class="nav node-treeview-content">
+			<li ng-repeat="category in categories" ng-if="category.main_category.identifier === main_category.identifier">
+				<a target="_self" data-value="{{ category.identifier }}" data-filter="category__identifier__in" title="{{ category.gn_description }}"
+				 ng-click="multiple_choice_listener($event)" class="{{category.active}} btn-clear-link"><div class="fa-stack fa-1g"><span class="fa {{category.fa_class}} fa-stack-1x"></span></div>{{ category.gn_description | limitTo: 20 }}{{ category.gn_description.length > 20 ? '...' : ''}}
+				 <span class="badge pull-right">{{ category.count }}</span>
+				</a>
+			 </li>	
+		</ul>
+      </li>
+    {% endverbatim %}
+  {% endif %}
+  </ul>
+</nav>
+<!--
+<nav class="filter" ng-cloak>
+	<h4 class="padding-LR"><a target="_self" href="#" class="toggle toggle-nav"><span class="fa fa-chevron-right"></span>{% trans "Sub Categories" %}</a></h4>
+	<ul class="nav closed node-treeview-content" id="categories">
+	{% if facet_type == 'layers' %}
+	  {% verbatim %}
+		<li ng-repeat="category in categories" ng-if="category.layers_count > 0">
+		  <a target="_self" data-value="{{ category.identifier }}" data-filter="category__identifier__in" title="{{ category.gn_description }}"
+		   ng-click="multiple_choice_listener($event)" class="{{main_category.active}} btn-clear-link">{{ category.gn_description | limitTo: 20 }}{{ category.gn_description.length > 20 ? '...' : ''}}
+			<span class="badge pull-right">{{ category.layers_count }}</span>
+		  </a>
+		</li>
+	  {% endverbatim %}
+	{% else %}
+	  {% verbatim %}
+		<li ng-repeat="category in categories" ng-if="category.count > 0">
+		  <a target="_self" data-value="{{ category.identifier }}" data-filter="category__identifier__in" title="{{ category.gn_description }}"
+		   ng-click="multiple_choice_listener($event)" class="{{category.active}} btn-clear-link">{{ category.gn_description | limitTo: 20 }}{{ category.gn_description.length > 20 ? '...' : ''}}
+			<span class="badge pull-right">{{ category.count }}</span>
+		  </a>
+		</li>
+	  {% endverbatim %}
+	{% endif %}
+	</ul>
+  </nav>
+-->
+{% endif %}
+{% if SEARCH_FILTERS.DATA_PORTAL_ENABLED %}
+<nav class="filter" ng-cloak>
+	<h4 class="padding-LR"><a target="_self" href="#" class="toggle toggle-nav" title="{% trans "Data portals" %}"><span class="fa fa-chevron-right"></span>{% trans "Data portals" %}</a></h4>
+	<ul class="nav closed node-treeview-content" id="dataportal">
+	{% if facet_type == 'layers' %}
+	  {% verbatim %}
+		<li ng-repeat="dp in dataportal" ng-if="dp.layers_count > 0">
+		  <a target="_self" data-value="{{ dp.identifier }}" data-filter="data_portal__identifier__in" title="{{ dp.gn_description }}"
+		   ng-click="multiple_choice_listener($event)" class="{{dp.active}} btn-clear-link">{{ dp.gn_description | limitTo: 20 }}{{ dp.gn_description.length > 20 ? '...' : ''}}
+			<span class="badge pull-right">{{ dp.layers_count }}</span>
+		  </a>
+		</li>
+	  {% endverbatim %}
+	{% else %}
+	  {% verbatim %}
+		<li ng-repeat="dp in dataportal" >
+		  <a target="_self" data-value="{{ dp.identifier }}" data-filter="data_portal__identifier__in" title="{{ dp.gn_description }}"
+		   ng-click="multiple_choice_listener($event)" class="{{dp.active}} btn-clear-link">{{ dp.gn_description | limitTo: 20 }}{{ dp.gn_description.length > 20 ? '...' : ''}}
+			<span class="badge pull-right">{{ dp.count }}</span>
+		  </a>
+		</li>
+	  {% endverbatim %}
+	{% endif %}
+	</ul>
+  </nav>
+{% endif %} 
+{% if SEARCH_FILTERS.DOMAIN_AREA_ENABLED %}
+<nav class="filter" ng-cloak>
+	<h4 class="padding-LR"><a target="_self" href="#" title="{% trans "Domain area" %}" class="toggle toggle-nav"><span class="fa fa-chevron-right"></span>{% trans "Domain area" %}</a></h4>
+	<ul class="nav closed node-treeview-content" id="domainarea">
+	  {% verbatim %}
+		<li ng-repeat="da in domainarea" >
+		  <a target="_self" data-value="{{ da.identifier }}" data-filter="domain_area__identifier__in" title="{{ da.gn_description }}"
+		   ng-click="multiple_choice_listener($event)" class="{{da.active}} btn-clear-link">{{ da.gn_description | limitTo: 20 }}{{ da.gn_description.length > 20 ? '...' : ''}}
+		   <span class="badge pull-right">{{ da.count }}</span>
+		  </a>
+		</li>
+	  {% endverbatim %}
+	</ul>
+  </nav>
+{% endif %} 
+{% if SEARCH_FILTERS.VALIDATION_LEVEL_ENABLED %}
+<nav class="filter" ng-cloak>
+	<h4 class="padding-LR"><a target="_self" href="#" title="{% trans "Validation levels" %}" class="toggle toggle-nav"><span class="fa fa-chevron-right"></span>{% trans "Validation levels" %}</a></h4>
+	<ul class="nav closed node-treeview-content" id="validationlevel">
+	{% if facet_type == 'layers' %}
+	  {% verbatim %}
+		<li ng-repeat="vl in validationlevel" ng-if="vl.layers_count > 0">
+		  <a target="_self" data-value="{{ vl.identifier }}" data-filter="validation_level__identifier__in" title="{{ vl.gn_description }}"
+		   ng-click="multiple_choice_listener($event)" class="{{vl.active}} btn-clear-link">{{ vl.gn_description | limitTo: 20 }}{{ vl.gn_description.length > 20 ? '...' : ''}}
+			<span class="badge pull-right">{{ vl.layers_count }}</span>
+		  </a>
+		</li>
+	  {% endverbatim %}
+	{% else %}
+	  {% verbatim %}
+		<li ng-repeat="vl in validationlevel" >
+		  <a target="_self" data-value="{{ vl.identifier }}" data-filter="validation_level__identifier__in" title="{{ vl.gn_description }}"
+		   ng-click="multiple_choice_listener($event)" class="{{vl.active}} btn-clear-link">{{ vl.gn_description | limitTo: 20 }}{{ vl.gn_description.length > 20 ? '...' : ''}}
+			<span class="badge pull-right">{{ vl.count }}</span>
+		  </a>
+		</li>
+	  {% endverbatim %}
+	{% endif %}
+	</ul>
+  </nav>
+{% endif %} 
+{% if SEARCH_FILTERS.OWNERS_ENABLED %}
+<nav class="filter" ng-cloak>
+  <h4 class="padding-LR"><a target="_self" href="#" title="{% trans "Owners" %}" class="toggle toggle-nav"><span class="fa fa-chevron-right"></span> {% trans "Owners" %}</a></h4>
+  <ul class="nav closed node-treeview-content" id="owners">
+    {% verbatim %}
+    <li ng-repeat="owner in owners | orderBy : 'full_name'" ng-if="owner.count > 0">
+      <a target="_self" data-value="{{ owner.username }}" data-filter="owner__username__in" 
+      ng-click="multiple_choice_listener($event)" class="{{owner.active}} btn-clear-link">{{ owner.full_name }}
+        <span class="badge pull-right">{{ owner.count }}</span>
+      </a>
+    </li>
+    {% endverbatim %}
+  </ul>
+</nav>
+{% endif %}
+{% if SEARCH_FILTERS.STARRED %}
+<nav class="filter" ng-cloak>
+  <h4 class="padding-LR"><a target="_self" href="#" title="{% trans "Starred" %}" class="toggle toggle-nav"><span class="fa fa-chevron-right"></span> {% trans "Starred" %}</a></h4>
+  <ul class="nav closed node-treeview-content" id="starred">
+	<li>
+		<a target="_self" data-value="all" data-filter="starred" title="{% trans "All" %}"
+		ng-click="single_choice_listener_remove($event)" class="btn-clear-link">{% trans "All" %}</a>
+	</li>
+    <li>
+      <a target="_self" data-value="true" data-filter="starred" title="{% trans "Yes" %}"
+      ng-click="single_choice_listener($event)" class="btn-clear-link">{% trans "Priority" %}</a>
+	</li>
+	<li>
+		<a target="_self" data-value="false" data-filter="starred" title="{% trans "No" %}"
+		ng-click="single_choice_listener($event)" class="btn-clear-link">{% trans "Non Priority" %}</a>
+	</li>
+  </ul>
+</nav>
+{% endif %}
+{% if SEARCH_FILTERS.DATE_ENABLED %}
+<!-- <nav class="filter" ng-cloak>
+  <h4 class="padding-LR"><a target="_self" href="#" class="toggle toggle-nav"><span class="fa fa-chevron-right"></span>{% trans "Date" %}</a></h4>
+	<div class="node-treeview-content nav closed">
+		<ul class="padding-LR" id="date_start">
+			<label>{% trans "Date begins after:" %}</label>
+			<li><input value="yyyy-mm-dd" data-date-format="YYYY-MM-DD" type="text" class="datepicker" placeholder="{% trans 'yyyy-mm-dd' %}" ng-model="date_query.date__gte" /></li>
+		</ul>
+		<ul class="padding-LR" id="date_end">
+			<label>{% trans "Date ends before:" %}</label>
+			<li><input value="yyyy-mm-dd" data-date-format="YYYY-MM-DD" type="text" class="datepicker" placeholder="{% trans 'yyyy-mm-dd' %}" ng-model="date_query.date__lte" /></li>
+		</ul>
+	</div>
+</nav> -->
+{% endif %}
+{% if SEARCH_FILTERS.DATE_ENABLED %}
+<nav class="filter" ng-cloak>
+  <h4 class="padding-LR"><a target="_self" href="#" class="toggle toggle-nav" title="{% trans "Date" %}" ><span class="fa fa-chevron-right"></span>{% trans "Date" %}</a></h4>
+	<div class="node-treeview-content nav closed">
+		<ul class="padding-LR list-unstyled">			
+			<li  id="date_start">
+				<label for='input-datetimepicker1'>{% trans "Date begins after:" %}</label> 
+				<div class="form-group">
+					<div class='input-group date' id='datetimepicker1'>
+						<input value="yyyy-mm-dd" data-date-format="YYYY-MM-DD" id='input-datetimepicker1' 
+							type="text" class="datepicker form-control" placeholder="{% trans 'yyyy-mm-dd' %}" ng-model="date_query.date__gte" />
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+				</div>
+			</li>
+
+			<li id="date_end">
+				<label  for="input-datetimepicker2">{% trans "Date ends before:" %}</label>
+				<div class="form-group">
+					<div class='input-group date' id='datetimepicker2'>
+							<input value="yyyy-mm-dd" data-date-format="YYYY-MM-DD" id="input-datetimepicker2"
+							type="text" class="datepicker form-control" placeholder="{% trans 'yyyy-mm-dd' %}" ng-model="date_query.date__lte" />
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+				</div>
+			</li>			
+		</ul>
+	</div>
+</nav> 
+{% endif %}
+
+

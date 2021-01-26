@@ -1,0 +1,111 @@
+
+
+{% load i18n %}
+
+{% if resource.display_type %}
+<div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" title="{% trans "Type" %}">
+  <span class="fa fa-folder-open"></span>
+  {{ resource.display_type }}
+</div>
+{% endif %}
+
+
+
+{% if resource.date %}
+{% if resource.date_type == 'creation' %}
+<div class="pull-left icon-list" data-toggle="tooltip" data-placement="top"
+  title="{% trans resource.date_type|title %} {% trans "Date" %}" itemprop="dateCreated"
+  datetime="{{ resource.date|date:"c"}}">
+  <span class="fa fa-calendar"></span>
+  {{ resource.date }}
+</div>
+{% elif resource.date_type == 'publication' %}
+<div class="pull-left icon-list" data-toggle="tooltip" data-placement="top"
+  data-original-title="{% trans resource.date_type|title %} {% trans "Date" %}" itemprop="datePublished"
+  datetime="{{ resource.date|date:"c"}}">
+  <span class="fa fa-calendar"></span>
+  {{ resource.date }}
+</div>
+{% else %}
+<div class="pull-left icon-list" data-toggle="tooltip" data-placement="top"
+  data-original-title="{% trans resource.date_type|title %} {% trans "Date" %}" itemprop="dateModified"
+  datetime="{{ resource.date|date:"c"}}">
+  <span class="fa fa-calendar"></span>
+  {{ resource.date }}
+</div>
+{% endif %}
+{% endif %}
+
+
+{% if LICENSES_ENABLED and LICENSES_DETAIL == 'above' and resource.license %}
+<div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" title=""
+  data-original-title="{% trans 'License' %}">
+  <span class="glyphicon glyphicon-copyright-mark"></span>
+  {{ resource.license.name_long }} 
+    <a title="{% trans 'License' %}" href="#license-more-above" data-toggle="collapse"
+      data-target=".license-more-above">
+        <span class="fa fa-info-circle"></span></a>
+  <div class="license-more-above collapse">
+    {% for bullet in resource.license.description_bullets %}
+    {{ bullet }}<br /><br />
+    {% endfor %}
+    {% if resource.license.url %}
+    {% trans 'For more info see' %} <a href="{{ resource.license.url }}">{{ resource.license.url }}</a>.
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+
+
+{% if resource.regions.all %}
+<div class="pull-left icon-list" data-toggle="tooltip" data-placement="top"
+  data-original-title="{% trans 'Regions' %}">
+  <span class="glyphicon glyphicon-map-marker"></span>
+  {% for region in resource.regions.all %}
+  <a title="{% trans 'Region name: ' %} {{ region.name }}" class="" itemscope itemtype="http://schema.org/Text" href="{% url "search" %}?regions__name__in={{ region.name }}">
+    {{ region.name }}
+  </a>
+  {% if not forloop.last %},{% endif %}
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if resource.owner %}
+<div class="pull-left icon-list" data-toggle="tooltip" data-placement="top"
+  data-original-title="{% trans 'Owner' %}">
+  <span class="fa fa-user"></span>
+  <a itemprop="author" href="{{ resource.owner.get_absolute_url }}" title="{% trans 'Author name: ' %} {{ resource.owner.get_full_name }}">{{ resource.owner.get_full_name }}</a>
+</div>
+{% endif %}
+
+{% if resource.poc.user %}
+<div class="pull-left icon-list" data-toggle="tooltip" data-placement="top"
+  data-original-title="{% trans 'Point of Contact' %}">
+  <span class="fa fa-user"></span>
+  <a href="{{ resource.poc.user.get_absolute_url }}" title="{% trans 'Point of Contact:' %} {{ resource.poc.user.username }}">{{ resource.poc.user.username }}</a>
+</div>
+{% endif %}
+
+{% if resource.group %}
+<div class="pull-left icon-list" data-toggle="tooltip" data-placement="top"
+  data-original-title="{% trans 'Group' %}">
+  <span class="fa fa-user-friends"></span>
+  <a href="/groups/group/{{ resource.group.name }}/activity/" title="{% trans 'Group:' %} {{ group }}">{{ group }}</a>
+</div>
+{% endif %}
+
+<!--
+{% if resource.keywords.count > 0 %}
+<div class="pull-left icon-list" data-toggle="tooltip" data-placement="top"
+  data-original-title="{% trans 'Keywords' %}">
+  <span class="glyphicon glyphicon-tags"></span>
+  {% for keyword in resource.keywords.all %}
+  <a itemscope itemtype="http://schema.org/Text" href="{% url "search" %}?keywords__slug__in={{ keyword.slug }}">
+    {{ keyword.name }}
+  </a>
+  {% if not forloop.last %},{% endif %}
+  {% endfor %}
+</div>
+{% endif %}
+-->

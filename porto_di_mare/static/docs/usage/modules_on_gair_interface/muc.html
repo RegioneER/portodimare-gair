@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>MUC Module &mdash; GAIR  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="CEA Module" href="cea.html" />
+    <link rel="prev" title="PARTRAC Module" href="partrac.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html"> GAIR
+          
+
+          
+            
+            <img src="../../_static/logo-adrion-portodimare.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                European Regional Development Fund - Instrument for Pre-Accession II Fund
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/index.html">What is GAIR</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.html">Getting Started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GAIR Help</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">GAIR Users Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data/index.html">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_layers/index.html">Working with Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_maps/index.html">Working with Maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../publishing_data/index.html">Publishing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_geodatabuilder/index.html">GeoDataBuilder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../case_studies/index.html">Case Studies</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Working with Case Studies</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="partrac.html">PARTRAC Module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">MUC Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configure-default-run">Configure default run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clone-case-study-to-a-customized-one">Clone case study to a customized one</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cea.html">CEA Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="aza.html">AZA Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ssf.html">SSF Module on GAIR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="msf.html">MSF Module on GAIR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oil_spill.html">OIL SPILL Module on GAIR</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_documents/index.html">Working with Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../accounts_user_profile/index.html">Accounts and User Profile</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+ 
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GAIR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">GAIR Users Guide</a> &raquo;</li>
+        
+          <li><a href="index.html">Working with Case Studies</a> &raquo;</li>
+        
+      <li>MUC Module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/usage/modules_on_gair_interface/muc.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="muc-module">
+<span id="tutorial-muc"></span><h1>MUC Module<a class="headerlink" href="#muc-module" title="Permalink to this headline">¶</a></h1>
+<p>From <span class="guilabel">Case studies</span> select the  <span class="guilabel">Module MUC</span> menu item to explore
+the list of available case studies for that module.</p>
+<div class="figure align-center" id="cs-menu">
+<img alt="GAIR case studies menu" src="../../_images/case_studies_menu2.png" />
+<p class="caption"><span class="caption-text">GAIR case studies menu</span></p>
+</div>
+<div class="figure align-center" id="ca-cs-list">
+<img alt="MUC case studies list" src="../../_images/MUC_cs_list.png" />
+<p class="caption"><span class="caption-text">MUC case studies list.</span></p>
+</div>
+<p>Each list item for MUC related case studies present a small overview of the domain area,
+the case study type (default or customized), resolution of the grid, Case study title and description.</p>
+<div class="figure align-center" id="ca-cs-list-item">
+<img alt="MUC case study list item" src="../../_images/MUC_cs_list_item.png" />
+<p class="caption"><span class="caption-text">MUC case study list item.</span></p>
+</div>
+<p>To open a case study click on the title or “open” button. The detail page
+presents all layers and layer expressions already configured for the case study</p>
+<div class="figure align-center" id="ca-cs-detail">
+<img alt="MUC case study detail page" src="usage\modules_on_gair_interface\img/MUC_cs_detail.png" />
+<p class="caption"><span class="caption-text">MUC case study detail page</span></p>
+</div>
+<p>In the case study detail page (<code class="xref std std-numref docutils literal notranslate"><span class="pre">ca-cs-detail</span></code>) are
+presented the following elements:</p>
+<ol class="arabic simple">
+<li>a map section with the domain area boundaries;</li>
+<li>name and description of the case study;</li>
+<li>the list of input layers as described in <span class="xref std std-ref">muc-module-inputs</span>;</li>
+<li>the  <span class="guilabel">SET MATRIX INPUTS</span> button to change values of <em>potential conflict</em> matrix as described in :<span class="xref std std-ref">muc-module-inputs</span>;</li>
+<li>the  <span class="guilabel">run case study</span> button to run the MUC module within this case study;</li>
+</ol>
+<p>6) the  <span class="guilabel">clone case study</span> button (6) to create a
+customized case study starting from this configuration;</p>
+<p>You can either set configuration data in the default case study (input layers and input matrix)
+or clone the current case study to create a customized one</p>
+<p>To check the content of a layer you can click on the layer thumbnail to open a new window
+with a larger preview image and a  <span class="guilabel">Download layer</span> control.</p>
+<div class="figure align-center" id="muc-cs-layerpreview">
+<img alt="MUC case study detail page" src="../../_images/MUC_cs_layer.png" />
+<p class="caption"><span class="caption-text">MUC case study layer preview</span></p>
+</div>
+<div class="section" id="configure-default-run">
+<span id="default-muc-case-studies"></span><h2>Configure default run<a class="headerlink" href="#configure-default-run" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Select input layers from list.
+You’ll see the list of input layers displayed as a grid with layer name,
+thumbnail and selection control.
+The input layers thumbnails are is loaded directly from the
+<a class="reference external" href="https://api.tools4msp.eu">API server</a>
+and in case the thumbnails are not showed as usual could be
+due to a connection trouble with the external server.</p>
+<p>Please check the layers list and identify what
+kind of input each layers refers to.</p>
+<table border="1" class="colwidths-auto docutils" id="gair-muc-layers">
+<caption><span class="caption-text">Example of MUC input layers</span><a class="headerlink" href="#gair-muc-layers" title="Permalink to this table">¶</a></caption>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Layer</th>
+<th class="head">Input type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Domain area boundary</td>
+<td>Embedded in case study def</td>
+</tr>
+<tr class="row-odd"><td>Grid of analysis</td>
+<td>Resolution (required)</td>
+</tr>
+<tr class="row-even"><td>use Industrial ports</td>
+<td>human use</td>
+</tr>
+<tr class="row-odd"><td>use Pipelines</td>
+<td>human use</td>
+</tr>
+</tbody>
+</table>
+<p>You can quickly select all layers using <code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">all</span> <span class="pre">layers</span></code> checkbox, this will compute MUC
+considering all enviromental components and all human uses available-
+If you need to investigate the cumulative effects on a subset of components or human uses you can manually
+select (or deselect) the layers to consider.</p>
+</li>
+<li><p class="first">Review or change input values for potential conflict matrix.
+Click on <code class="docutils literal notranslate"><span class="pre">SET</span> <span class="pre">MATRIX</span> <span class="pre">INPUTS</span></code> to open the matrix input widget for potential conflict</p>
+<div class="figure align-center" id="muc-cs-pconflictmatrix">
+<img alt="MUC potential conflictMU matrix input widget" src="../../_images/MUC_matrix_pconflict.png" />
+<p class="caption"><span class="caption-text">MUC  potential conflict matrix input widget</span></p>
+</div>
+</li>
+<li><p class="first">Click on  <span class="guilabel">Run Case Study</span> to run teh module for the current case study.
+When the Run is complete the results will be listed in the same page on a new tab.</p>
+<div class="figure align-center" id="muc-cs-results">
+<img alt="MUC results list" src="../../_images/MUC_cs_results.png" />
+<p class="caption"><span class="caption-text">MUC results list: json results (1) and raster outpus (2)</span></p>
+</div>
+<p>To download the json output right click on  <span class="guilabel">Download Run</span> button and select  <span class="guilabel">Save destination</span>
+To download raster outputs jus click on  <span class="guilabel">Download Layer</span>
+To make another Run click again on the  <span class="guilabel">Layer</span> tab (3).</p>
+</li>
+</ol>
+</div>
+<div class="section" id="clone-case-study-to-a-customized-one">
+<span id="customized-muc-case-studies"></span><h2>Clone case study to a customized one<a class="headerlink" href="#clone-case-study-to-a-customized-one" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">select  <span class="guilabel">Clone case Study</span>: the new  case study will open in the same page but
+you’ll see <em>Type: customized</em>  in the summary box over 6 (<code class="xref std std-numref docutils literal notranslate"><span class="pre">ca-cs-detail</span></code>)</p>
+</li>
+<li><p class="first">write down the Case Study ID number in the las part of the new URL
+(e.g.  <code class="docutils literal notranslate"><span class="pre">https://www.portodimare.eu/casestudies/XXX/</span></code>)</p>
+<blockquote>
+<div></div></blockquote>
+</li>
+<li><p class="first">create new layer expression and add it to case study as described in <span class="xref std std-ref">create_new-gd-exp</span>
+section and link to the new created case study (you can identify the correct
+one with title and ID see <span class="xref std std-ref">gair-gdb-create</span> number 2).</p>
+</li>
+<li><p class="first">to add new layers already stored in the geoportal you need to create a
+simple layer expression with just one layer without operators.</p>
+</li>
+<li><p class="first">get back to the customized case study using <code class="docutils literal notranslate"><span class="pre">View</span> <span class="pre">case</span> <span class="pre">study</span></code> Button (<code class="xref std std-numref docutils literal notranslate"><span class="pre">gair-gdb-viewcs</span></code>)</p>
+</li>
+<li><p class="first">click  <span class="guilabel">Run Expression</span> (<code class="xref std std-numref docutils literal notranslate"><span class="pre">gair-gdb-exp-run</span></code>) for each customized layer
+then select the coded label from dropdown list to assign the result to a MUC input</p>
+<div class="figure align-center" id="muc-cs-select-label">
+<img alt="MUC coded label selection" src="../../_images/MUC_select_label.png" />
+<p class="caption"><span class="caption-text">MUC coded label selection</span></p>
+</div>
+</li>
+<li><p class="first">Select layers and set matrix inputs as described in <a class="reference internal" href="#default-muc-case-studies"><span class="std std-ref">Configure default run</span></a> section</p>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cea.html" class="btn btn-neutral float-right" title="CEA Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="partrac.html" class="btn btn-neutral float-left" title="PARTRAC Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright CC-SA
+      <span class="lastupdated">
+        Last updated on Nov 24, 2020.
+      </span>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

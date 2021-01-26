@@ -1,0 +1,21 @@
+{% load i18n %}
+
+
+<div class="container flex-grid">
+
+	 
+		<div class="col-md-12 col-xs-12 col-sm-12"> 
+			<h2 class="pull-left h3" ng-bind="total_counts + ' {{ facet_type | title }} found'"></h2>
+			{% include "search/_sort_filters.html" %}
+		</div>
+	 
+		<div class="col-md-12 col-xs-12 col-sm-12 grid-spacer">
+			{% include 'base/_resourcebase_snippet.html' %}
+			{% include 'search/_pagination.html' %}
+		</div>
+ 
+
+
+	{% include "_bulk_permissions_form.html" %}
+
+</div>

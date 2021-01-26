@@ -1,0 +1,132 @@
+{% load i18n %}
+
+
+<div class="container flex-grid">
+
+
+    {% if items|length == 0 %}
+        <div class="col-md-12 col-sm-12 col-xs-12 text-center icons-snippet">
+            <h3>{% trans "No content created yet." %}</h3>
+        </div>
+        {% endif %}
+
+
+        {% if items|length > 0 %}
+
+        
+        <div class="col-md-12 col-xs-12 col-sm-12">  
+            <h2 class="pull-left h3">
+                {{ items|length }} {% trans ' found' %}
+            </h2>  
+            {% include 'search/_sort_filters_custom.html' %}
+        </div>
+
+        <div class="col-md-12 col-xs-12 col-sm-12 grid-spacer"> 
+
+            <div class=" flex-grid flex-article-list resourcebase-snippet">
+
+                <div class="row" >
+
+                {% for  item in items   %}
+                <!-- col-lg-4 col-md-6 col-sm-12 col-xs-12 -->
+                <article resource_id="{{ item.id }}" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+                    <div class="panel panel-default" style="width: 100%;">
+
+
+                        <div class="panel-body">
+
+                            <div class="pull-left icon-list" >
+                                <span class="fa fa-user"></span>
+                                &nbsp;&nbsp;<small>
+                                {% if item.owner.get_full_name.split|length > 0  %}
+                                    {{item.owner.get_full_name}}
+                                {% else %}
+                                    {{ item.owner.username }}
+                                {% endif %}                
+                                </small>
+                            </div>
+
+
+                            <div class="pull-left icon-list" data-toggle="tooltip" data-placement="right"
+                                data-original-title="{% trans 'Updated Date' %}" itemprop="dateUpdated"
+                                datetime="{{ item.updated}}">
+                                <span class="fa fa-calendar"></span>
+                                <small>{{ item.updated}}</small>
+                            </div>
+                            
+                
+
+                            <div class="clearfix"></div>
+
+
+                            <h3 class="item-detail-title">
+                                <a href="{{ item.full_url }}">
+                                    {{ item.label }}</a>
+                            </h3>
+
+
+                            <div class="pull-left icon-list">
+                                <span class="fa fa-circle-o"></span>
+                                {% trans 'Status' %}: {{ item.status}}
+                            </div>
+
+                            <div class="clearfix"></div>
+
+                        </div>
+
+                        <div class="panel-footer">
+                            <a class="btn btn-info" href="{{ item.full_url }}">
+                                {{cta_text}}</a>
+
+                                {% if user.is_authenticated and cta_class_clone|length > 0 %}
+                                <button 
+                                    style="margin-left: 0;"
+                                    type="button" 
+                                    class="btn btn-dark {{cta_class_clone}} float-right" 
+                                    data-gdb_title="{{item.label}}"
+                                    data-toggle="tooltip" 
+                                    data-placement="left"
+                                    data-original-title="{{ cta_text_clone }}"
+                                    data-title="{{item.label}}"
+                                    data-id="{{item.id}}">  
+
+                                    <span class="sr-only">
+                                    {{ cta_text_clone }}
+                                    </span>
+
+                                    <span class="fa fa-copy"></span>
+
+                                </button>
+                                {% endif %}
+
+                                
+                        </div>
+
+
+                    </div>
+                </article>
+                {% endfor %}
+
+
+                <div class="col-md-12" style="margin-top: 50px;"></div>
+
+                </div>
+
+
+            </div>
+        
+        </div>
+
+
+
+        {% include 'search/_pagination_custom.html' %}
+
+
+
+        {% endif %}
+
+    </div>
+
+
+</div>

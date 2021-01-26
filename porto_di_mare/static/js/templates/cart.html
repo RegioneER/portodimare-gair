@@ -1,0 +1,22 @@
+<div id="composerCart" class="panel panel-default">
+  <div
+    class="panel-heading"
+    ng-bind="'Selected ' + (facetType | default_if_blank : 'objects') | title "></div>
+  <div
+    ng-show="!cart.getCart().items.length"
+    class="panel-body">
+    <p>Add {{ facetType | default_if_blank : 'objects' }} through the "checkboxes".</p>
+  </div>
+  
+ <ul class="_list-group list-unstyled">
+    <li class="_list-group-item padding-sm" ng-repeat="resource in cart.getCart().items">
+    <p class="">
+    <button data-toggle="tooltip" data-placement="right" data-original-title="Remove" 
+      class="btn btn-danger fa fa-remove icon-left remove-file" 
+      ng-click="cart.removeItem(resource)">
+    </button>
+    {{ resource.title | limitTo: 25}}{{ resource.title.length > 25 ? '...' : '' }}			
+    </p>
+    </li>
+  </ul>
+</div>

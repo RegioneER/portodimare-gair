@@ -1,0 +1,229 @@
+{% extends "upload/layer_upload_base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block title %} {% trans "Upload Layer"  %} - {{ block.super }}  {% endblock %}
+
+{% block body_class %}layers upload{% endblock %}
+
+
+{% block head %}
+
+{{ block.super }}
+{% endblock %}
+
+
+{% block sidebar %}
+
+	
+
+
+
+	{% if GEONODE_SECURITY_ENABLED %}
+		<div class="padding-LR">
+			<h2 class="h4">{% trans "Permissions"  %}</h2>
+		</div>
+		<form id="permission_form">
+		{% include "_permissions.html" %}
+		</form>
+	{% endif %}
+
+
+{% endblock %}
+
+
+{% block body %}
+
+
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="page-header">
+					<small><a class="btn-dark-light-link breadcrumb-title" 
+						href="{% url "layer_browse" %}?limit={{ CLIENT_RESULTS_LIMIT }}">{% trans "Explore Layers" %}</a> /</small>
+	
+				<h1 class="page-title">{% trans "Upload Layers" %}</h1>
+			
+				<script language="javascript">
+				var json_mosaics = [
+						{% for mosaic in mosaics %}
+						{
+							"name" : "{{mosaic.name}}",
+							"workspace" : "{{mosaic.workspace}}",
+							"is_mosaic" : "{{mosaic.is_mosaic}}",
+							"has_time" : "{{mosaic.has_time}}",
+							"has_elevation" : "{{mosaic.has_elevation}}",
+							"time_regex" : "{{mosaic.time_regex}}",
+							"elevation_regex" : "{{mosaic.elevation_regex}}"
+						},
+						{% endfor %}
+				]
+				</script>
+			</div>	  
+		</div>
+	</div>
+
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				{% if incomplete %}
+				<section class="widget" id="incomplete-download-list">
+					<h2 class="h3">{% trans "Incomplete Uploads" %}</h2>
+					<p>{% trans "You have the following incomplete uploads" %}:</p>
+					{% for u in incomplete %}
+					<div class="clearfix uip" id="incomplete-{{ u.import_id }}">
+						<div class="pull-left">{{ u.name }}, {% trans "last updated on" %} {{ u.date }}</div>
+						<div class="upload_actions pull-right">
+							<a class="btn btn-mini" href="#" id="resume-{{ u.import_id }}">{% trans "Resume" %}</a>
+							<a class="btn btn-mini" href="#" id="delete-{{ u.import_id }}"><i class="icon-trash"></i> {% trans "Delete" %}</a>
+						</div>
+					</div>
+					{% endfor %}
+				</section>
+				
+				<div id="confirm-delete" class="hidden alert alert-warning">
+					{% trans "Are you sure you want to delete this upload?" %}
+					<a href="#y" class="btn btn-danger">{% trans "Delete" %}</a>
+					<a href="#n" class="btn btn-default">{% trans "Cancel" %}</a>
+					<a href="#yy">{% trans "Delete, and don't ask me again." %}</a>
+				</div>
+				{% endif %}
+
+
+			
+				{% block additional_info %}{% endblock %}
+			
+				{% if errors %}
+				<div id="errors" class="alert alert-danger">
+					{% for error in errors %}
+					<p>{{ error }}</p>
+					{% endfor %}
+				</div>
+				{% endif %}
+			
+			</div>
+		</div>
+			
+
+		<div class="row">
+			<div class="col-md-12">
+			
+			
+			<div class="row">
+				
+				<div class="col-md-4">
+					<p>{% trans "Select them one by one:" %}</p>
+				
+					<form id="file-uploader" method="post" enctype="multipart/form-data">
+						<!-- UI change to hide the list of previously uploaded files from the user -->
+						<label class="sr-only" for="file-input">{% trans 'File' %}</label>
+						<input type="file" id="file-input" style="display: none;" multiple>
+						<input class="btn btn-link no-gutter" type="button" value="{% trans "Choose Files" %}" onclick="document.getElementById('file-input').click();">
+					</form>
+				
+					
+				
+					<section class="charset">
+						
+						<div class="form-group">
+							<label class="" for="charset">
+								{% trans "Select the charset or leave default" %}
+							</label>
+							<select id="charset" class="form-control">
+							{% for charset in charsets %}
+							{% if charset.0 == 'UTF-8' %}
+							<option selected='selected' value={{ charset.0 }}>{{ charset.1 }}</option>
+							{% else %}
+							<option value={{ charset.0 }}>{{ charset.1 }}</option>
+							{% endif %}
+							{% endfor %}
+							</select>
+						</div>
+					</section>
+					
+					<section>
+						<a href="{% url "layer_upload" %}" 
+						data-toggle="tooltip" data-placement="left" title="{% trans "Clear" %}" 
+						id="clear-button" class="btn btn-danger">
+							<span class="fa fa-trash"></span>
+						</a>
+						<a href="#" id="upload-button" class="btn btn-info text-uppercase">{% trans "Upload files" %}</a>
+					</section>
+					
+					<div style="margin-bottom: 15px"></div>
+				</div>
+
+				<div class="col-md-8">
+					
+					
+
+					<section id="drop-zone">
+						<h2 class="h3"><span class="fa fa-cloud-upload"></span><br />{% trans "Or drop files here" %}</h2>
+					</section>
+
+					<div id="upload-status"></div>
+
+					<section class="widget">
+						<ul id="global-errors"></ul>
+
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h2 class="panel-title h3">
+								{% trans "Files to be uploaded" %}
+								</h2>
+							</div>
+																
+							<div id="file-queue" class="padding-LR ">
+
+							</div>
+
+						</div>
+
+
+						<div class="checkbox" style="display:none;" id="metadata_uploaded_preserve_check">
+							<label for="id_metadata_uploaded_preserve" class="">Preserve Metadata XML</label>
+							<input type="checkbox" name="metadata_uploaded_preserve" id="id_metadata_uploaded_preserve"/>
+						</div>
+					</section>
+
+				
+
+				</div>
+
+				
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}
+
+
+{% block extra_script %}
+{{ block.super }}
+<script type="text/javascript" data-main="{% static 'js/upload/main' %}"
+  src="{% static 'lib/js/require.js' %}">
+</script>
+<script type="text/javascript">
+
+$('[data-toggle="tooltip"]').tooltip();
+
+{% autoescape off %}
+
+  csrf_token =  "{{ csrf_token }}",
+  form_target = "{{ UPLOADER_URL }}",
+  // geogig_enabled = {{ GEOGIG_ENABLED|lower  }},
+  time_enabled = {{ TIME_ENABLED|lower  }},
+  mosaic_enabled = {{ MOSAIC_ENABLED|lower  }},
+  userLookup = "{% url "account_ajax_lookup" %}"
+
+{% endautoescape %}
+
+</script>
+{% if GEONODE_SECURITY_ENABLED %}
+{% with resource=layer %}
+{% include "_permissions_form_js.html" %}
+{% endwith %}
+{% endif %}
+{% endblock extra_script %}

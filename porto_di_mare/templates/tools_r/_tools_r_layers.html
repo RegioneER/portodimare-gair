@@ -1,0 +1,55 @@
+
+{% load i18n %} 
+
+
+ <div id="expression_editor">
+    <div class="col-md-12 col-sm-12 col-xs-12 ">
+    
+        <div class="form-group required inputLayers_label">
+            <h2 class="h5 h-label">{% trans 'Parameters' %}</h2> 
+        </div>
+
+        <div id="expression_editor_content">
+                <div class="container">
+                <div class="bg-info inputLayers">
+                    <div class="inputLayers_view">
+                        <div class="inputLayers_cursor"></div>                     
+                    </div>                                
+                </div>
+            
+                <div class="inputLayers_footer"> 
+                    <div class="row">
+                        <div class="col-md-9 col-sm-8 col-xs-12 pull-left">
+                            <small class="inputLayers_tip"><em>{% trans "Select layers to start, click on item to remove." %}</em><br /></small>
+                            <small class="text">&nbsp;</small>
+                
+                            <!-- snippet html del singolo elemento dell'espressione -->
+                            <div class="expr_template_clone hide show_popover is-close" 
+                                rel='popover'></div>
+                        
+                        </div>
+                        {% if request.user.is_superuser or user.id == tools_r.owner.id or not resp_command.check  %}
+                        <div class="col-md-3 col-sm-4 col-xs-12 pull-right">
+                            <div class="inputLayers_footer_save">
+                                <button type="submit" 
+                                    disabled="disabled"
+                                    class="btn btn-info btn-block save_tools_r_btn">
+                                    <span class='hidden run_icon fa fa-circle-o-notch fa-spin'></span>
+                                    <span class="text-btn">
+                                        {% trans "RUN TOOL" %}
+                                    </span>
+                                </button>            
+                            </div>
+                        </div>
+                        {% endif %}
+                        <pre class="hide col-md-12 col-sm-12 col-xs-12 tools_r_inputLayers">{{tools_r.input_layers}}</pre>
+                        <pre class="hide col-md-12 col-sm-12 col-xs-12 tools_r_inputCriteria">{{tools_r.input_criteria}}</pre>
+                        <pre class="hide col-md-12 col-sm-12 col-xs-12 tools_r_outputFiles">{{tools_r.output_files}}</pre>
+                        <pre class="hide col-md-12 col-sm-12 col-xs-12 tools_r_pairwiseMatrix">{{tools_r.pairwise_matrix}}</pre>
+                        <pre class="hide col-md-12 col-sm-12 col-xs-12 tools_r_fishingGear">{{tools_r.fishing_gear}}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>    

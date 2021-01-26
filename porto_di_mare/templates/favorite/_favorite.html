@@ -1,0 +1,20 @@
+{% load i18n %}
+
+<div id="favorite-box">
+    <!-- <header class="sr-only">
+        <h4>{% trans 'Favorite' %}</h4>
+    </header> -->
+
+    {% if user.is_authenticated %}
+    <div class="clearfix">
+        <button id="favoriteLink" class="btn-block btn btn-info">Add to Favorites</button>
+        <a class="btn-block btn btn-default" href="{% url "favorite_list" %}">Go to Favorites</a>
+    </div>
+
+    {% else %}
+    <div class="clearfix">
+        <p class="pull-right">{% trans 'Log in to add/delete Favorites.' %}</p>
+    </div> 
+    {% endif %}
+</div>
+ 

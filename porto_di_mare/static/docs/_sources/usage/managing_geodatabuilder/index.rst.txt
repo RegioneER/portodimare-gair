@@ -1,0 +1,77 @@
+﻿.. _geodatabuilder:
+
+GeoDataBuilder
+===============
+
+| This section will guide you to use *GeoDataBuilder* GAIR to browse, create and manage (if you are a GAIR singed in user) a geo expression to combine geospatial information stored on the Geoportal itself.
+| The aim of the GeoDataBuilder is to produce new layers, useful for *Case Studies* analysis.
+| The *Explore GeoDataBuilder* main page can be accessed from the :guilabel:`Data` dropdown menu of the navigation bar (at the top of the page), shown in the picture below.
+
+.. figure:: img/geodatabuilder_link.png
+   :alt: Link to Explore GeoDataBuilder
+   :align: center
+   :name: geodatabuilder_link
+
+   Link to Explore GeoDataBuilder
+
+| In the *Explore GeoDataBuilder* main page you can see a list of "geo" expression previously created by GAIR users, with a title and short description.
+| Each expression is related to a case study. 
+| The content can be available or not, according to the user profile permission.
+| Only authenticated user can create new expression.
+
+.. figure:: img/explore_geodatabuilder_exp.png
+   :alt: Explore GeoDataBuilder
+   :align: center
+   :name: explore_geodatabuilder_exp
+
+   Explore GeoDataBuilder
+
+The :guilabel:`View Expression` button of the *Explore GeoDataBuilder* opens the relative expression's page.
+
+GeoDataBuilder - Expression
+----------------------------
+
+A *GeoDataBuilder Expression* is a geo expression, created by GAIR singed in user, that combine geospatial information stored on the Geoportal, and produce new layer, 
+useful for *Case Studies* analysis.
+
+Each geo expression has a title and a description, heplful to identify the expression itself.
+The black box shows the layers names and the operators used by the expression.
+
+.. figure:: img/view_geodatabuilder_exp.png
+   :alt: GeoDataBuilder Expression
+   :align: center
+   :name: view_geodatabuilder_exp
+
+   GeoDataBuilder Expression
+
+The Thumbnail and some brief information on the layers combined in the expression are listed below the expression box. A link to the related Case Study is available on the right.
+
+GeoDataBuilder - Create new Expression
+---------------------------------------
+
+A new GeoDataBuilder expression allows to combine geospatial information stored in the Geoportal to create a new layer, useful for *Case Studies* analysis. In fact the result, 
+that expresses a combination of layers, will be selectable as input of a specific case study.
+
+On this feature-rich page, the fields provided in the interface,highlighted with an asterisk, are mandatory.
+
+Required fields include:
+-	A title, as the name of the expression, 
+-	a clear and comprehensive description (to allow other users of the GAIR to easily understand the use and context of the expression created).
+
+.. figure:: img/create_new_geodatabuilder_exp.png
+   :alt: Create new Expression
+   :align: center
+   :name: create_new_geodatabuilder_exp
+
+   Create new Expression
+
+When creating a new expression, it is also mandatory to specify the existing case study to whom associate the expression. This association can be done by selecting the Case Study from the drop-down menu. 
+This means that it is necessary to create the case study first, in order to be able to associate an expression with it.
+
+A geo expression is a orderly succession of layers (filterable with options and selectable with a click in the list displayed below) and spatial operators.
+Spatial operator are selectable from the available options: :guilabel:`+`, :guilabel:`-`, :guilabel:`x`; :guilabel:`÷`.
+and brackets and numeric values ​​can also be added.
+If you wish to remove one of the elements you added in the black box, just select it by clicking and then press the bin icon that shows above it. 
+Remember that at least one layer is required for a valid expression and the brackets can't be empty.
+
+The :guilabel:`Save Expression` button create the expression. If the expression is not valid an error message and some useful indications are displayed and the save function are not available.

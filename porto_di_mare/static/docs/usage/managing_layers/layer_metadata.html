@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Layers Metadata &mdash; GAIR  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Layer Styling" href="layer_styling.html" />
+    <link rel="prev" title="Layer Editing" href="layer_editing.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html"> GAIR
+          
+
+          
+            
+            <img src="../../_static/logo-adrion-portodimare.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                European Regional Development Fund - Instrument for Pre-Accession II Fund
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/index.html">What is GAIR</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.html">Getting Started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GAIR Help</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">GAIR Users Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data/index.html">Data</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Working with Layers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="layer_info.html">Layer Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layer_permissions.html">Changing the Layer Permissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layer_download.html">Downloading Layers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layer_editing.html">Layer Editing</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Layers Metadata</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#downloading-metadata">Downloading Metadata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metadata-wizard">Metadata Wizard</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metadata-advanced-editing">Metadata Advanced Editing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#uploading-metadata">Uploading Metadata</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="layer_styling.html">Layer Styling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uploading_layers.html">Layers Uploading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="new_layer_from_scratch.html">Creating a Layer from scratch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using_remote_services.html">Using Remote Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_maps/index.html">Working with Maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../publishing_data/index.html">Publishing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_geodatabuilder/index.html">GeoDataBuilder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../case_studies/index.html">Case Studies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules_on_gair_interface/index.html">Working with Case Studies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_documents/index.html">Working with Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../accounts_user_profile/index.html">Accounts and User Profile</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+ 
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GAIR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">GAIR Users Guide</a> &raquo;</li>
+        
+          <li><a href="index.html">Working with Layers</a> &raquo;</li>
+        
+      <li>Layers Metadata</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/usage/managing_layers/layer_metadata.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="layers-metadata">
+<span id="layer-metadata"></span><h1>Layers Metadata<a class="headerlink" href="#layers-metadata" title="Permalink to this headline">¶</a></h1>
+<p>In GAIR special importance is given to <em>Metadata</em> and their standard formats.
+You can explore the <em>Metadata</em> of a <em>Layer</em> by clicking the <span class="guilabel">Metadata Detail</span> button in the the left side of <em>Layer page</em>.</p>
+<div class="figure align-center" id="layer-metadata-detail-button">
+<img alt="The Layer Metadata Detail button" src="../../_images/layer_metadata_detail_button.png" />
+<p class="caption"><span class="caption-text">The Layer Metadata Detail button</span></p>
+</div>
+<p>The <em>Layer Metadata</em> page will be displayed.</p>
+<div class="figure align-center" id="id1">
+<img alt="../../_images/layer_metadata_details_page.png" src="../../_images/layer_metadata_details_page.png" />
+<p class="caption"><span class="caption-text"><em>The Layer Metadata Details</em></span></p>
+</div>
+<p>In that page you can see the whole set of available metadata about the layer.
+Metadata are grouped in order to show the following types of information:</p>
+<blockquote>
+<div><ul class="simple">
+<li><em>Identification</em> to uniquely identify the layer (Title, Abstract, Publication Date etc.);</li>
+<li><em>Owner</em>, the user who owns the layer;</li>
+<li><em>Information</em>, the Identification Image, the Spatial Extent, Projection System and so on;</li>
+<li><em>Features</em>, Language, Supplemental and other Information;</li>
+<li><em>Contact Points</em>, the available user to get in contact;</li>
+<li><em>References</em>, various links to the resource information and data;</li>
+<li><em>Metadata Author</em>, information about the author of the metadata.</li>
+</ul>
+</div></blockquote>
+<div class="section" id="downloading-metadata">
+<h2>Downloading Metadata<a class="headerlink" href="#downloading-metadata" title="Permalink to this headline">¶</a></h2>
+<p>The <span class="guilabel">Download Metadata</span> button of the <em>Layer Page</em> allows you to download the layer metadata in various formats.</p>
+<div class="figure align-center" id="download-metadata">
+<img alt="How to Download Metadata" src="../../_images/download_metadata.png" />
+<p class="caption"><span class="caption-text">How to Download Metadata</span></p>
+</div>
+<p>The available download formats are grouped in three categories:</p>
+<ul class="simple">
+<li><em>Full metadata</em></li>
+<li><em>Standard Metadata - XML format</em></li>
+<li><em>Attribute Information</em></li>
+</ul>
+<p>Click on the format name that you prefer to start the download.</p>
+</div>
+<div class="section" id="metadata-wizard">
+<h2>Metadata Wizard<a class="headerlink" href="#metadata-wizard" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Remember you can edit only the data of which you are the owner or assigned to your group staff, according the layer permissions.</p>
+</div>
+<div class="line-block">
+<div class="line">Metadata contains all the information related to the layer. They provide essential information for its identification and its comprehension. Metadata also make the layer more easily retrievable through search by other users.</div>
+<div class="line">The <em>Metadata</em> of a layer can be changed through a <em>Wizard</em> which involves four steps, one for each type of metadata considered:</div>
+</div>
+<ul>
+<li><p class="first"><em>Basic Metadata</em></p>
+<p>The first two steps are mandatory (no layers will be published if the required information are not provided) whereas the last two are optional.</p>
+<div class="figure align-center">
+<img alt="Basic Layer Metadata" src="../../_images/basic_layer_metadata.png" />
+</div>
+<p>In the first step the system asks you to insert the following metadata:</p>
+<ul class="simple">
+<li>The <em>Thumbnail</em> of the layer (click <span class="guilabel">Edit</span> to change it);</li>
+<li>The <em>Title</em> of the layer, which should be clear and understandable;</li>
+<li>An <em>Abstract</em> on the layer;</li>
+<li>The <em>Creation/Publication/Revision Dates</em>  which define the time period that is covered by the layer;</li>
+<li>The <em>Keywords</em>, which should be chosen within the available list. The contributor search for available keywords by clicking on the searching bar, or on the folder logo representing, or by entering the first letters of the desired word;</li>
+<li>The <em>Category</em> which the layer belongs to;</li>
+<li>The <em>Group</em> which the layer is linked to.</li>
+</ul>
+</li>
+<li><p class="first"><em>Location and Licenses</em></p>
+<div class="figure align-center" id="id2">
+<img alt="../../_images/location_licenses_layer_metadata.png" src="../../_images/location_licenses_layer_metadata.png" />
+<p class="caption"><span class="caption-text"><em>Location and Licenses Metadata for Layers</em></span></p>
+</div>
+<p>The following list shows what kinds of metadata you are required to enter (see also the picture below):</p>
+<ul class="simple">
+<li>The <em>Language</em> of the layer;</li>
+<li>The <em>License</em> of the dataset;</li>
+<li>The <em>Regions</em>, which informs on the spatial extent covered by the layer. Proposed extents cover the following scales: global, continental, regional, national;</li>
+<li>The <em>Data Quality statement</em> (general explanation of the data producer’s knowledge about the lineage of a dataset);</li>
+<li>Potential <em>Restrictions</em> on layer sharing.</li>
+</ul>
+</li>
+<li><p class="first"><em>Optional Metadata</em></p>
+<div class="figure align-center" id="id3">
+<img alt="../../_images/optional_layer_metadata.png" src="../../_images/optional_layer_metadata.png" />
+<p class="caption"><span class="caption-text"><em>Optional Layer Metadata</em></span></p>
+</div>
+<p>Complementary information are:</p>
+<ul class="simple">
+<li>The <em>Edition</em> to indicate the reference or the source of the layer;</li>
+<li>The <em>Purpose</em> of the layer and its objectives;</li>
+<li>Any <em>Supplemental information</em> that can provide a better understanding of the uploaded layer;</li>
+<li>The <em>Maintenance frequency</em> of the layer;</li>
+<li>The users who are <em>Responsible</em> for the layer, its <em>Owner</em>, and the <em>Author</em> of its metadata;</li>
+<li>The <em>Spatial representation type</em> used.</li>
+</ul>
+</li>
+<li><p class="first"><em>Dataset Attributes</em></p>
+<div class="figure align-center" id="id4">
+<img alt="../../_images/dataset_attributes_layer_metadata.png" src="../../_images/dataset_attributes_layer_metadata.png" />
+<p class="caption"><span class="caption-text"><em>Dataset Attributes Metadata for Layers</em></span></p>
+</div>
+<p>At this step you can enrich the dataset attributes with useful information like the following:</p>
+<ul class="simple">
+<li>The <em>Label</em> displayed</li>
+<li>A detailed <em>Description</em></li>
+<li>The <em>Display Order</em></li>
+</ul>
+</li>
+</ul>
+<p>Use <span class="guilabel">next &gt;&gt;</span> or <span class="guilabel">&lt;&lt; back</span> to navigate through those steps. Once you have finished click on <span class="guilabel">Update</span>.</p>
+<p>Some metadata are mandatory, if you miss any of that metadata the <em>Completeness</em> bar shows you a red message like the one in the picture below.</p>
+<div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="../../_images/completeness_progress_bar.png"><img alt="../../_images/completeness_progress_bar.png" src="../../_images/completeness_progress_bar.png" style="width: 200px;" /></a>
+<p class="caption"><span class="caption-text"><em>Completeness Progress Bar</em></span></p>
+</div>
+</div>
+<div class="section" id="metadata-advanced-editing">
+<h2>Metadata Advanced Editing<a class="headerlink" href="#metadata-advanced-editing" title="Permalink to this headline">¶</a></h2>
+<p>In the <em>Layer Editing</em> panel the <span class="guilabel">Advanced Edit</span> is also available.</p>
+<div class="figure align-center" id="id6">
+<img alt="../../_images/advanced_edit_button.png" src="../../_images/advanced_edit_button.png" />
+<p class="caption"><span class="caption-text"><em>The Advanced Edit button</em></span></p>
+</div>
+<p>Click on it to display the <em>Metadata Advanced Editing Page</em>. That page allows you to edit all the layer metadata described in the previous paragraph. Once you have finished to edit them click on <span class="guilabel">Update</span> to save your changes.</p>
+</div>
+<div class="section" id="uploading-metadata">
+<h2>Uploading Metadata<a class="headerlink" href="#uploading-metadata" title="Permalink to this headline">¶</a></h2>
+<p>Users may also upload a metadata XML document (in ISO, FGDC, or Dublin Core format) to fill in key GeoNode metadata elements automatically.
+The picture below shows you how the page looks like.</p>
+<div class="figure align-center" id="id7">
+<img alt="../../_images/metadata_upload.png" src="../../_images/metadata_upload.png" />
+<p class="caption"><span class="caption-text"><em>The Metadata Advanced Editing page</em></span></p>
+</div>
+<p>Click on <span class="guilabel">Choose Files</span> to select the document from your disk, then click on <span class="guilabel">Upload files</span> to trigger the uploading process.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="layer_styling.html" class="btn btn-neutral float-right" title="Layer Styling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="layer_editing.html" class="btn btn-neutral float-left" title="Layer Editing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright CC-SA
+      <span class="lastupdated">
+        Last updated on Nov 24, 2020.
+      </span>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

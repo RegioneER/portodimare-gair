@@ -1,0 +1,96 @@
+{% load static from staticfiles %}
+{% load leaflet_tags %}
+{% load i18n %}
+
+{% leaflet_js %}
+{% leaflet_css %}
+
+<style>
+    .leaflet-container { /* all maps */
+        height: 400px;
+    }
+
+    .leaflet-control-zoom, .leaflet-control-zoomslider {  /* all controls */
+        position: relative;
+        left: 0px !important;
+    }
+</style>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function (event) {
+    
+        var map = L.map('preview_map').setView([42.147, 17.183], 5);
+        var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var base_maps = {
+            'OpenStreetMap': osm
+        };
+
+        var overlay_layer = {};
+
+      	//add elements to maps page
+        var scale_bar = L.control.scale().addTo(map);
+    
+      	//on surcharge attribution
+        L.Control.Watermark = L.Control.extend({
+          onAdd: function(map) {
+          var img = L.DomUtil.create('img');
+
+          // Default to Geonode logo
+          img.src = "{% static "geonode/img/logo.png" %}";
+          img.style.width = '120px';
+
+          return img;
+          },
+
+          onRemove: function(map) {
+          // Nothing to do here
+          }
+        });
+
+        L.control.watermark = function(opts) {
+          return new L.Control.Watermark(opts);
+        };
+
+        L.control.watermark({ position: 'bottomright' }).addTo(map);
+
+        // POLYGON CASE STUDIES
+        
+        {% if item.domain_area.coordinates %}
+             var polygonPoints = {{item.domain_area.coordinates}};
+             var geojson = L.polygon(polygonPoints).toGeoJSON();
+              var ljson = L.geoJSON(geojson, {
+                  coordsToLatLng: function (coords) {
+                      return new L.LatLng(coords[0], coords[1], coords[2]);
+                  }
+              }).addTo(map);
+          map.fitBounds(ljson.getBounds());
+        {% endif %}
+        
+        
+
+        /*var layerControl = L.control.layers(
+                base_maps, overlay_layer
+        ).addTo(map);*/
+
+        if (L.control.hasOwnProperty('fullscreen')) {
+            L.control.fullscreen().addTo(map);
+        }
+
+        if(L.Control.hasOwnProperty('opacitySlider')) {
+            //adjust opacity
+            var opacitySlider = new L.Control.opacitySlider();
+            map.addControl(opacitySlider);
+
+            opacitySlider.setOpacityLayer(tile_layer);
+        }
+
+        if(L.control.hasOwnProperty('navbar')){
+            //adjust info
+            L.control.navbar().addTo(map);
+        }
+
+  });
+
+</script>

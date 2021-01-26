@@ -1,0 +1,970 @@
+{% extends "casestudies/casestudies_base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load dialogos_tags %}
+{% load agon_ratings_tags %}
+{% load bootstrap_tags %}
+{% load pagination_tags %}
+{% load base_tags %}
+{% load guardian_tags %}
+{% load client_ext_lib_tags %} 
+
+{% block title %}{{ item.label }} — {{ block.super }}{% endblock %}
+
+{% block head %}
+{% if TWITTER_CARD %}
+{%comment%}
+<!-- {% include "base/_resourcebase_twittercard.html" %} -->
+{%endcomment%}
+
+{% endif %}
+
+{% if OPENGRAPH_ENABLED %}
+{%comment%}
+{% include "base/_resourcebase_opengraph.html" %}
+{%endcomment%}
+{% endif %}
+
+
+{{ block.super }}
+{% endblock %}
+
+
+{% block body_class %}casestudies{% endblock %} 
+
+<div class="list-group">
+    <div class="list-group-item">    
+        <div class="profile-image">
+                
+        </div>
+    </div>
+</div>
+
+
+{%comment%}
+{% block sidebar %}
+
+{% endblock %}
+{%endcomment%}
+
+{% block body_outer %}
+<form id="form-casestudy-detail" method="post" enctype="multipart/form-data">
+<div class="container-fluid">
+    <div id="embedded_map" class="mrg-btm">
+        <div id="preview_map"></div> 
+    </div>
+</div>
+
+<div class="container">
+
+        <div class="page-header">  
+
+            <div class="row" id="row-page-header">
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                        
+                    <div class="pull-left">
+                
+                        <small><a class="btn-dark-light-link breadcrumb-title" 
+                            href="{% url "casestudies" %}?limit={{ CLIENT_RESULTS_LIMIT }}">{% trans "Explore Casestudies" %}</a> /</small>
+
+                        <h1 class="page-title"> 
+                            {{ item.label }} 
+                        </h1>
+                    </div>
+
+                    {% if user.username == item.tag %}
+                    <div class="pull-right">
+                        <button type="button" 
+                            class="btn btn-info cs_edit_btn"
+                            data-cs_title="{{item.label}}"
+                            data-id="{{item.id}}">
+                                {%trans 'Edit Case Study' %}
+                        </button>
+                    </div>
+                    {% endif %}
+
+                </div>
+            
+
+                <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 25px;"></div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="pull-left icon-list owner" data-toggle="tooltip" data-placement="top"
+                        data-original-title="{% trans 'Owner' %}" >
+                        <span class="fa fa-user"></span>
+                        {% if item.pdm_owner.get_full_name.strip %}
+                        {{ item.pdm_owner.get_full_name }}
+                        {% else %}
+                        {{ item.tag }}
+                        {% endif %}
+                    </div>
+            
+                    <div class="pull-left icon-list" data-toggle="tooltip" data-placement="top"
+                        data-original-title="{% trans 'Created Date' %}" itemprop="datePublished"
+                        datetime="{{ item.created}}">
+                        <span class="fa fa-calendar"></span>
+                        {{ item.created}}
+                    </div>
+            
+                    <div class="pull-left icon-list" id="updated" data-toggle="tooltip" data-placement="top"
+                        data-original-title="{% trans 'Updated Date' %}" itemprop="dateModified"
+                        datetime="{{ item.updated}}">
+
+                        {{ item.updated}}
+                    </div>
+            
+                
+            
+                </div>
+
+            </div>
+
+    </div>        
+
+
+    <div class="row">
+        
+
+        <div class="col-md-9 abstract">
+            <h2 class="h3">
+                {% trans "Description" %}
+            </h2>
+
+            <div class="item-description">
+            
+                {% if item.description %}
+                   
+                    {{ item.description|escape|urlize|linebreaks|safe|truncatechars:500 }}
+                   
+                {% else %}            
+                    {% trans "No description provided." %}
+                {% endif %}
+            
+            </div>
+
+            
+            <div style="margin-top: 50px;"></div>
+            
+            {% if item.inputs and user.is_authenticated %}
+                
+            <button id="matrixInput_btn" type="button" class="btn btn-info hide" data-toggle="modal" data-target="#matrixInput">
+                {% trans 'SET MATRIX INPUTS' %}
+            </button>
+
+            <div class="modal fade set_matrix" tabindex="-1" role="dialog" id="matrixInput" aria-labelledby="matrixInputLabel">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                            
+                        </div>
+                        <div class="modal-body text-center">
+                            <div class="modal-body-content">
+                                <article id="inputs" class="description tab-pane ">
+                    
+                                    <h3 class="sr-only">
+                                        {% trans "Inputs" %}
+                                    </h3>
+                
+                
+                                    <ul class="nav nav-tabs text-center sub-nav-tabs">
+                                
+                
+                                        <li class="hidden active" data-tab-name="weights" id="li_weights">
+                                            <a href="#weights" data-toggle="tab">
+                                            {% trans "WEIGHTS" %}</a></li>
+                                        
+                                        <li class="hidden" data-tab-name="sens" id="li_sens">
+                                            <a href="#sens" data-toggle="tab">
+                                            {% trans "SENS" %}</a></li>
+                                        
+                        
+                                        <li class="hidden" data-tab-name="pconflict" id="li_pconflict">
+                                            <a href="#pconflict" data-toggle="tab">
+                                            {% trans "PCONFLICT" %}</a></li> 
+                        
+                                    </ul> 
+                
+                                    <div class="tab-content" >
+                                        <article id="weights" class="description tab-pane active">
+                                            <h4 class="text-center" style="margin-bottom: 30px;"></h4>
+                                            <div class="text-center">
+                                                <div style="margin-top: 30px;"></div>
+                                            </div>
+                                            <div class="casestudyInputs" style="overflow-x: auto;"></div>
+                                        </article> 
+                
+                                        <article id="sens" class="description tab-pane">
+                                            <h4 class="text-center" style="margin-bottom: 30px;"></h4>
+                                            <div class="text-center">
+                                                <div style="margin-top: 30px;"></div>
+                                            </div>
+                                            <div class="casestudyInputs" style="overflow-x: auto;"></div>
+                                        </article>
+                
+                                        <article id="pconflict" class="description tab-pane">
+                                            <h4 class="text-center" style="margin-bottom: 30px;"></h4>
+                                            <div class="text-center">
+                                                <div style="margin-top: 30px;"></div>
+                                            </div>
+                                            <div class="casestudyInputs" style="overflow-x: auto;"></div>
+                                        </article>
+                
+                
+                                    </div>
+                                    
+                
+                                    <div class="row hidden" id="casestudyInputsTemplate">
+                                        <div class="col-md-12">
+                                            <table class="table table-bordered" style="margin-top: 27px;">
+                                                <thead>
+                                                    <tr></tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr></tr>
+                                                </tbody>
+                                              </table>
+                                        </div>
+                                    </div>
+                
+                                </article>
+                            </div>                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-clear" data-dismiss="modal">
+                                {% trans "Close" %}
+                            </button>                            
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+
+            {% endif %}
+
+            <div style="margin-top: 50px;"></div>
+
+
+            <div class="hide" id="codedlabels_template">
+                <label class="sr-only" for="select_coded_labels">
+                    {% trans "Select Coded Labels" %}
+                </label>
+                <select id="select_coded_labels">
+                    <option data-url="" value="">
+                        {% trans "Select Coded Labels" %}
+                    </option>
+                </select>
+            </div>
+            
+            <ul class="nav nav-tabs" id="tab_cs">
+                
+                {% if item.layers %}
+                <li class="active">
+                    <a href="#layers" data-toggle="tab">
+                    {% trans "Layers" %}</a></li>
+                {% endif %}
+                                
+
+                <li id="run-tab" class="hidden">
+                    <a href="#run" data-toggle="tab">
+                    {% trans "Run" %}</a></li>
+
+            </ul>
+
+            <div class="tab-content">
+
+                
+                {% if item.layers %}
+                <article id="layers" class="description tab-pane active">
+                    <h3 class="sr-only">
+                            {% trans "Layers" %}
+                    </h3>
+
+                    <div class="text-center row">
+                        
+                        <div class="col-md-4 hidden-xs hidden-sm">&nbsp;</div>
+                        {% if user.is_authenticated %}
+                        <div class="col-md-4 col-sm-6">
+                            <p>
+                                <strong>
+                                    <span id="layers-counter">
+                                        0
+                                    </span>
+                                    /
+                                    <span id="layers-tot">
+                                        0
+                                    </span>
+                                    {% trans " Layers Selected" %}
+                                </strong>
+                            </p>
+                        </div>
+
+                        <div class="col-md-4 col-sm-6">
+                            <div class="custom-control custom-checkbox pull-right">
+
+                                <input type="checkbox" data-forloop-counter="All"
+                                    class="custom-control-input" id="customCheckAll">
+                                    &nbsp;
+                                <label
+                                    style="margin-right: 0;"
+                                    class="custom-control-label"  for="customCheckAll">
+                                    {% trans "Select All Layers" %}
+                                </label>
+
+                                {% if user.username == item.tag %}
+                                <button 
+                                    id="remove_selected_layers"
+                                    data-placement="bottom"
+                                    title="{% trans 'Remove Selected Layer'%}"
+                                    data-toggle="tooltip"
+                                    disabled="disabled"
+                                    class="btn text-danger-light btn-link btn-xs remove-btn float-right" type="button">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                    <span class="sr-only">{% trans 'Remove Selected Layers'%}</span>
+                                </button>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    {% if user.is_authenticated %}
+                    <div class="row text-center">
+
+                        <div class="col-md-12">
+                            <div  style="margin-top: 5px;"></div>
+                        
+                            <div>
+                                <button id="cs_run_btn" disabled="disabled"
+                                    class="btn-info btn btn-lg" type="button">
+                                    <span class='hidden run_icon fa fa-circle-o-notch fa-spin'></span>
+                                    {% trans "Run Case Study" %}                        
+                                </button>
+                                
+
+                                <div class="clearfix"></div>
+                                <div  style="margin-top: 15px;"></div>
+                                
+                                <p  id="cs_run_error" class="text-danger text-center">
+                                    <strong></strong>
+                                </p>
+                            </div>
+                            
+                        </div>
+
+                        <div class="col-md-12" id="warning-run-cs" style="display: none;">
+                            <p class="alert alert-warning">
+                                {% trans 'Please, wait. The execution can take several minutes to complete.' %}
+                            </p>
+                        </div>
+
+
+                    </div>
+                    {% endif %} 
+
+                    <div id="layer-thumbs-tpl" class="layer-thumbs-tpl">
+                        <a href="#" data-target="" class="img-thumbnail-link">
+                            <img 
+                                alt="{% trans 'Layer Image' %}" 
+                                title="{% trans 'Layer Image' %}" 
+                                class="img-responsive img-thumbnail layer_thumbnail" 
+                                src="/static/img/img_placeholder.jpg"    
+                            />
+                        </a>
+                    </div>
+
+
+                    <div id="template-group-item-layer"  
+                        class="col-md-12 col-sm-12 col-xs-12 hide group-item-layer text-center">
+                        <hr />
+                        <strong class="group_name"></strong>
+                        <div style="margin-bottom: 15px;"></div>
+                    </div>
+
+                    
+                    <div id="template-item-layer"  
+                        class="col-md-4 col-sm-4 col-xs-12 hide item-layer"
+                            style="margin-bottom: 25px;">
+                            <div class="item-layer-container">
+                                <div class="row">
+                                    
+                                    <div class="col-md-12 col-sm-12 col-xs-4">
+                                        <div class="row layer-thumbs">
+                                            
+                                        </div>                                        
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-8">
+
+                                        
+                                        <div style="margin-top: 5px;"></div>
+                                        
+                                        <h3 class="layer_label"></h3>
+                                        
+                                        <small class="expression_updated hide"></small>
+                                        
+                                        
+                                       
+                                        <div class="custom-control run-expression">
+                                            {% if user.is_authenticated %}
+                                            <a href="#" class="btn btn-info btn-block run-expression_btn">
+                                                <span class="hidden run_icon fa fa-circle-o-notch fa-spin"></span>
+                                                {% trans "Run Expression" %}
+                                            </a>
+                                            {% endif %}
+                                            <div class="geodatabuilder_expression_arr hide"></div>
+                                            <div class="geodatabuilder_expression_string hide"></div>
+                                        </div>
+                                        
+
+                                        
+                                        {% if user.is_authenticated %}
+
+                                        <div style="margin-top: 5px;"></div>
+
+                                        <div class="custom-control custom-select hide"></div>
+
+                                        
+                                        <div style="margin-top: 5px;"></div>
+                                        
+                                        <div class="custom-control ">
+                                            <input type="checkbox" data-forloop-counter="" 
+                                                data-code-label=""
+                                                class="custom-checkbox custom-control-input layer-checkbox-tpl customCheckSingle custom-checkbox hide" 
+                                                id="select_layer">
+                                            <label class="custom-control-label custom-checkbox custom-checkbox hide" for="select_layer">
+                                                {% trans "Select Layer" %}
+                                            </label>
+                                            
+                                            {% if user.username == item.tag %}
+                                            <button class="btn btn-danger btn-xs remove-btn pull-right" type="button">
+                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                <span class="sr-only">{% trans 'Remove Layer'%}</span>
+                                            </button>
+                                            {% endif %}
+
+                                        </div>
+
+                                    
+
+                                      
+                                           
+                                       
+                                        {% endif %}
+
+                                    </div>
+
+                                    <div style="margin-top: 25px;"></div>
+
+                                </div>
+                            </div>
+                    </div>
+
+                  
+                        
+                    <div class="row" id="layers-list">
+                    
+                    </div>
+                    <div class="geodatabuilder_expression hide"></div>
+                    <div class="row layers-list_">
+                    
+                    {% comment %}
+                    <!-- {% for layer in item.layers %}
+
+                        <div class="col-md-4 col-sm-4 col-xs-12  item-layer {% if layer.file %}has-file{%else%}hasnot-file{% endif %} " 
+                            data-layer-file="{{layer.file}}"
+                            id="item-{{forloop.counter}}" style="margin-bottom: 25px;">
+                            <div class="item-layer-container">
+                                <div class="row">
+                                    
+                                    <div class="col-md-12 col-sm-12 col-xs-4">
+                                        <a  href="#" data-target="{{forloop.counter}}">
+                                            <img class="img-responsive img-thumbnail layer_thumbnail" 
+                                                src="{{layer.thumbnail}}"   />
+                                        </a>
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-8">
+
+                                        <div style="margin-top: 5px;"></div>
+                                        <h3 class="layer_label">{{layer.label}}</h3>
+                                        <div style="margin-top: 5px;"></div>
+
+                                        <div class="custom-control custom-checkbox">
+                                            
+                                            <input type="checkbox" 
+                                                data-forloop-counter="{{forloop.counter}}" 
+                                                data-code-label="{{layer.code}}"
+                                                class="custom-control-input layer-checkbox" 
+                                                id="customCheck{{forloop.counter}}">
+
+                                            <label class="custom-control-label"  
+                                                for="customCheck{{forloop.counter}}">
+                                                {% trans "Select Layer" %}
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-top: 25px;"></div>
+
+                                </div>
+                            </div>
+                        </div>
+                        {% if forloop.counter|divisibleby:3  %}
+                        <div class="col-md-12 col-sm-12 hidden-xs"></div>
+                        {% endif %}
+
+                    {% endfor %}
+                   
+                    {% for e in expressions %}
+
+                        <div class="col-md-4 col-sm-4 col-xs-12  item-layer " 
+                            id="item-expr-{{forloop.counter}}" style="margin-bottom: 25px;">
+                            <div class="item-layer-container">
+                                <div class="row">
+                                    
+                                    <div class="col-md-12 col-sm-12 col-xs-4">
+
+                                        <a  href="#" data-target="{{forloop.counter}}">
+                                            <img class="img-responsive img-thumbnail layer_thumbnail" 
+                                                src="{{layer.thumbnail}}"   />
+                                        </a>
+                                        
+
+                                    </div>
+
+                                    <div class="col-md-12 col-sm-12 col-xs-8">
+
+                                        <div style="margin-top: 5px;"></div>
+                                        <h3 class="layer_label">{{e.label}}</h3>
+                                        <div style="margin-top: 5px;"></div>
+
+                                        <div class="custom-control custom-checkbox">
+                                            
+                                            <input type="checkbox" data-forloop-counter="{{forloop.counter}}" data-code-label="{{layer.code}}"
+                                                class="custom-control-input layer-checkbox" id="customCheck{{forloop.counter}}">
+                                            <label class="custom-control-label"  for="customCheck{{forloop.counter}}">
+                                                {% trans "Select Layer" %}
+                                            </label>
+
+
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-top: 25px;"></div>
+
+                                </div>
+                            </div>
+                        </div>
+                        {% if forloop.counter|divisibleby:3  %}
+                        <div class="col-md-12 col-sm-12 hidden-xs"></div>
+                        {% endif %}
+
+                    {% endfor %} -->
+                    {% endcomment %}
+                    
+                    </div>
+
+
+
+                    <div class="modal fade layer_thumbnail_zoom" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <span class="modal-title layer_label h4"></span>
+
+                                    <div class="file-space" style="margin-top: 5px;"></div>
+                                    <a class="pull-left btn btn-info layer_file" target="_blank" 
+                                        href="#" >
+                                        {% trans "Download layer" %}</a>
+
+                                </div>
+                                <div class="modal-body text-center">
+                                    <div class="modal-body-content">
+
+                                    </div>
+
+                                    <div class="modal-body-abstract" style="margin-top: 15px;">
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info" data-dismiss="modal">
+                                        {% trans "Close" %}
+                                    </button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
+
+
+                    <img id="layers-image-tpl" 
+                        class="layer_thumbnail hide" 
+                        alt="{% trans 'Layer Thumbnail' %}"
+                        title="{% trans 'Layer Thumbnail' %}"
+                        src="/static/img/img_placeholder.jpg" 
+                        data-toggle="modal" />  
+
+                    <div id="layers-carousel-tpl" class="carousel slide hide" >
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators hide">
+                        </ol>
+                        
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner">                            
+                        </div>
+                        
+                        <!-- Left and right controls -->
+                        <a class="left carousel-control" href="#layers-carousel" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                            <span class="sr-only">{% trans 'Previous' %}</span>
+                        </a>
+                        <a class="right carousel-control" href="#layers-carousel" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                            <span class="sr-only">{% trans 'Next' %}</span>
+                        </a>
+                    </div>
+
+
+                        
+                </article>
+                {% endif %}
+
+                
+
+
+
+                <article id="run" class="description tab-pane hidden">
+                    
+                    <div class="page-header" style="margin-top: 0">                    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 id="run_casestudy_label"></h3>         
+                            </div>
+
+                            <div class="col-md-12" style="margin-top: 10px;"></div>
+
+                             <div class="pull-left icon-list owner" data-toggle="tooltip" data-placement="top" 
+                                data-original-title="{% trans 'Owner' %}">
+                                <span class="fa fa-user"></span>
+                                <span class="text"></span>
+                            </div>
+
+                            
+                            <div class="col-md-12">
+                                <div class="pull-left icon-list data_created" data-toggle="tooltip" data-placement="top"
+                                    data-original-title="{% trans 'Created Date' %}" itemprop="datePublished"
+                                    datetime="">
+                                    <span class="fa fa-calendar"></span>
+                                    <span class="text"></span>
+                                </div>
+                        
+                                <div class="pull-left icon-list data_updated" data-toggle="tooltip" data-placement="top"
+                                    data-original-title="{% trans 'Updated Date' %}" itemprop="dateModified"
+                                    datetime="">
+                                    <span class="fa fa-clock-o"></span>
+                                    <span class="text"></span>
+                                </div>
+                        
+                                
+                               
+
+                            </div>  
+                            
+                            <div class="clearfix"></div>                         
+                        
+                        </div>
+                        
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p id="run_casestudy_description"></p>
+
+                            <div  style="margin-top: 50px;"></div>
+                            
+                            <div id="run_casestudy_outputs"></div>
+
+                            
+                            <h3>{% trans "Output Layers" %}</h3>
+
+                            <div id="run_casestudy_outputlayers" class="row"></div>
+
+
+
+                            <div id="run_casestudy_outputs_template" class="hidden row run-layer has-file">
+                                
+                                <div class="col-md-3">
+                                    <a href="#" class="link_run_thumbnail" data-target="">
+                                        <img class="img-responsive run_thumbnail" 
+                                            alt="{% trans 'Layer Thumbnail' %}"
+                                            title="{% trans 'Layer Thumbnail' %}"
+                                            src="/static/img/img_placeholder.jpg" />
+                                    </a>
+                                </div>
+
+                                <div class="col-md-9">
+                                    
+                                    <h4 class="run_label"></h4>      
+                                            
+                                    <p class="abstract run_description">
+                                        {% trans "No description provided." %}
+                                    </p>
+                                    
+                                    <div style="margin-top: 5px;"></div>
+
+                                    <a  class="btn btn-info run_file" target="_blank" 
+                                        href="#" >
+                                        {% trans "Download Run" %}</a>
+
+                                </div>
+
+                                <div class="col-md-12" style="margin-top: 5px;"></div>
+                            
+                                <div class="col-md-12">
+                                    <hr />
+                                </div>
+                            
+                                <div class="col-md-12" style="margin-top: 5px;"></div>
+                            
+                            </div>
+
+                            <!-- output layers -->
+
+                            <div id="run_casestudy_outputlayers_template" 
+                                class="col-md-4 col-sm-4 col-xs-12 hidden run-layer item-layer has-file" 
+                                style="margin-bottom: 25px;">
+                                <div class="item-layer-container">
+                                    <div class="row">
+                                        
+                                        <div class="col-md-12 col-sm-12 col-xs-4">
+                                            <a  href="#" class="link_run_thumbnail">
+                                                <img class="img-responsive img-thumbnail run_thumbnail" 
+                                                    alt="{% trans 'Layer Thumbnail' %}"
+                                                    title="{% trans 'Layer Thumbnail' %}"
+                                                    src="/static/img/img_placeholder.jpg"   />
+                                            </a>
+                                        </div>
+
+                                        <div class="col-md-12 col-sm-12 col-xs-8">
+
+                                            <div style="margin-top: 5px;"></div>
+                                            <span class="run_label h3"></span>
+                                            <p class="hidden run_description">
+                                                {% trans "No description provided." %}
+                                            </p>
+                                            <a class="btn btn-info pull-left run_file" target="_blank" href="#" >
+                                                {% trans "Download Layer" %}</a>
+                                        </div>
+
+                                        <div style="margin-top: 25px;"></div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>    
+                    
+                    </div>
+
+                    <div class="modal fade thumbnail_zoom" labelledby="thumbnail_zoom" tabindex="-1" role="dialog">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <span class="modal-title run_label h4"></span>
+                                        
+                                        <div style="margin-top: 5px;" class="run_space"></div>
+                                        <a class="btn btn-info pull-left run_file" target="_blank" href="#" >
+                                            {% trans "Download Run" %}</a>
+                        
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <img class="col-md-12 run_thumbnail"
+                                            alt="{% trans 'Layer Thumbnail' %}"
+                                            title="{% trans 'Layer Thumbnail' %}"
+                                            src="/static/img/img_placeholder.jpg" 
+                                         />
+                        
+                                        <div style="margin-top: 5px;"></div>
+                                                                            
+                                        <p class="abstract run_description">
+                                            {% trans "No description provided." %}                                        
+                                        </p>                                       
+                                        
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-info" data-dismiss="modal">
+                                            {% trans "Close" %}
+                                        </button>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+        
+        
+                </article>
+
+            
+            </div>
+
+
+
+            <div style="margin-top: 50px;"></div>
+            
+        </div>
+
+        <div class="col-md-3 info">
+            <div class="more">
+                <dl class="dl-vertical">
+                    <dt>{% trans "Module" %}</dt>
+                    <dd>{{ item.module }}</dd>
+
+                    <dt>{% trans "Type" %}</dt>
+                    <dd>{{ item.cstype }}</dd>
+
+                    <dt>{% trans "Resolution" %}</dt>
+                    <dd>{{ item.resolution }}</dd>
+                </dl>
+            </div>
+            {% if user.is_authenticated %}
+            <button 
+                style="margin-left: 0;"
+                type="button" 
+                class="btn btn-default btn-block cs_clone_btn" 
+                data-cs_title="{{item.label}}"
+                data-id="{{item.id}}">  
+                {% trans 'CLONE CASE STUDY' %}
+            </button>
+            {% endif %}
+            
+            {% if user.is_authenticated and user.username == item.tag %}
+            <button 
+                style="margin-left: 0;"
+                type="button" 
+                class="btn btn-danger btn-block cs_delete_btn" 
+                data-cs_title="{{item.label}}"
+                data-id="{{item.id}}">  
+                {% trans 'REMOVE CASE STUDY' %}
+            </button>
+            {% endif %}
+
+            <div style="margin-top: 50px;"></div>
+            
+        </div>
+
+            
+    </div>
+
+</div>
+
+<div id="label_cs_{{ item.id }}" class="hide" aria-hidden="true">
+    {{ item.label }}
+</div>
+<div id="description_cs_{{ item.id }}" class="hide" aria-hidden="true">
+    {{ item.description }}
+</div>
+
+
+</form>
+
+<!-- Modal Alert -->
+<div id="expression_info" class="modal fade" role="dialog">
+    <div class="modal-dialog">  
+        <div class="alert alert-info">
+            <span class="modal-title h4">
+            </span>
+        </div>        
+    </div>
+</div>
+<div id="expression_alert" class="modal fade" role="dialog">
+    <div class="modal-dialog">  
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <span class="modal-title h4">
+               
+            </span>
+        </div>        
+    </div>
+</div>
+    
+
+{%comment%}
+    <!-- 
+        Se l'utente è loggato carico le modali di clone e edit 
+        Solo l'utente proprietario del cs (if user.username == item.tag) può modificare il cs.
+    -->
+{%endcomment%}
+{% if user.is_authenticated %}
+    
+    {% include 'casestudies/_confirm_casestudies_clone.html' %}
+
+    {% if user.username == item.tag %}
+        {% include 'casestudies/_confirm_casestudies_edit.html' %}
+        {% include 'casestudies/_confirm_casestudies_delete.html' %}
+        {% include 'casestudies/confirm_casestudies_delete_layers.html' %} 
+    {% endif %}
+
+{% endif %}
+
+
+{% endblock %}
+
+
+
+
+
+{% block extra_script %}
+
+{% include "geodatabuilder/_geodatabuilder_script.html" %}
+{% include "casestudies/_casestudies_script.html" %}
+
+  <script type="text/javascript">
+    
+    var extent = "";
+    {% if item.extent != None %}
+        extent = {{ item.extent }};
+    {% endif %}
+    
+    var grid = "";
+    {% if item.grid != None %}
+        grid = {
+            "bounds":  {{ item.grid.bounds }},
+            "resolution":  {{ item.grid.resolution }},
+            "projection":  "{{ item.grid.projection }}",
+            "epsg":  {{ item.grid.epsg }}
+        };
+    {% endif %}
+    
+   
+    if (user_is_authenticated) { 
+        getCodedlabelsList();
+        setCaseStudiesList();
+    }        
+
+
+    if (has_inputs)
+        getInputs();
+    
+    
+    $("#customCheckAll").attr("checked" , false);
+    var layer = {{layers | safe}};
+    createLayersCaseStudy(layer);
+
+
+     $("#cs_run_btn").click(function(e) {
+        e.stopImmediatePropagation();   
+        if (user_is_authenticated)
+            runCaseStudies();
+    });
+
+  </script>
+
+{% get_casestudies_detail %}
+
+{% endblock extra_script %}

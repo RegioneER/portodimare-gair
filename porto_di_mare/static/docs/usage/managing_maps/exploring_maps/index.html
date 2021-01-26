@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Exploring Maps &mdash; GAIR  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Table of Contents (TOC)" href="toc.html" />
+    <link rel="prev" title="Creating Maps" href="../creating_maps.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html"> GAIR
+          
+
+          
+            
+            <img src="../../../_static/logo-adrion-portodimare.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                European Regional Development Fund - Instrument for Pre-Accession II Fund
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/index.html">What is GAIR</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.html">Getting Started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GAIR Help</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">GAIR Users Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../data/index.html">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../managing_layers/index.html">Working with Layers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Working with Maps</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../map_info.html">Map Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../map_metadata.html">Maps Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../map_permissions.html">Changing the Map Permissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../creating_maps.html">Creating Maps</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Exploring Maps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="toc.html">Table of Contents (TOC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="attribute_table.html">Attributes Table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="creating_widgets.html">Creating Widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="timeline.html">Timeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="options_menu.html">Options Menu Tools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#search-bar">Search Bar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sidebar-tools">Sidebar Tools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#basemap-switcher">Basemap Switcher</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#footer-tools">Footer Tools</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../publishing_data/index.html">Publishing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../managing_geodatabuilder/index.html">GeoDataBuilder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../case_studies/index.html">Case Studies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules_on_gair_interface/index.html">Working with Case Studies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../managing_documents/index.html">Working with Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accounts_user_profile/index.html">Accounts and User Profile</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+ 
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">GAIR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">GAIR Users Guide</a> &raquo;</li>
+        
+          <li><a href="../index.html">Working with Maps</a> &raquo;</li>
+        
+      <li>Exploring Maps</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/usage/managing_maps/exploring_maps/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="exploring-maps">
+<span id="id1"></span><h1>Exploring Maps<a class="headerlink" href="#exploring-maps" title="Permalink to this headline">¶</a></h1>
+<p>From the <span class="guilabel">Explore Maps</span> link of the navigation bar you can reach the <em>Maps List</em> page (see <a class="reference internal" href="../../data/finding_data.html#finding-maps"><span class="std std-ref">Maps</span></a>).
+Select a map you are interested in and click on it, the <em>Map Page</em> will open.</p>
+<div class="figure align-center" id="id3">
+<img alt="../../../_images/view_map_button.png" src="../../../_images/view_map_button.png" />
+<p class="caption"><span class="caption-text"><em>The View Map button</em></span></p>
+</div>
+<p>Click on the <span class="guilabel">View Map</span> button to open the <em>Map Viewer</em>.</p>
+<div class="figure align-center" id="id4">
+<img alt="../../../_images/explore_map_viewer.png" src="../../../_images/explore_map_viewer.png" />
+<p class="caption"><span class="caption-text"><em>The Map View</em></span></p>
+</div>
+<p>The Map Viewer (based on <a class="reference external" href="https://mapstore2.geo-solutions.it/mapstore/#/">MapStore</a>) provides the following tools:</p>
+<ul class="simple">
+<li>the <a class="reference internal" href="toc.html#toc"><span class="std std-ref">Table of Contents (TOC)</span></a> to manage the map contents;</li>
+<li>the <em>Basemap Switcher</em> to change the basemap (see the next paragraphs);</li>
+<li>the <em>Search Bar</em> to search by location, name and coordinates (see the paragraph below);</li>
+<li>the <a class="reference internal" href="options_menu.html#options-menu-tools"><span class="std std-ref">Options Menu Tools</span></a> which contains the link to the <em>Print</em> tool, to the layers <em>Catalog</em> and to the <em>Measure</em> tool;</li>
+<li>the <em>Sidebar</em> and its tools such as the <em>Zoom</em> tools and the <em>Get Features Info</em> tool;</li>
+<li>the <em>Footer Tools</em> to manage the scale of the map, to track the mouse coordinates and change the CRS (Coordinates Reference System).</li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="search-bar">
+<h2>Search Bar<a class="headerlink" href="#search-bar" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line">The <em>Search Bar</em> of the map viewer allows you to find point of interests (POIs), streets or locations by name.</div>
+<div class="line">Let’s type the name of some place then select the first record.</div>
+</div>
+<div class="figure align-center" id="id5">
+<img alt="../../../_images/search_bar_typing_name.png" src="../../../_images/search_bar_typing_name.png" />
+<p class="caption"><span class="caption-text"><em>The Search Bar</em></span></p>
+</div>
+<p>The map will automatically re-center on that area delimiting it by a polygon in the case of an area, by a line in the case of a linear shape (e.g. streets, streams) and by a marker in the case of a point.</p>
+<div class="figure align-center" id="id6">
+<img alt="../../../_images/search_bar_result.png" src="../../../_images/search_bar_result.png" />
+<p class="caption"><span class="caption-text"><em>Result of a Search</em></span></p>
+</div>
+</div>
+<div class="section" id="sidebar-tools">
+<span id="sidebar"></span><h2>Sidebar Tools<a class="headerlink" href="#sidebar-tools" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line">The <em>Map Viewer</em> makes also available the <em>Sidebar</em>.
+It is a navigation panel containing various tools that help you to explore the map such as tools for zooming, changing the extent and querying objects on the map.</div>
+<div class="line">By default the <em>Sidebar</em> shows you the zooming buttons <a class="reference internal" href="../../../_images/zoom_in_button.png"><img alt="zoom_in_button" class="align-middle" src="../../../_images/zoom_in_button.png" style="width: 30px; height: 30px;" /></a> and <a class="reference internal" href="../../../_images/zoom_out_button.png"><img alt="zoom_out_button" class="align-middle" src="../../../_images/zoom_out_button.png" style="width: 30px; height: 30px;" /></a>, other options can be explored by clicking on <a class="reference internal" href="../../../_images/sidebar_expand_button.png"><img alt="sidebar_expand_button" class="align-middle" src="../../../_images/sidebar_expand_button.png" style="width: 30px; height: 30px;" /></a> which expands/collapses the toolbar.</div>
+</div>
+<div class="figure align-center" id="id7">
+<a class="reference internal image-reference" href="../../../_images/collapsed_sidebar.png"><img alt="../../../_images/collapsed_sidebar.png" src="../../../_images/collapsed_sidebar.png" style="width: 300px;" /></a>
+<p class="caption"><span class="caption-text"><em>The Default Sidebar</em></span></p>
+</div>
+<div class="figure align-center" id="id8">
+<a class="reference internal image-reference" href="../../../_images/expanded_sidebar.png"><img alt="../../../_images/expanded_sidebar.png" src="../../../_images/expanded_sidebar.png" style="width: 300px;" /></a>
+<p class="caption"><span class="caption-text"><em>The Expanded Sidebar</em></span></p>
+</div>
+<p>The <em>Sidebar</em> contains the following tools:</p>
+<ul>
+<li><p class="first">The <em>Query Objects on map</em> allows you to get feature information through the <a class="reference internal" href="../../../_images/query_objects_on_map_button.png"><img alt="query_objects_on_map_button" class="align-middle" src="../../../_images/query_objects_on_map_button.png" style="width: 30px; height: 30px;" /></a> button.
+It allows you to retrieve information about the features of some layers by clicking them directly on the map.</p>
+<div class="figure align-center" id="id9">
+<img alt="../../../_images/querying_objects_on_map.gif" src="../../../_images/querying_objects_on_map.gif" />
+<p class="caption"><span class="caption-text"><em>Querying Objects on map</em></span></p>
+</div>
+<p>When clicking on map a new panel opens. That panel will show you all the information about the clicked features for each active loaded layer.</p>
+</li>
+<li><p class="first">You can <em>Zoom To Max Extent</em> by clicking <a class="reference internal" href="../../../_images/zoom_to_max_extent_button.png"><img alt="zoom_to_max_extent_button" class="align-middle" src="../../../_images/zoom_to_max_extent_button.png" style="width: 30px; height: 30px;" /></a>.</p>
+</li>
+<li><p class="first">You can switch between the previous and the next zoom level through the <em>Go Back</em> button <a class="reference internal" href="../../../_images/go_back_button.png"><img alt="go_back_button" class="align-middle" src="../../../_images/go_back_button.png" style="width: 30px; height: 30px;" /></a> and the <em>Go Forward</em> one <a class="reference internal" href="../../../_images/go_forward_button.png"><img alt="go_forward_button" class="align-middle" src="../../../_images/go_forward_button.png" style="width: 30px; height: 30px;" /></a>.</p>
+</li>
+<li><p class="first">The <em>Switch to Full Screen</em> <a class="reference internal" href="../../../_images/full_screen_button.png"><img alt="full_screen_button" class="align-middle" src="../../../_images/full_screen_button.png" style="width: 30px; height: 30px;" /></a> button allows to have a full screen map.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="basemap-switcher">
+<span id="id2"></span><h2>Basemap Switcher<a class="headerlink" href="#basemap-switcher" title="Permalink to this headline">¶</a></h2>
+<p>By deafault, GeoNode allows to enrich maps with many world backgrounds:</p>
+<ul class="simple">
+<li><em>OpenStreetMap</em></li>
+<li><em>OpenTopoMap</em></li>
+<li><em>Sentinel-2-cloudless</em></li>
+</ul>
+<div class="figure align-center" id="id10">
+<a class="reference internal image-reference" href="../../../_images/basemap_switcher.png"><img alt="../../../_images/basemap_switcher.png" src="../../../_images/basemap_switcher.png" style="height: 400px;" /></a>
+<p class="caption"><span class="caption-text"><em>The Basemap Switcher Tool</em></span></p>
+</div>
+<p>You can also decide to have an <em>Empty Background</em>.</p>
+<div class="figure align-center" id="id11">
+<a class="reference internal image-reference" href="../../../_images/basemap_switching.gif"><img alt="../../../_images/basemap_switching.gif" src="../../../_images/basemap_switching.gif" style="height: 400px;" /></a>
+<p class="caption"><span class="caption-text"><em>Switching the Basemap</em></span></p>
+</div>
+</div>
+<div class="section" id="footer-tools">
+<h2>Footer Tools<a class="headerlink" href="#footer-tools" title="Permalink to this headline">¶</a></h2>
+<p>At the bottom of the map, the <em>Footer</em> shows you the <em>Scale</em> of the map and allows you to change it.</p>
+<div class="figure align-center" id="id12">
+<a class="reference internal image-reference" href="../../../_images/map_scale.png"><img alt="../../../_images/map_scale.png" src="../../../_images/map_scale.png" style="height: 600px;" /></a>
+<p class="caption"><span class="caption-text"><em>The Map Scale</em></span></p>
+</div>
+<p>The <a class="reference internal" href="../../../_images/show_hide_coordinates_button.png"><img alt="show_hide_coordinates_button" class="align-middle" src="../../../_images/show_hide_coordinates_button.png" style="width: 30px; height: 30px;" /></a> button allows you to see the pointer <em>Coordinates</em> and to change the Coordinates Reference System (CRS), WGS 84 by default.</p>
+<div class="figure align-center" id="id13">
+<img alt="../../../_images/map_coordinates.png" src="../../../_images/map_coordinates.png" />
+<p class="caption"><span class="caption-text"><em>The Pointer Coordinates and the CRS</em></span></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="toc.html" class="btn btn-neutral float-right" title="Table of Contents (TOC)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../creating_maps.html" class="btn btn-neutral float-left" title="Creating Maps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright CC-SA
+      <span class="lastupdated">
+        Last updated on Nov 24, 2020.
+      </span>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

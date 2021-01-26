@@ -1,0 +1,27 @@
+<script>
+  const defaultConfig = {
+    proxy: "{{ SITEURL|slice:":-1" }}{{ PROXY_URL }}",
+    printingEnabled: true,
+    localConfig: {
+      mapLayout: {left: {sm: 300, md: 500, lg: 600}, right: {md: "41%"}, bottom: {sm: 0}},
+      geonode_url: "{{ SITEURL }}",
+      genode_rest_api: "{{ SITEURL }}mapstore/rest/",
+      printUrl: "{{ GEOSERVER_PUBLIC_LOCATION }}pdf/info.json",
+      translations: '',
+      useAuthenticationRules: true,
+      loadAfterTheme: true,
+      authenticationRules: [{
+        "urlPattern": ".*geostore.*",
+        "method": "bearer"
+      }, {
+        "urlPattern": ".*geoserver.*",
+        "authkeyParamName": "access_token",
+        "method": "authkey"
+      }, {
+        "urlPattern": ".*gs.*",
+        "authkeyParamName": "access_token",
+        "method": "authkey"
+      }]
+    }
+  }
+</script>

@@ -1,0 +1,332 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Creating Widgets &mdash; GAIR  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Timeline" href="timeline.html" />
+    <link rel="prev" title="Attributes Table" href="attribute_table.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html"> GAIR
+          
+
+          
+            
+            <img src="../../../_static/logo-adrion-portodimare.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                European Regional Development Fund - Instrument for Pre-Accession II Fund
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/index.html">What is GAIR</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.html">Getting Started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GAIR Help</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">GAIR Users Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../data/index.html">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../managing_layers/index.html">Working with Layers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Working with Maps</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../map_info.html">Map Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../map_metadata.html">Maps Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../map_permissions.html">Changing the Map Permissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../creating_maps.html">Creating Maps</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Exploring Maps</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="toc.html">Table of Contents (TOC)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="attribute_table.html">Attributes Table</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Creating Widgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="timeline.html">Timeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="options_menu.html">Options Menu Tools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#search-bar">Search Bar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#sidebar-tools">Sidebar Tools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#basemap-switcher">Basemap Switcher</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#footer-tools">Footer Tools</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../publishing_data/index.html">Publishing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../managing_geodatabuilder/index.html">GeoDataBuilder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../case_studies/index.html">Case Studies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules_on_gair_interface/index.html">Working with Case Studies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../managing_documents/index.html">Working with Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accounts_user_profile/index.html">Accounts and User Profile</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+ 
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">GAIR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">GAIR Users Guide</a> &raquo;</li>
+        
+          <li><a href="../index.html">Working with Maps</a> &raquo;</li>
+        
+          <li><a href="index.html">Exploring Maps</a> &raquo;</li>
+        
+      <li>Creating Widgets</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/usage/managing_maps/exploring_maps/creating_widgets.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="creating-widgets">
+<span id="id1"></span><h1>Creating Widgets<a class="headerlink" href="#creating-widgets" title="Permalink to this headline">¶</a></h1>
+<p><em>Widgets</em> are graphical elements that describe the layers data. They can be of different types such as <em>Charts</em>, <em>Texts</em>, <em>Tables</em> and <em>Counters</em>.
+Through the <a class="reference internal" href="../../../_images/create_widgets_button.png"><img alt="create_widgets_button" class="align-middle" src="../../../_images/create_widgets_button.png" style="width: 30px; height: 30px;" /></a> button of the <a class="reference internal" href="toc.html#toc"><span class="std std-ref">Table of Contents (TOC)</span></a> you can open the <em>Widgets</em> panel.</p>
+<div class="figure align-center" id="id2">
+<img alt="../../../_images/widgets_panel.png" src="../../../_images/widgets_panel.png" />
+<p class="caption"><span class="caption-text"><em>Creating Widgets</em></span></p>
+</div>
+<div class="section" id="chart-widgets">
+<h2>Chart Widgets<a class="headerlink" href="#chart-widgets" title="Permalink to this headline">¶</a></h2>
+<p><em>Chart Widgets</em> are graphical representations of the layer data. They can be <em>Bar Chart</em>, <em>Pie Chart</em> or <em>Line Chart</em> as shown in the picture below.</p>
+<div class="figure align-center" id="id3">
+<img alt="../../../_images/chart_widgets.png" src="../../../_images/chart_widgets.png" />
+<p class="caption"><span class="caption-text"><em>Chart Widgets</em></span></p>
+</div>
+<div class="line-block">
+<div class="line">Let’s create a new <strong>Bar Chart</strong>.</div>
+<div class="line">Click on <em>Bar Chart</em> then select the <em>X Attribute</em>, the <em>Y Attribute</em>, the <em>Operation</em> and the <em>Color</em> do you prefer.
+You can also display the <em>Legend</em>, <em>Hide the Y axis</em>, <em>Hide the grid</em> and decide what <em>Label</em> display into the legend.</div>
+<div class="line">Now you can filter the data to be considered for the chart by clicking on <a class="reference internal" href="../../../_images/advanced_search_button.png"><img alt="advanced_search_button" class="align-middle" src="../../../_images/advanced_search_button.png" style="width: 30px; height: 30px;" /></a>. We don’t need any filter so click <a class="reference internal" href="../../../_images/configure_widgets_options_button.png"><img alt="configure_widgets_options_button" class="align-middle" src="../../../_images/configure_widgets_options_button.png" style="width: 30px; height: 30px;" /></a> to configure other widget options.
+Insert a <em>Title</em> and a <em>Description</em> and click on <em>Save</em> <a class="reference internal" href="../../../_images/save_button.png"><img alt="save_button" class="align-middle" src="../../../_images/save_button.png" style="width: 30px; height: 30px;" /></a>.</div>
+</div>
+<div class="figure align-center" id="id4">
+<img alt="../../../_images/chart_widgets.gif" src="../../../_images/chart_widgets.gif" />
+<p class="caption"><span class="caption-text"><em>Chart Widgets Creation</em></span></p>
+</div>
+<p>The green <a class="reference internal" href="../../../_images/connect_to_viewport.png"><img alt="connect_to_viewport" class="align-middle" src="../../../_images/connect_to_viewport.png" style="width: 30px; height: 30px;" /></a> icon means that the chart is connected to the viewport.</p>
+<p>Expanding the options menu of the widget you can <em>Show the plotted data</em>, <em>Edit</em> the widget or <em>Delete</em> it, <em>Download</em> the data as a CSV file or <em>Export</em> the image of the graph.</p>
+<div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="../../../_images/chart_widget_options.png"><img alt="../../../_images/chart_widget_options.png" src="../../../_images/chart_widget_options.png" style="width: 500px;" /></a>
+<p class="caption"><span class="caption-text"><em>Chart Widgets Options</em></span></p>
+</div>
+</div>
+<div class="section" id="text-widgets">
+<h2>Text Widgets<a class="headerlink" href="#text-widgets" title="Permalink to this headline">¶</a></h2>
+<p>If you select <em>Text</em> on the <em>Widgets</em> panel you can create <em>Text Widgets</em>. Add a <em>Title</em> and the desired descriptive text, then click on <a class="reference internal" href="../../../_images/save_button.png"><img alt="save_button" class="align-middle" src="../../../_images/save_button.png" style="width: 30px; height: 30px;" /></a>.</p>
+<div class="figure align-center" id="id6">
+<img alt="../../../_images/text_widgets_creation.png" src="../../../_images/text_widgets_creation.png" />
+<p class="caption"><span class="caption-text"><em>Text Widgets Creation</em></span></p>
+</div>
+<p>The resulting widget looks like the following.</p>
+<div class="figure align-center" id="id7">
+<img alt="../../../_images/text_widget.png" src="../../../_images/text_widget.png" />
+<p class="caption"><span class="caption-text"><em>My Text Widget</em></span></p>
+</div>
+</div>
+<div class="section" id="table-widgets">
+<h2>Table Widgets<a class="headerlink" href="#table-widgets" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line">Through the <em>Table Widgets</em> you can add the <a class="reference internal" href="attribute_table.html#attributes-table"><span class="std std-ref">Attributes Table</span></a> of the layer to the map. You can decide to show a subset of the features, through filters, and you can select one or more columns/attributes.</div>
+<div class="line">So, choose what attributes you are interested in and click on <a class="reference internal" href="../../../_images/configure_widgets_options_button.png"><img alt="configure_widgets_options_button" class="align-middle" src="../../../_images/configure_widgets_options_button.png" style="width: 30px; height: 30px;" /></a>.</div>
+</div>
+<div class="figure align-center" id="id8">
+<img alt="../../../_images/table_widget_columns.png" src="../../../_images/table_widget_columns.png" />
+<p class="caption"><span class="caption-text"><em>Table Widgets Columns</em></span></p>
+</div>
+<p>Insert <em>Title</em> and <em>Description</em> (optional) and click on <a class="reference internal" href="../../../_images/save_button.png"><img alt="save_button" class="align-middle" src="../../../_images/save_button.png" style="width: 30px; height: 30px;" /></a>. The example below shows the <em>Table Widget</em> on the map.</p>
+<div class="figure align-center" id="id9">
+<img alt="../../../_images/table_widget.png" src="../../../_images/table_widget.png" />
+<p class="caption"><span class="caption-text"><em>Table Widget</em></span></p>
+</div>
+</div>
+<div class="section" id="counter-widgets">
+<h2>Counter Widgets<a class="headerlink" href="#counter-widgets" title="Permalink to this headline">¶</a></h2>
+<p><em>Counter Widgets</em> are numeric representations of some attributes. For example you can represent the average speed limit on a road network.</p>
+<div class="figure align-center" id="id10">
+<a class="reference internal image-reference" href="../../../_images/counter_widget_creation.png"><img alt="../../../_images/counter_widget_creation.png" src="../../../_images/counter_widget_creation.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-text"><em>Counter Widget Creation</em></span></p>
+</div>
+<p>Click on <a class="reference internal" href="../../../_images/configure_widgets_options_button.png"><img alt="configure_widgets_options_button" class="align-middle" src="../../../_images/configure_widgets_options_button.png" style="width: 30px; height: 30px;" /></a>, insert <em>Title</em> and <em>Description</em> then click on <a class="reference internal" href="../../../_images/save_button.png"><img alt="save_button" class="align-middle" src="../../../_images/save_button.png" style="width: 30px; height: 30px;" /></a>.</p>
+<div class="figure align-center" id="id11">
+<img alt="../../../_images/counter_widget.png" src="../../../_images/counter_widget.png" />
+<p class="caption"><span class="caption-text"><em>Counter Widget</em></span></p>
+</div>
+<p>The GeoNode map viewer is <a class="reference external" href="https://mapstore2.geo-solutions.it/mapstore/#/">MapStore</a> based, see the <a class="reference external" href="https://mapstore2.readthedocs.io/en/latest/user-guide/widgets/">MapStore Documentation</a> for further information.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="timeline.html" class="btn btn-neutral float-right" title="Timeline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="attribute_table.html" class="btn btn-neutral float-left" title="Attributes Table" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright CC-SA
+      <span class="lastupdated">
+        Last updated on Nov 24, 2020.
+      </span>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

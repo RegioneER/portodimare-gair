@@ -1,0 +1,76 @@
+{% extends "pinax/notifications/base.html" %}
+
+{% load i18n %}
+
+{% block body_id %}notification-settings{% endblock %} 
+
+{% block head_title %}{% trans "Notification Settings" %}{% endblock %}
+
+{% block body_outer %}
+
+<div class="container">
+
+
+
+  	<div class="row">
+		<div class="col-md-12">
+			<div class="page-header">
+				<small><a class="btn-dark-light-link breadcrumb-title" href="{{user.get_absolute_url}}">{{ user.name_long  }}</a> /</small>
+				<h1 class="page-title">{% trans "Notification Settings" %}</h1>
+			</div>        
+		</div>
+  	</div>
+
+
+  
+    {% url "account_settings" as email_url %}
+    {% if not request.user.email %}
+        {% blocktrans %}
+        <p class="alert alert-warning">
+            <span class="warning">Note</span>:
+            You do not have a verified email address to which notices can be sent. <a href="{{ email_url }}">Add one</a> now.
+        </p>
+        {% endblocktrans %}
+    {% endif %}
+
+    <form method="POST" class="form" action="">
+        {% csrf_token %}
+        <table class="table table-striped notice_settings">
+            <tr>
+                <th>{% trans "Notification Type" %}</th>
+                {% for header in notice_settings.column_headers %}
+                    <th>
+                        {{ header.title }}
+                    </th>
+                {% endfor %}
+            </tr>
+            {% for row in notice_settings.rows %}
+                <tr class="notice-row">
+                    <td>
+                        <strong>{{ row.notice_type.display }}</strong><br/>
+                        <span class="notice_type_description">
+                            {{ row.notice_type.description }}
+                        </span>
+                    </td>
+                    {% for cell in row.cells %}
+                        <td>
+                            <label for="{{ cell.0 }}" class="sr-only">
+                                {{ row.notice_type.display }}
+                            </label>
+                            <input type="checkbox" 
+                            name="{{ cell.0 }}" 
+                            id="{{ cell.0 }}" 
+                            {% if cell.1 %}checked="yes"{% endif %} />
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info">{% trans "Change" %}</button>
+        </div>
+    </form>
+    <div style="margin-top: 50px;"></div>
+</div>
+{% endblock %}

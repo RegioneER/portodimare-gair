@@ -1,0 +1,113 @@
+{% load i18n %}
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+
+    <div class="bg-dark-white">
+        
+        
+        <div class="row" id="fishing-gear-header">
+            <div class="col-md-12" style="margin-top: 15px;"></div>
+            <div class="col-md-11 col-sm-10 col-xs-10"> 
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <strong>
+                        {% trans 'Longitude' %}
+                    </strong>
+                    </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <strong>
+                        {% trans 'Latitude' %}
+                    </strong>
+                    </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <strong>
+                        {% trans 'GT' %}
+                    </strong>
+                </div>
+            </div>
+            <div class="col-md-1 col-sm-2 col-xs-2">&nbsp;</div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <hr />
+                </div>
+            </div>
+        </div>
+
+        <div class="" id="fishing-gear-content">
+
+
+        </div>
+
+        
+        <div class="row hidden row-template" id="fishing-gear-content-template">
+            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 5px;"></div>
+            <div class="col-md-11 col-sm-10 col-xs-10">
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <label class="sr-only label-longitude" for="input-longitude">
+                        {% trans 'Longitude' %}
+                    </label>
+                    <input 
+                        type="text" 
+                        placeholder="{% trans 'Longitude' %}"
+                        class="form-control input-longitude" 
+                        id="input-longitude" 
+                        data-orig-value="0" 
+                        value="0" />
+                </div>
+                <div class="col-md-4 col-sm-4  col-xs-4">
+                    <label class="sr-only label-latitude" for="input-latitude">
+                        {% trans 'Latitude' %}
+                    </label>
+                    <input 
+                        type="text" 
+                        placeholder="{% trans 'Latitude' %}"
+                        class="form-control input-latitude" 
+                        id="input-latitude" 
+                        data-orig-value="0" 
+                        value="0" />
+                </div>
+                <div class="col-md-4 col-sm-4  col-xs-4">
+                    <label class="sr-only label-gt" for="input-gt">
+                        {% trans 'GT' %}
+                    </label>
+                    <input 
+                        type="text" 
+                        placeholder="{% trans 'GT' %}"
+                        class="form-control input-gt" 
+                        id="input-gt" 
+                        data-orig-value="0" 
+                        value="0" />
+                </div>
+            </div>
+            <div class="col-md-1 col-sm-2  col-xs-2">
+                {% if tools_r and tools_r.status != "clone" %}
+                {% else %}
+                <button type="button"  class="btn-danger btn fishing-gear-trash_btn">
+                    <span class="fa fa-trash"></span>
+                </button>   
+                {% endif %}
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 5px;">
+                
+            </div>
+        </div>
+
+        {% if tools_r and tools_r.status != "clone" %}
+        {% else %}
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 25px; margin-bottom: 25px;">
+                    <button 
+                        id="add-fishing-gear-content_btn"
+                        type="button" 
+                        class="btn-info btn">
+                        {% trans 'ADD ROW' %}
+                    </button>       
+                </div>
+            </div>
+        
+        </div>
+        {% endif %}
+
+    </div>
+</div>

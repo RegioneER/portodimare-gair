@@ -1,0 +1,48 @@
+{% load i18n %}
+<!-- <a href><strong ng-click="paginate_down()">&laquo;</strong></a>
+<span>page </span>
+<span ng-model="page" ng-bind="page"></span>
+<span> of </span>
+<span ng-bind="numpages"></span>
+<a href><strong ng-click="paginate_up()">&raquo;</strong></a> -->
+
+<div class="container flex-grid" ng-if="total_counts > 0">
+    <nav class="col-md-12">
+        <ul class="pagination pull-right">
+            
+            <li>
+                <a href="#" 
+                    class="list-page"
+                    target="_self" 
+                    data-value="{{previous}}"
+                    title="{% trans "Go to the prev page" %}">
+                    <strong>
+                        <span class="fa fa-angle-left"></span>
+                    </strong>
+                </a>
+            </li>
+            
+            <li>
+                <a target="_self" title="{% trans "Go to page" %}" href="#">
+                    {% trans "page" %}
+                    {{current_page}}
+                    {% trans "of" %}
+                    {{num_pages}}
+                </a>
+            </li>
+           
+            <li>
+                <a href="#" 
+                    class="list-page"
+                    target="_self" 
+                    data-value="{{next}}"
+                    title="{% trans "Go to the next page" %}">
+                    <strong>
+                        <span class="fa fa-angle-right"></span>
+                    </strong>
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+</div>

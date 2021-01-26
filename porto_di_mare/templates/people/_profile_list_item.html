@@ -1,0 +1,86 @@
+{% load i18n %}
+
+{% verbatim %}
+<div class="row resourcebase-snippet">
+
+	<div class="col-md-12 col-sm-12 col-xs-12 icons-snippet">
+		<div ng-if="results.length == 0" ng-cloak>
+			{% endverbatim %}
+			<div><h2 class="h3">{% trans "No content created yet." %}</h2></div>
+			{% verbatim %}
+		</div>
+	</div>	
+
+
+	<article ng-repeat="profile in results" ng-cloak class="ng-cloak"> 
+		<div class="col-md-6 col-sm-12 col-xs-12 item-container ">
+
+			
+			
+			<div class="col-md-12 col-sm-12 col-xs-12 profile-avatar">
+
+				<div 
+					style="background-image: url('{{ profile.avatar_100  || '/static/img/img_placeholder.jpg'  }}');" 
+					class="col-md-4 col-sm-4 col-xs-12 item-thumb">
+					<a href="{{ profile.profile_detail_url }}" title="{% endverbatim %}{% trans 'View profile of '%}{% verbatim %} {{ profile.username }}"> 
+						<!-- <img ng-src="" /> -->
+					</a>
+				</div>
+				
+
+				<div class="col-md-8 col-sm-8 col-xs-12 item-details">
+				
+					<h3 class="item-detail-title">
+						<a href="{{ profile.profile_detail_url }}">
+							{{ profile.first_name != '' ? profile.first_name : profile.username }}
+							{{ profile.last_name != '' ? profile.last_name : '' }}
+						</a>
+					</h3>
+
+					<p>
+						<small ng-hide="profile.organization">
+							{% endverbatim %}
+							{% trans "No Organization Info" %}
+							{% verbatim %}
+						</small>
+						<small ng-show="profile.organization">
+							{{ profile.organization | limitTo:30 }} <small
+								ng-if="profile.organization.length > 30">...</small>
+						</small>
+					</p>
+
+					<ul class="list-unstyled icons-snippet-item" style="margin-top: 10px;;">
+						<li style="margin-bottom: 5px;">
+							<a class="btn btn-default" href="{{ profile.profile_detail_url }}?content=layers">
+								<span class="fa fa-square-o rotate-45"></span>
+								{{ profile.layers_count }} {% endverbatim %}{% trans 'Layers' %}{% verbatim %}
+								<!-- <ng-pluralize count="profile.layers_count" when="{'1': 'Layer', 'other': 'Layers'}"></ng-pluralize> -->
+							</a>
+						</li>
+						<li style="margin-bottom: 5px;">
+							<a class="btn btn-default" href="{{ profile.profile_detail_url }}?content=maps">
+								<span class="fa fa-map-marker"></span>
+								{{ profile.maps_count }} {% endverbatim %}{% trans 'Maps' %}{% verbatim %}
+								<!-- <ng-pluralize count="profile.maps_count" when="{'1': 'Map', 'other': 'Maps'}"></ng-pluralize> -->
+							</a>
+						</li>
+						<li style="margin-bottom: 5px;">
+							<a class="btn btn-default" href="{{ profile.profile_detail_url }}?content=documents">
+								<span class="fa fa-file-text-o"></span>
+								{{ profile.documents_count }} {% endverbatim %}{% trans 'Documents' %}{% verbatim %}
+								<!-- <ng-pluralize count="profile.documents_count" when="{'1': 'Doc', 'other': 'Docs'}"></ng-pluralize> -->
+							</a>
+						</li>
+					</ul>
+					
+
+			
+				</div>
+			</div>
+		</div>
+
+		<div ng-if="$index + 1 % 2 == 0" class="col-md-12 col-sm-12 col-xs-12"></div>
+	</article>
+</div>
+{% endverbatim %}
+

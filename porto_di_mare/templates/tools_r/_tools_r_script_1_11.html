@@ -1,0 +1,917 @@
+{% load i18n %}
+
+<label class="sr-only" for="ssf_template">{% trans 'SELECT TYPE OF LAYER' %}</label>
+<select id="ssf_template" name="" class="hidden ssf_select">
+    <option value="">-- {% trans 'SELECT TYPE OF LAYER' %} --</option>
+    <option class="useModule setMatrix" value="bathymetry">Bathymetry</option>
+    <option class="useModule setMatrix" value="chlorophyl">Chlorophyl</option>
+    <option class="useModule setMatrix" value="coast_dist">Coast Dist</option>
+    <option class="useModule setMatrix" value="legislation">Legislation</option>
+    <option class="useModule setMatrix" value="marine_traffic">Marine Traffic</option>
+    <option class="useModule setMatrix" value="seine_fleet">Seine Fleet</option>
+    <option class="useModule setMatrix" value="trawl_fleet">Trawl Fleet</option>
+    <option class="useModule " value="no_take">No Take</option>
+
+</select>
+
+
+<script type="text/javascript">
+
+    // $('.inputLayers_view').scrollTop($('.inputLayers_view')[0].scrollHeight);
+
+    {% if HAYSTACK_SEARCH %}
+        SEARCH_URL = '{% url 'api_get_search' api_name='ext' resource_name='base' %}?type__in=layer'; //&keywords__slug__in=ssf'
+    {% else %}
+        SEARCH_URL = '{% url 'api_dispatch_list' api_name='ext' resource_name='layers' %}'; //?keywords__slug__in=ssf';
+    {% endif %}
+
+    var tool_r = {
+        isTiff: false,
+        value: ""
+    }
+
+    var array = [];
+    var array_ssf = [];
+    var outputFiles = "";
+    var inputLayers_obj = {
+        input_criteria: [],
+        array_ssf: [],
+        obj: [],
+        id: [],
+        errorCode: [],
+        canLayer: true,
+        isEmpty: function() {
+            return inputLayers_obj.id == 0;
+        },
+        isValid: false,
+        isValidLayerStatus: true,
+        write: function() {
+     
+            parseInputLayers();  
+            // init del plugin popover
+            if (hasPopover)
+                setPopoverEvents();
+            // recupera la lista dei layer usati
+            if (hasLayerUsed)
+                setLayerUsed();
+            
+        }
+    }
+    
+
+    function unique(list) {
+        var result = [];
+        $.each(list, function(i, e) {
+            if ($.inArray(e, result) == -1) result.push(e);
+        });
+        return result;
+    }
+
+    // set the click on layers and operators
+    /*
+        1. se posso aggiungere, pusho il layer o l'operator nell'array dell'espressione        
+        2. avvio la validazione
+        3. nel loop della validazione eseguo 2 funzioni
+        3.1. 
+    */
+    function inputLayersBtn() {
+
+        $(".inputLayers").hover(function() {
+            $(".show_popover.is-open").popover("hide");
+            $(".show_popover").removeClass("ui-state-disabled");
+        })
+
+        $(document).on( "click" , ".item-details a.title, .icons-snippet .icon-add button", function(e) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            
+            var b = $(this);            
+            insertLayer(b);
+
+
+        });
+
+        
+
+    }
+
+
+
+
+    function insertLayer(b) {
+        var isTiff = false;
+        var keywords = JSON.parse(b.attr("data-keywords").toLowerCase());            
+        if ( $.inArray( "geotiff".toLowerCase() , keywords ) >= 0) {
+            isTiff = true;
+        }
+        
+        var add_btn = $(".icon-add-btn[data-id='"+b.attr("data-id")+"']");
+
+        if (array.indexOf(Number(b.attr("data-id"))) > -1) {
+            // remove
+            add_btn
+                .attr("title" , add_btn.attr("data-title-plus"))
+                .attr("data-original-title" , add_btn.attr("data-title-plus"))
+                .find(".icon-add-fa")
+                .addClass("fa-plus")
+                .removeClass("fa-minus");
+            var _splice = array.indexOf(Number(b.attr("data-id")));
+            array.splice( _splice , 1 );
+            inputLayers_obj.array_ssf.splice( _splice , 1 );
+       
+        }
+        else {
+            // add 
+            
+            add_btn
+                .attr("title" , add_btn.attr("data-title-minus"))
+                .attr("data-original-title" , add_btn.attr("data-title-minus"))
+                .find(".icon-add-fa")
+                .addClass("fa-minus")
+                .removeClass("fa-plus");
+
+            array.push(Number(b.attr("data-id")));
+            inputLayers_obj.array_ssf.push({
+                index: inputLayers_obj.array_ssf.length ,
+                isTiff: isTiff,
+                id: b.attr("data-id")
+            });
+        }
+        
+        var array_unique = [];        
+        array_unique = unique(array);
+        inputLayers_obj.obj = [];
+        inputLayers_obj.id = array_unique;
+
+
+        getInputLayersObj(array_unique);
+        inputLayersWrite();
+        setPopoverEvents();
+        
+        $('.inputLayers_view').scrollTop($('.inputLayers_view')[0].scrollHeight);
+
+    }
+
+
+
+
+    function setLayerUsed() {
+        $.each( inputLayers_obj.obj , function( index, value ) {
+            
+            console.log(value);
+
+            var exp_list = $("#tools_r_layers");
+            var exp_obj = $("#tools_r_layers_template .item").clone();
+            exp_obj.find(".item_title").text(value.text); 
+            var url = "{% url 'layer_detail'  layername='@layername' %}";
+            url = url.replace('@layername' , value.data.alternate);  
+            exp_obj.find(".item_detail_url").attr("href" , url + "");
+            
+            exp_obj.find(".icon-calendar-o").addClass("hidden");
+
+            exp_obj.find(".icon-star a").attr("title" , value.data.rating + "");
+            exp_obj.find(".icon-eye a").attr("title" , value.data.popular_count + "");
+
+            exp_obj.find(".icon-user a").attr("title" , value.data.owner_name + "");
+            exp_obj.find(".icon-user a").attr("href" , "/people/profile/" + value.data.owner__username + "");
+
+            exp_obj.find(".abstract").text(value.data.abstract);
+            exp_obj.find(".item_thumbnail_url").css("background-image" , "url('" + value.data.thumbnail_url + "')");
+            exp_obj.find(".item_not_approved").addClass("hide");
+            exp_obj.find(".item_is_approved").addClass("hide");
+            exp_obj.find(".start-spacer").addClass("hide");
+
+            if (!value.isValid) {
+                exp_obj.find(".item_detail_url").remove();
+                exp_obj.find(".item_thumbnail_url").remove();
+                exp_obj.find(".icons-snippet-item").remove();
+                var str = "";
+                var code_arr = value.code.split(":")
+                var id = code_arr[0].split("'").join("");
+                var error_code = code_arr[1].split("'").join("");
+                str += "Layer id " + id + " ";
+                str += value.text;
+                exp_obj.find(".item_title").text(str).addClass("text-danger"); 
+                exp_obj.find(".start-spacer").removeClass("hide");
+                exp_obj.find(".item-details").attr("class" , "item-details col-md-12 not-valid-layer");
+
+            }
+
+            exp_obj.appendTo(exp_list);
+            
+        });
+
+
+
+    }
+
+
+    function inputLayersWrite() {
+        //inputLayers_obj.id = new Array();
+        var inputLayers_view = "&nbsp;";
+        
+        $(".inputLayers_view").empty();
+        $(".inputLayers_footer .text").text("");
+        $(".inputLayers_footer .text").addClass("text-success").removeClass("text-danger");
+     
+        
+        for(var i = 0 ; i < inputLayers_obj.obj.length; i++) {
+            var obj = inputLayers_obj.obj[i];
+
+            var error_class = "";
+
+            if (!obj.isValid) {
+                $(".inputLayers_footer .text").html("<strong>ERROR: some layers not found!</strong>");
+                $(".inputLayers_footer .text").addClass("text-danger").removeClass("text-success");
+                error_class = "text-danger-light";
+            }
+
+
+            var expr_template = $(".expr_template_clone").clone(); 
+            expr_template.removeClass("expr_template_clone").addClass("expr_template");
+            $(".inputLayers_view").append(expr_template);
+            $(".inputLayers_view").append("<div class='d-block' />");
+            var class_layer = "is-" + obj.type;
+            
+            expr_template.removeClass("hide").addClass(class_layer);
+            expr_template.attr("data-index" , i)
+                .attr("id" , "inputLayers_data_" + i );
+           
+            var _value = inputLayers_obj.array_ssf[i].value;
+            
+            if (inputLayers_obj.array_ssf[i].isTiff) {
+                var ssf_select = $("#ssf_template").clone();
+                ssf_select
+                    .attr("id" , "ssf_select_" + i)
+                    .attr("data-index" , i)
+                    .removeClass("hidden");
+                
+                var ssf_select_value = "";
+                if (!hasPopover) {
+                    ssf_select.attr("disabled", true); 
+                    ssf_select.addClass("hidden");
+                    ssf_select_value = "<span class='vector-layer-text'>[" + _value + "]</span>";
+                }
+                    
+                ssf_select.val(_value);
+                expr_template.html("<span class='layer-text "+ error_class +" '>" + obj.text + "</span>&nbsp;" + ssf_select_value); 
+                expr_template.append(ssf_select);
+                expr_template.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div class='clearfix'></div>");   
+
+                ssf_select.on("change" , function(e) {
+                    var _val = $(this).val();
+                    var i = parseInt( $(this).attr("data-index") );
+
+                    if (_val.trim().length > 0)
+                        inputLayers_obj.array_ssf[i].value = _val;
+                        setInputSSF();
+                }) 
+            }
+            else 
+                expr_template.html("<span class='layer-text "+ error_class +" '>" + obj.text + "</span>&nbsp;&nbsp;&nbsp;<div class='clearfix'></div>"); 
+
+        }
+       
+        setInputSSF();
+
+        $("#input_layers_id").text(inputLayers_obj.id.toString());
+       
+       
+    }
+
+    function setInputSSF() {
+        inputLayers_obj.input_criteria = new Array();
+        var tot_ssf = inputLayers_obj.array_ssf.length;
+
+        for (var i=0; i<tot_ssf; i++) {
+            var a = inputLayers_obj.array_ssf[i];
+            if (a.value)
+                inputLayers_obj.input_criteria.push(a.id+";"+a.value);
+            else
+                inputLayers_obj.input_criteria.push(a.id);
+                
+        }
+        $("#id_input_criteria").val(inputLayers_obj.input_criteria);
+
+        validLayersSsf();
+    }
+
+    function setPopoverEvents() {
+        
+        $(".show_popover").popover({   
+                html:true,
+                template: $("#expr_template_popover_title").html(), 
+                content: $("#expr_template_popover_content").html(), 
+                title: "",
+                placement: "top"
+            });
+            
+        $('.show_popover').on('show.bs.popover', function (e) {  
+            e.stopImmediatePropagation();
+            $(".show_popover.is-open").popover("hide");
+            $(this).addClass("is-opening").removeClass("is-close");  
+            $(".show_popover").addClass("ui-state-disabled");
+            $(this).removeClass("ui-state-disabled");
+        })
+        $('.show_popover').on('shown.bs.popover', function (e) {  
+            e.stopImmediatePropagation();
+            $(this).removeClass("is-opening").addClass("is-open");  
+            setEditorPopover($(this));
+        })
+        $('.show_popover').on('hide.bs.popover', function (e) {  
+            e.stopImmediatePropagation();
+            $(this).removeClass("is-open").addClass("is-closing");  
+        })
+        $('.show_popover').on('hidden.bs.popover', function (e) {  
+            e.stopImmediatePropagation();
+            $(this).removeClass("is-closing").addClass("is-close");  
+            $(".show_popover").removeClass("ui-state-disabled");
+        })
+    }
+
+
+    function setEditorPopover(b) {
+        $(".popover-editor .remove").attr("data-remove" , "inputLayers_obj").attr("data-index" , b.attr("data-index") );
+        $(document).on("click" , '.popover-editor .remove[data-remove="inputLayers_obj"]' , function(e) {
+            e.stopImmediatePropagation();
+            var index = $(this).attr("data-index");
+            var arr = inputLayers_obj.obj;
+            $(".show_popover").removeClass("ui-state-disabled");
+            var _splice = array.indexOf(Number(arr[index].code));
+            array.splice( _splice , 1 );
+            inputLayers_obj.array_ssf.splice( _splice , 1 );
+            inputLayers_obj.obj = [];
+            inputLayers_obj.id = array;
+            getInputLayersObj(array);
+            inputLayersWrite();
+            setPopoverEvents();
+
+        });
+    }
+
+    
+    function getLayerById(item) {
+        // se è un livello, recupero dal ws get_layer_by_id i campi del livello
+        var url = "{% url 'get_layer_by_id'  id='@id' %}";
+        url = url.replace('@id' , item); 
+        var exp_obj = {};
+             
+        $.ajax({
+            type: "GET",
+            url: url,
+            async: false,
+            dataType: 'json',
+
+            success: function(data)
+            {
+                exp_obj = {
+                    code: data.id,
+                    text: data.title,
+                    type: "layer", 
+                    isValid: true,
+                    data: data
+                };
+            },
+            error: function (resp, status) {
+                console.log(resp, status);
+                exp_obj = {
+                    code: "'"+item+":"+resp.status+"'",
+                    text: resp.statusText,
+                    type: "layer",
+                    isValid: false,
+                    data : false
+                };
+                
+
+            }
+        });
+        return exp_obj;
+    }
+
+    function showFilter() {
+        var btn = $("#show-search");
+        if (btn.length) {
+            var filter = $("#div-filter");
+
+            btn.click(function(e) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                if (filter.hasClass("hidden-sm"))
+                    filter.removeClass("hidden-sm").removeClass("hidden-xs").hide().slideDown();
+                else 
+                    filter.slideUp("fast" , function() {
+                        filter.addClass("hidden-sm").addClass("hidden-xs").show();
+                    });
+            });
+        }
+
+    }
+
+
+    function writeParseInputLayers() {
+        if ($("#id_input_criteria").val().length) {
+            
+            var criteria_str = $("#id_input_criteria").val();
+            var criteria = criteria_str.trim().split(',');
+            var layer_id = new Array();
+            if (criteria_str.length) {
+                criteria.forEach(function(item, i) {
+                    var crit = item.split(';');
+                    inputLayers_obj.id.push(crit[0]);
+                    var isTiff = false;
+                    if (crit[1]) {
+                        isTiff = true;
+                    }
+
+                    var add_btn = $(".icon-add-btn[data-id='"+crit[0]+"']");
+                    console.log(add_btn);
+                    add_btn
+                        .attr("title" , add_btn.attr("data-title-plus"))
+                        .attr("data-original-title" , add_btn.attr("data-title-plus"))
+                        .find(".icon-add-fa")
+                        .removeClass("fa-plus")
+                        .addClass("fa-minus");
+                    
+                    array.push(Number(crit[0]));
+                    inputLayers_obj.array_ssf.push({
+                        index: inputLayers_obj.array_ssf.length ,
+                        isTiff: isTiff,
+                        id: crit[0],
+                        value: crit[1]?crit[1]:null
+                    });
+
+                });  
+            
+
+                inputLayers_obj.obj = [];
+                getInputLayersObj(inputLayers_obj.id);
+                inputLayersWrite();
+                setPopoverEvents();
+            }
+     
+        }        
+    }
+
+
+
+    function parseInputLayers() {
+        if ($(".tools_r_inputLayers").text().length) {
+            
+            var exp = $(".tools_r_inputLayers").text().trim();
+            var arr = eval("[" + exp + "]");
+            inputLayers_obj.id = arr;
+
+            var criteria = $(".tools_r_inputCriteria").text().trim().split(',');
+            criteria.forEach(function(item) {
+                var crit = item.split(';');
+                inputLayers_obj.array_ssf.push({
+                    isTiff: crit[1]?true:false,
+                    id: crit[0],
+                    value: crit[1]?crit[1]:null
+                });
+            });   
+                
+            // prendo l'array di id dal div, lo converto in array
+            getInputLayersObj(inputLayers_obj.id);
+            inputLayersWrite();
+     
+        }        
+    }
+
+    function checkOutputFiles() {
+        if ($(".tools_r_outputFiles").length) {
+            
+            outputFiles = $(".tools_r_outputFiles").text().trim();
+            if (outputFiles)
+                return true;
+            else     
+                return false; 
+            
+        } else {
+            return false;
+        }
+    }
+
+    
+
+    function getInputLayersObj(arr) {
+        
+        // loop interno agli item dell'espressione per l'array di id
+        var validLayers = true;
+        for( var i = 0 ; i < arr.length ; i++) {
+            var item = arr[i];
+            var exp_obj = {};
+            
+            exp_obj = getLayerById(item);  
+            if (!exp_obj.isValid)
+                validLayers = false;
+            inputLayers_obj.obj.push( exp_obj );  
+                
+        }
+        inputLayers_obj.isValid = validLayers;
+        
+    }   
+
+    {% comment %}
+        /*
+        se presente uno shape non aggiungere altri e limitare i tiff
+        obbligatori:
+        1- shape
+        1- no_take
+        2- tiff fino a 7 
+        matrix:
+        - solo numeri, con virgola
+
+        */
+    {% endcomment %}
+
+    function validLayersSsf() {
+        var run_tool = $(".save_tools_r_btn");
+        var tot_ssf = inputLayers_obj.array_ssf.length;
+        var hasError = false;
+        var text_error = $(".inputLayers_footer .text");
+        var count_tiff = 0;
+        var count_shape = 0;
+        var text_error_txt = "";
+
+        var ssf_value_arr = new Array();
+
+        for (var i = 0 ; i < tot_ssf; i++) {
+            var _value = inputLayers_obj.array_ssf[i].value;
+            var _isTiff = inputLayers_obj.array_ssf[i].isTiff;
+
+            if (!_value) {
+                // se non c'è un valore selezionato e l'oggetto è un tiff
+                if (_isTiff) {
+                    hasError = true;
+                    text_error_txt = "{% trans 'Select a raster at all levels' %}";
+                }
+            }
+            else 
+                // creo un array con la lista dei valori selezionati
+                if (_isTiff) 
+                    ssf_value_arr.push(_value);
+
+            if (_isTiff) 
+                count_tiff++;
+            else 
+                count_shape++;
+        }
+
+        if (ssf_value_arr.length) {
+            // deduplico l'array con la lista dei valori selezionati e il numero deve corrispondere ai livelli tiff inseriti
+            var ssf_arr = unique(ssf_value_arr);
+ 
+            if (ssf_arr.length != count_tiff ) {
+                hasError = true;
+                text_error_txt = "{% trans 'Select a unique raster for each level' %}";
+            }            
+            var has_no_take = false;
+            var has_no_bathymetry = false;
+            var has_no_chlorophyl = false;
+            var has_no_coast_dist = false;
+            for (var i = 0; i < ssf_arr.length; i++) {
+                if(ssf_arr[i].toLowerCase() == "no_take") {
+                    has_no_take = true;
+                }
+                if(ssf_arr[i].toLowerCase() == "bathymetry") {
+                    has_no_bathymetry = true;
+                }
+                if(ssf_arr[i].toLowerCase() == "chlorophyl") {
+                    has_no_chlorophyl = true;
+                }
+                if(ssf_arr[i].toLowerCase() == "coast_dist") {
+                    has_no_coast_dist = true;
+                }
+            }
+            if (!has_no_take) {
+                hasError = true;
+                text_error_txt = "{% trans 'Select No Take on one level' %}";
+            }
+            if (!has_no_bathymetry) {
+                hasError = true;
+                text_error_txt = "{% trans 'Select Bathymetry on one level' %}";
+            }
+            if (!has_no_chlorophyl) {
+                hasError = true;
+                text_error_txt = "{% trans 'Select Chlorophyl on one level' %}";
+            }
+            if (!has_no_coast_dist) {
+                hasError = true;
+                text_error_txt = "{% trans 'Select Coast Distance on one level' %}";
+            }
+        }
+     
+        if (count_shape == 0) {
+            hasError = true;
+            text_error_txt = "{% trans 'Select a vector layer' %}";
+        }
+        if (count_shape > 1) {
+            hasError = true;
+            text_error_txt = "{% trans 'Select only one vector layer' %}";
+        }
+        if (count_tiff > 8 ||  count_tiff < 3) { 
+            hasError = true;
+            text_error_txt = "{% trans 'Select from 3 to 8 raster levels' %}";
+        }
+        
+        // conto quanti layer sono stati inseriti
+        if (tot_ssf < 3 ) {            
+            hasError = true;
+            text_error_txt = "{% trans 'Add at least 3 raster levels' %}";
+        }
+        if (count_tiff > 8) {            
+            hasError = true;
+            text_error_txt = "{% trans 'Add up to 8 raster levels' %}";
+        }
+
+
+        if (hasError) {
+            run_tool.attr("disabled" , "disabled");
+            text_error
+                .text(text_error_txt)
+                .addClass("text-danger")
+                .removeClass("text-success");
+        }
+        else {
+            text_error
+                .text("");
+            run_tool
+                .attr("disabled" , false);
+        }
+
+    }
+
+
+    function setTableMatrix(pairwise_matrix, readonly=false) {
+
+        var counter_row = 0;
+        var counter_col = 0;
+        $("#module_r_11_table thead tr").append("<td class='table_cell_empty'>&nbsp;</td>");
+        jQuery.each( $("#ssf_template option.setMatrix") , function( y, val ) {
+            counter_col++;
+            var _val = $(val).val().toLowerCase();
+            var _name = $(val).val(); 
+            $("#module_r_11_table thead tr").append("<td data-col='"+counter_col+"' id='head_td_"+_val+"'>" + _name + "</td>");     
+        });
+        jQuery.each( $("#ssf_template option.setMatrix") , function( y, val ) {
+            var _val = $(val).val().toLowerCase();
+            var _name = $(val).val();
+            counter_row++;
+            $("#module_r_11_table tbody").append("<tr id='tr_"+_val + "'></tr>");  
+            $("#module_r_11_table tbody #tr_" + _val  )
+                .append("<td data-row='"+counter_row+"' class='v_header' id='td_"+_val+"'>" + _name + "</td>");
+            
+            counter_col = 0;
+            jQuery.each( $("#ssf_template option.setMatrix") , function( x, valx ) {
+                var _valx = $(valx).val().toLowerCase();
+                var _namex = $(valx).val();
+                counter_col++;
+                var _hide_input_class = "";
+                var input_val = "";
+                if(_valx == _val || counter_col < counter_row ) {
+                    _hide_input_class = " hidden ";
+                }
+                if(_valx == _val  ) {
+                    var input_val = "1";
+                }
+                
+                $("#module_r_11_table tbody #tr_" + _val ) 
+                    .append("<td data-col='"+counter_col+"'  data-row='"+counter_row+"' ><input data-decimal='2' "+(readonly?"readonly":"")+" type='text' data-y='"+_valx+"' data-x='"+_val+"' data-toggle='tooltip' data-placement='left' class='form-control input-module_r "+_hide_input_class+"' placeholder='' title='' name='" + _valx +"_"+y+"' data-orig-value='"+parseFloat(pairwise_matrix[_name][_namex])+"'  value='"+parseFloat(pairwise_matrix[_name][_namex])+"' /></td>");
+            });
+        });
+
+        $("#module_r_11_table input").focus(function(e) {
+            e.stopImmediatePropagation();
+            var i = $(this);
+            i.removeClass("input-error");
+            var td = i.parent();
+            var col = td.attr("data-col");
+            var row = td.attr("data-row");
+            $("#module_r_11_table td[data-row='"+row+"']").addClass("td_selected");
+            $("#module_r_11_table td[data-col='"+col+"']").addClass("td_selected");
+        });
+        $("#module_r_11_table input").on("blur", function(e) {
+      
+            e.stopImmediatePropagation();
+            $("#module_r_11_table td").removeClass("td_selected");
+            var i = $(this);
+            
+            if ( validateNumber(i) )
+                setInputTableMatrix( i ); 
+
+        });
+        
+    }
+
+
+    function setInputTableMatrix(input) {
+        var data_x = input.attr("data-x");
+        var data_y = input.attr("data-y");
+        var val = input.val();
+        var input_2 = $("#module_r_11_table tbody input[data-x='"+data_y+"'][data-y='"+data_x+"']").val(parseFloat(1/val));
+        isValidForm()
+    }
+
+
+    function isValidForm() {
+        var tr = $("#module_r_11_table tr");
+        var fieldnames = ["bathymetry", "chlorophyl", "coast_dist", "legislation", "marine_traffic", "seine_fleet", "trawl_fleet"];
+        var pairwise_matrix = {};
+        var i = 0;
+        for (var i = 0; i < tr.length; i++) {
+            var td = tr.eq(i).find("td");
+            var csv_row = "";
+            for (var j = 0 ; j < td.length; j++) {
+                if (i == 0) {
+                    if (j < td.length  - 1 )
+                        csv_row += td.eq(j).text() + ","
+                    else 
+                        csv_row += td.eq(j).text()
+                }
+                if (i > 0) {
+                    if (j > 0) {
+                        var input = td.eq(j).find("input")
+                        if (j < td.length  - 1 )
+                            csv_row += input.val() + ","
+                        else 
+                            csv_row += input.val()
+                    }
+                    if (j == 0) {
+                        if (j < td.length  - 1 )
+                            csv_row += td.eq(j).text() + ","
+                        else 
+                            csv_row += td.eq(j).text()
+                    }
+                }
+            }
+            if (i > 0) {
+                var list_row = csv_row.split(',');
+                var name_row = list_row[0];
+                list_row.shift();
+                var y = 0;
+                var json_temp={};
+                list_row.forEach(function(value) {
+                    json_temp[fieldnames[y]] = value;
+                    y=y+1;
+                    pairwise_matrix[name_row] = json_temp;
+                });
+            }
+        }
+        $("#pairwise_matrix_id").text(JSON.stringify(pairwise_matrix));
+
+        return true;
+    }
+
+
+
+
+function setFishingGearMatrix(fishing_gear_obj, readonly) {
+    var c = $("#fishing-gear-content");
+    c.empty();
+    
+    $.each( fishing_gear_obj , function(i, obj) {
+        var obj = fishing_gear_obj[i];
+        addFishingGearMatrix(obj , readonly);
+    });
+
+
+    var add_btn = $("#add-fishing-gear-content_btn");
+    add_btn.click(function(e) {
+        e.stopImmediatePropagation();
+        addFishingGearMatrix(false, readonly);
+    });
+
+
+}
+
+function addFishingGearMatrix(obj, readonly) {
+    
+    var _longitude = "0";
+    var _latitude = "0";
+    var _gt = "0";
+
+    if(obj) {
+        _longitude = obj["Longitude"];
+        _latitude = obj["Latitude"];
+        _gt = obj["GT"];
+    }
+
+    var c = $("#fishing-gear-content");
+    var t = $("#fishing-gear-content-template").clone();
+        t.appendTo(c)
+            .removeClass("hidden")
+            .attr("id" , "")
+        t.find("input.input-longitude").val(_longitude);
+        t.find("input.input-latitude").val(_latitude);
+        t.find("input.input-gt").val(_gt);
+        t.find("input.input-longitude").attr("data-orig-value", _longitude);
+        t.find("input.input-latitude").attr("data-orig-value", _latitude);
+        t.find("input.input-gt").attr("data-orig-value", _gt);
+        
+    setIdFishingGearMatrix(readonly);
+    
+    $("#fishing-gear-content input").on("blur", function(e) {
+        e.stopImmediatePropagation();
+        var i = $(this);
+        validateNumber(i) ;
+    });
+
+}
+
+function setIdFishingGearMatrix(readonly) {
+    var rows = $("#fishing-gear-content .row-template");
+    for (var i = 0 ; i < rows.length; i++) {
+        var row = rows.eq(i);
+        row.find(".fishing-gear-trash_btn").attr("data-index" , i);
+        row.attr("id" , "fishing-gear-row_" + i );
+        row.find("input.input-latitude").attr("id" , "input-latitude_" + i );
+        row.find("label.label-latitude").attr("for" , "input-latitude_" + i );
+        row.find("input.input-longitude").attr("id" , "input-longitude_" + i );
+        row.find("label.label-longitude").attr("for" , "input-longitude_" + i );
+        row.find("input.input-gt").attr("id" , "input-gt_" + i );
+        row.find("label.label-gt").attr("for" , "input-gt_" + i );
+        if (readonly) {
+            row.find("input.input-latitude").prop("readonly" , true );
+            row.find("input.input-longitude").prop("readonly" , true );
+            row.find("input.input-gt").prop("readonly" , true );
+        }
+    }
+
+    rows.find(".fishing-gear-trash_btn").click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var i = $(this).attr("data-index");
+        $("#fishing-gear-row_" + i).slideUp('fast' , function() {
+            $("#fishing-gear-row_" + i).remove();
+            setIdFishingGearMatrix(readonly);
+        });        
+    });
+
+}
+
+
+function validFishingGearObj() {
+    var is_valid = true;
+
+    var obj = {};
+    var obj_arr = new Array();
+
+    $.each($("#fishing-gear-content .row-template") , function(i, val) {
+        
+        var _latitude =  $(val).find("input.input-latitude").val();
+        var _gt =  $(val).find("input.input-gt").val();
+        var _longitude =  $(val).find("input.input-longitude").val();
+
+        if ( !validateNumber($(val).find("input.input-latitude")) 
+            || !validateNumber($(val).find("input.input-gt")) 
+            || !validateNumber($(val).find("input.input-longitude")) )
+                
+                is_valid = false;
+
+        obj[i] = {
+            "Latitude": _latitude, 
+            "GT": _gt, 
+            "Longitude": _longitude
+        }
+    });
+
+    var resp = {
+        is_valid: is_valid,
+        data: obj
+    }
+    return resp;
+}
+
+
+
+
+function cloneToolsR11() {
+    {% if user.is_authenticated %}
+        
+  		$("body").on("click" , ".ssf_clone_btn" , function(e) {
+              
+			var title = $(this).attr("data-title");
+			var id = $(this).attr("data-id");
+            
+            var url = "{% url 'tools_r_1_11_clone'  id='@id' %}";
+            url = url.replace('@id' , id);      
+            console.log(url);
+			$("#confirm_tools_r_clone .title").text(title);
+			$("#confirm_tools_r_clone .clone_confirm_btn").attr("data-id" , id);
+			$("#confirm_tools_r_clone .form").attr("action" , url);
+			$("#confirm_tools_r_clone").modal("show");  
+		});
+
+    {%endif%}
+
+    $('#confirm_tools_r_clone').on('hidden.bs.modal', function (e) {
+        $("#id_label").val("");
+    });
+    
+}
+
+
+</script>
+
+

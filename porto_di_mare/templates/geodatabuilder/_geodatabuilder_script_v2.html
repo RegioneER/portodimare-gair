@@ -1,0 +1,1292 @@
+{% load i18n %}
+
+
+<script type="text/javascript">
+
+
+var KEY_STUDY_MISSING = "{% trans 'The Case Study is not found.' %}";
+
+var expression_view;
+var operator_arr = [];
+var function_arr = [];
+var geodb_id = parseInt("{{geodatabuilder.id}}");
+var is_detail = $("body.GeoDataBuilder").hasClass("detail");
+var is_list = $("body.GeoDataBuilder").hasClass("list");
+var is_edit = ( $("body.GeoDataBuilder").hasClass("create") && !isNaN(geodb_id) );
+var is_create = isNaN(geodb_id);
+
+var casestudy_obj = {
+    success: true
+};
+
+function initGeodataBuilder() {
+    getCaseStudy();
+    if (is_list)
+        setFilter();
+}
+
+
+
+
+
+function setGeodataBuilder() {
+    expression_view = $(".expression_view");
+    var exp = $(".geodatabuilder_expression").text().trim();  
+    console.log("exp");
+    console.log(exp);
+    
+    setExpressionPlaceholder(exp);
+    cloneGeodatabuilder();
+
+    if (exp.length > 0) {
+        
+        var exp_arr = eval("[" + exp + "]");
+        parseExpression(exp_arr);
+        setLayerUsed();
+        $(".expression .loader").remove();
+    }
+    
+    $(".expression_view").removeClass("hide");
+    $(".expression_footer .validator-text").removeClass("hide");
+    if (!is_detail)
+        initStickyExpression();
+}
+
+
+
+
+
+function parseExpression(exp_arr) {
+    
+    console.log(exp_arr);
+
+    // recupero la lista degli operatori
+    $.each($(".operator_btn") , function(key, val) {
+        operator_arr.push( $(val).attr("data-text") );
+    });
+
+    
+    // recupero la lista delle funzioni
+    $.each($(".function_btn") , function(key, val) {
+        function_arr.push( $(val).attr("data-name") );
+    });
+    
+
+    $.each(exp_arr , function(key, value) {
+        
+        var _obj = getObjectType(value);
+        // console.log(_obj);
+
+        if (_obj.type == "layer") {
+            $("<div />")
+                .attr("data-tpl" , "#tpl_layer")
+                .attr("data-name" , "")
+                .attr("data-obj" , "obj_layer")
+                .attr("data-type" , "layer")
+                .attr("data-id" , _obj.id)
+                .attr("data-selected_opt" , _obj.selected_opt_value)
+                .attr("id" , "layer-" +_obj.id)
+                .appendTo("body");
+            
+            var t = expressionBtn($("#layer-" + _obj.id));
+            layerBtn(t);
+        }
+
+        if (_obj.type == "operator") {
+            var t = expressionBtn( $(".operator_btn[data-text='"+getStringOperator(_obj.text)+"']") ) ;
+            operatorBtn(t); 
+        }
+        
+        if (_obj.type == "number") {
+            $(".number_btn").attr("data-text" , _obj.text);
+            var t = expressionBtn( $(".number_btn") ) ;
+            numberBtn(t);
+        }
+
+        if (_obj.type == "brackets") {
+            var t = expressionBtn( $(".bracket_btn") ) ;
+            bracketsBtn(t , 0); // apertura
+            parseExpression(value);
+            bracketsBtn(t , 1); // chiusura
+        }
+        
+        
+        if (_obj.type == "functions") {
+            var _btn = $(".function_btn[data-name='"+_obj.name+"']");
+            _btn.attr("data-text" , String(value[value.length - 1]).replace("(" , "").replace(")" , "")  );
+            var t = expressionBtn( _btn ) ;
+            var t_obj = t.data(); 
+            if (t_obj.hasParams) {
+                console.log("--------------------")
+                var _text = t.find(".param-text");
+                _text.val();
+            }
+            functionsBtn(t , 0); // apertura
+            var _splice_to = value.length ;
+            if (t_obj.hasParams)
+                _splice_to =  _splice_to - 1;
+
+            var func_arr = [];
+            for (var i = 1; i < _splice_to; i++) {
+                func_arr.push(value[i]);
+            } 
+            console.log("parse function");
+            console.log(func_arr);
+            parseExpression(func_arr);
+            functionsBtn(t , 1); // chiusura
+        }
+    });
+
+
+    
+
+}
+
+
+
+function getObjectType(val) {
+    var _typeof = typeof(val);
+    console.log(val , _typeof);
+    var el = {
+        name : "",
+        type : "",
+        id: null,
+    };
+    if (_typeof == "number"){
+        el.type = "layer";
+        el.id = parseInt(val);
+    }
+    if (_typeof == "string"){
+        if ( $.inArray( getStringOperator(val) , operator_arr) >= 0 ) {
+            el.type = "operator";
+            el.text = getStringOperator(val);
+        }
+        else if ( !isNaN(val) ) {
+            el.type = "number";
+            el.text = val;
+        }
+        else if ( isNaN(val) && val.split("#").length > 0 ) {
+            el.type = "layer";
+            el.isVector = true;
+            el.id = parseInt(val.split("#")[0]);
+            el.selected_opt_value = val.split("#")[1];
+        }
+    }
+    if (_typeof == "object"){
+
+        el.type = "brackets";
+        el.name = "BRACKETS";
+        
+        if ( $.inArray( val[0] , function_arr) >= 0 ) {
+            console.log(val[0]);
+            el.name = val[0];
+            el.type = "functions";
+            el.name = val[0].toUpperCase();
+        }
+    }
+
+    
+    return el;
+}
+
+
+// ------------------------------
+
+
+
+
+function expressionBtn(btn) {
+    $('[data-toggle="tooltip"]').tooltip('hide');
+    var exp_obj_str = btn.attr("data-obj");
+    // definisce l'id html del template da clonare
+    var tpl = btn.attr("data-tpl");
+    var t = $(tpl + " .expression_data").clone();   
+    t.addClass( obj_class )
+        .addClass( exp_obj_str );
+    
+    
+    // imposto agli oggetti il popover con il tasto di cancella se non sono nella pagina di detail
+    if(!is_detail)
+        setPopover(t);
+    
+    
+    // creo l'oggetto data con la copia dell'oggetto a cui appartiene
+    var exp_obj = eval( exp_obj_str );
+    t.data(exp_obj);
+    
+    var _obj = t.data();
+        _obj.name = btn.attr("data-name");
+        _obj.text = btn.attr("data-text");
+        _obj.type = btn.attr("data-type");
+        _obj.code = btn.attr("data-code");
+        _obj.btn = btn;
+
+    
+    var _now = $.now();
+
+    $.each( t , function(key, value) {
+        var _obj = $(value).data();
+        _obj.index = _now;
+        $(value).attr("data-index" , _obj.index);
+    });
+
+    return t;
+
+}
+
+// layer
+function layerBtn(t) {
+    var _obj = t.data();
+    
+    _obj = getLayerById(t);
+    t.find(".layer-text").text(_obj.name);
+    // se il livello non è vettoriale ma è raster, tolgo la select 
+    if(!_obj.isVector) {
+        t.find(".is-vector").remove();
+    }
+    
+    // se il livello  è vettoriale popolo la select con la lista degli attributi del layer
+    else {
+        var vector_attribute = t.find("#vector_attribute");
+        vector_attribute.data("expression_data" , t);
+
+        _obj.selected_opt_value = t.data().btn.attr("data-selected_opt");
+        
+        if (is_detail) {
+            
+            t.find(".is-vector").remove();
+            t.find(".vector-layer-text").text("[ " + _obj.selected_opt_value + " ]");
+        }
+        else {
+            t.find(".vector-layer-text").remove();
+            t.find(".ssf_select").attr("id" , _obj.id + "_vector_attribute");
+            t.find("label").attr("for" , _obj.id + "_vector_attribute");        
+
+            for(var j = 0; j < _obj.layer.attribute.length; j++) {
+                if ($.inArray(_obj.layer.attribute[j].type , _obj.valid_attribute) >= 0) {
+                    vector_attribute.append("<option data-selected-index='"+j+"' value='"+_obj.layer.attribute[j].name+"'>"+_obj.layer.attribute[j].name+"</option>");
+                }
+            }
+            
+
+            // vector_attribute.val();
+
+            vector_attribute.removeClass("hidden");
+            
+            if (_obj.selected_opt_value) {
+                vector_attribute.val(_obj.selected_opt_value);
+                vector_attribute.trigger("change");
+            }
+            vector_attribute.on("change" , function(e) {
+                e.stopImmediatePropagation();
+                var t = $(this).data("expression_data");
+                var selected_opt = $(this).find("option:selected");
+                var _obj = t.data();
+                // _obj.selected_opt = Number( selected_opt.attr("data-selected-index") );
+                _obj.selected_opt_value = $(this).val();
+                setValidator();
+            })
+        }
+    }
+    
+    if (!_obj.isValid)
+        t.find(".layer-text").addClass("text-danger-light");    
+
+    t.find(".layer-text").text(_obj.text);
+
+    t.appendTo(expression_view);
+    expressionAppend();   
+}
+
+//  operatore
+function operatorBtn(t) {
+    var _obj = t.data();
+        _obj.text = _obj.btn.attr("data-text");
+
+    t.find(".operator-text").text(_obj.text);
+
+    t.appendTo(expression_view);
+    expressionAppend();   
+}
+
+
+//  numero
+function numberBtn(t) {
+    var _obj = t.data();
+        _obj.text = _obj.btn.attr("data-text");
+    if (is_detail) {
+        t.find(".is-number").css("padding-top" , "7px");
+        t.find(".is-number").text(_obj.text);
+    }
+    else {
+        var _text = t.find(".number-text");
+        _text.val(_obj.text);
+
+        // il blur del numero imposta il campo text e il valore arrotondato
+        _text.on("blur" , function() {
+            _obj.text = setInt( roundToTwo($(this).val()) );
+            _text.val(_obj.text);
+            setValidator();
+        });
+    }
+        
+
+    t.appendTo(expression_view);
+    expressionAppend();   
+
+}
+
+//  parentesi
+function bracketsBtn(t, i) {
+    // var _obj = t.data();
+        // _obj.text = _obj.btn.attr("data-text");
+    if (i == 0)
+        t.eq(0).data().type = "brackets_open";
+    if (i == 1)
+        t.eq(1).data().type = "brackets_close";
+
+
+    // t.find(".text").text(_obj.text);
+    t.eq(i).appendTo(expression_view);
+    expressionAppend();
+}
+
+//  funzioni
+function functionsBtn(t , i) {
+    var _obj = t.data();
+        _obj.hasParams = eval( _obj.btn.attr("data-has-params") ) ;
+
+    // t.eq(0).data().type = "brackets_open";
+    
+    if (i == 1) {
+    
+        t.eq(1).data().type = "functions_close";
+        t.eq(1).data().hasParams = eval( _obj.btn.attr("data-has-params") ) ;
+        t.eq(1).data().param = t.eq(0).data().param;
+        console.log(_obj);
+    }
+
+
+    if (!_obj.hasParams) {
+        t.find(".function-param").remove();
+    }
+    else {
+        var _text = t.find(".param-text");
+        if (is_detail) {
+            _text.remove();
+            t.find(".is-number.function-param").text(_obj.text);
+        }
+        else {   
+            
+            _text.val(  _obj.text  );
+
+            if (i == 1)
+                t.eq(1).attr("data-orig-value" , String(_obj.param));
+
+            console.log(_obj.param);
+            // il blur del numero imposta il campo text e il valore arrotondato
+            _text.on("blur" , function() {
+                if ( validateNumber($(this))){
+                    _obj.param = setInt( roundToTwo($(this).val()) );
+                    _text.val(_obj.param);
+                    $(this).attr("data-orig-value" , _obj.param);
+                    setValidator();
+                }
+            });
+        }
+        _obj.param = _obj.text;
+    }
+
+    if (i == 0)
+        t.find(".function-text").text(_obj.name.toUpperCase() + " ( ");
+
+    t.eq(i).appendTo(expression_view);
+    expressionAppend();
+}
+
+//  dopo l'append dell'oggetto nell'editor dell'espressione
+function expressionAppend() {
+
+    // imposto gli oggetti sortabili se non sono nella pagina di detail
+    if(!is_detail)
+        setSortable();    
+
+    // verifica se la funzione è valida
+    setValidator();
+
+    
+}
+
+
+function setValidator() {
+
+    // imposto gli array con la lista degli index delle parentesi di apertura e chiusura
+    // -- poi faccio il reverse della chiusura e verifico se le parentesi sono chiuse correttamente
+    var brackets_list_open = [];
+    var brackets_list_close = [];
+
+    var layer_count = 0; // conta quanti layer contiene l'espressione
+
+    var validator = jQuery.extend({}, obj_validator);
+    validator.errorCode = new Array();
+    validator.isValid = true;
+
+    var expression_data = expression_view.find(".expression_data");
+    // loop all'interno degli elementi dell'espressione
+    // console.log("START VALIDATION ------------------------------- ");
+
+    $.each(expression_data , function(i, value) {
+
+        // recupero l'oggetto di ogni div
+        var obj = $(value).data();
+        // console.log("obj" , obj, i )
+
+        var j = i+1;
+        var h = i-1;
+
+        var obj_first = expression_data.eq(0).data();
+
+        var obj_prev = null;
+        if (expression_data.eq(h).length)
+            obj_prev = expression_data.eq(h).data();
+
+        var obj_next = null;
+        if (expression_data.eq(j).length)
+            obj_next = expression_data.eq(j).data();
+        
+
+        // se l'oggetto ha un errore (es. layer inesistente)
+        // if (getObjectType(obj) == "error") {
+        //     validator.isValid = false;
+        //     validator.isValidLayerStatus = false;
+        // }
+
+
+
+        // BRACKETS OPEN -------------------------------------
+        if (obj.type == "brackets_open" || obj.type == "functions") {
+            // quando apro la parentesi, faccio un loop nell'espressione dal punto successivo alla parentesi di apertura fino alla sua chiusura
+            // aggiungo nel content dell'oggetto tutti gli elementi che trovo
+            obj.content = new Array();
+            for(var k = i+1; k < expression_data.length; k++) {
+                var obj_k = expression_data.eq(k).data();
+                if (obj.index != obj_k.index) {
+                    obj.content.push(expression_data.eq(k));
+                }
+                if (obj.index == obj_k.index) {
+                    break;
+                }
+            }
+            console.log(obj.content.length);
+
+            if (obj.content.length == 0) {
+                validator.isValid = false;
+                validator.isValidBracket = false;
+                validator.isNotEmptyBracket = false;
+            }
+
+        }
+        // BRACKETS CLOSE -------------------------------------
+        if (obj.type == "brackets_close" || obj.type == "functions_close") {
+            brackets_list_close.push(obj.index);
+        }
+
+
+
+        // ERRORI OPERATORE ---------------------------------------------------------
+        if (obj.type == "operator") {
+                        
+            // console.log(i , expression_data.length - 1);
+            if (
+                // se l'operatore è il primo 
+                (i == 0) 
+                ||                
+                // se l'operatore è l'ultimo
+                (i == (expression_data.length - 1))
+                ||
+                // se l'oggetto successivo è una prentesi di chiusura
+                (obj_next.type == "brackets_close")
+            ) {
+                validator.isValid = false;
+                validator.isValidOperatorOrder = false;  
+            }
+            
+            if (obj_next != null) {
+                if (
+                    // se l'oggetto precedente è una prentesi di chiusura di funzione
+                    (obj_next.type == "functions_close")
+                ) {
+                    validator.isValid = false;
+                    validator.isValidLayerOrderBrackets = false;
+                }
+                if ( 
+                    // se l'oggetto successivo è un altro operatore
+                    obj_next.type == "operator" ) {
+                    validator.isValid = false;
+                    validator.isValidLayerOrder = false;
+                }
+            }
+            if (obj_prev != null) {
+                if (
+                    // se l'oggetto precedente è una prentesi di apertura
+                    (obj_prev.type == "brackets_open")
+                    ||
+                    // se l'oggetto successivo è una funzione
+                    (obj_prev.type == "functions")
+
+                ) {
+                    validator.isValid = false;
+                    validator.isValidOperatorOrder = false;                    
+                }
+            
+            }
+
+        }
+        
+        //  LAYER  ---------------------------------------------------------
+        if (obj.type == "layer") {
+            // contro se ci sono layer nell'espressione
+            layer_count++;
+            if(obj.isVector) {
+                if (obj.selected_opt_value == null) {
+                    validator.isValid = false;
+                    validator.isSelectedVector = false;
+                }
+            }
+
+            if (!obj.isValid){
+                validator.isValid = false;
+                validator.isLayerFound = false;
+            }
+        }
+
+        // ERRORI LAYER E NUMBER ---------------------------------------------------------
+        if (obj.type == "layer" || obj.type == "number") { 
+            // console.log("obj_prev , obj_next");
+            // console.log(obj_prev , obj_next , h , i);
+            if (obj_prev != null && h >= 0) {
+                if ( 
+                    // se l'oggetto precedente è un layer
+                    (obj_prev.type == "layer")
+                    ||
+                    // se l'oggetto precedente è una parentesi di chiusura
+                    (obj_prev.type == "brackets_close")
+                    ||
+                    // se l'oggetto precedente è un numero
+                    (obj_prev.type == "number")
+                ) {
+                    validator.isValid = false;
+                    validator.isValidLayerOrder = false;
+                }
+            }
+
+            if (obj_next != null) {
+                if ( 
+                    // se l'oggetto successivo è un layer
+                    (obj_next.type == "layer")
+                    ||
+                    // se l'oggetto successivo è una parentesi di apertura
+                    (obj_next.type == "brackets_open")
+                    ||
+                    // se l'oggetto successivo è un numero
+                    (obj_next.type == "number")
+                    ||
+                    // se l'oggetto successivo è un numero
+                    (obj_next.type == "function")
+                ) {
+                    validator.isValid = false;
+                    validator.isValidLayerOrder = false;
+                }
+            }
+
+        }
+
+
+        
+    });
+
+
+
+
+
+    // check su ordine parentesi
+    // console.log(brackets_list_open);
+    // console.log(brackets_list_close);
+    var brackets_list_close_reverse = brackets_list_close.reverse();
+    // console.log(brackets_list_close_reverse);
+
+    $.each( brackets_list_open, function( key, value ) {
+        // console.log(brackets_list_open[key] , brackets_list_close_reverse[key], "---");
+        if(brackets_list_open[key] != brackets_list_close_reverse[key] ) {
+            // isValid = false;
+            // console.log("not valid brackets");
+        }
+    });
+
+
+
+
+
+
+    if(layer_count == 0) {
+        validator.isValid = false;
+        validator.isValidLayerCount = false;
+    }
+
+
+    if (!validator.isValidOperatorOrder) {
+        validator.errorCode.push("{% trans 'the first or the last element not to be an operator' %}");
+    }
+    if (!validator.isValidLayerOrderBrackets) {
+        validator.errorCode.push("{% trans 'insert an operator before or after the brackets' %}");
+    }
+    if (!validator.isValidBracket) {
+        if (!validator.isNotEmptyBracket)
+            validator.errorCode.push("{% trans 'the brackets can\'t be empty' %}");
+    }
+    if (!validator.isValidBracketOrder) {
+        validator.errorCode.push("{% trans 'check the brackets order' %}");
+    }
+    if (!validator.isValidLayerOrder) {
+        validator.errorCode.push("{% trans 'layers, numbers or operators not to be consecutive' %}");
+    }
+    if (!validator.isValidLayerStatus) {
+        validator.errorCode.push("{% trans 'some layers are not valid' %}");
+    }
+    if (!validator.isValidLayerCount ) {
+        validator.isValid = false;
+        validator.errorCode.push("{% trans 'at least one layer is required' %}"); 
+    }
+    if (!validator.isNotEmptyFunction) {
+        validator.isValid = false;
+        validator.errorCode.push("{% trans 'at least one layer is required in a function' %}"); 
+    }
+    if (!validator.isSelectedVector) {
+        validator.isValid = false;
+        validator.errorCode.push("{% trans 'select an attribute for layer' %}"); 
+    }
+    if (!validator.isLayerFound) {
+        validator.isValid = false;
+        validator.errorCode.push("{% trans 'layer not found' %}"); 
+    }
+    
+
+    $(".expression_view").append($(".expression_cursor_template").clone().attr("id" , "expression_cursor").removeClass("hide"));
+    $(".save_geodatabuilder_btn").attr("disabled" , !validator.isValid);
+    $(".expression_footer .text").removeClass("text-success").removeClass("text-danger");
+    $(".expression_footer .text").text("");
+    
+    $('.expression_view').scrollTop($('.expression_view')[0].scrollHeight);
+
+
+
+    if (!casestudy_obj.success) {
+        validator.isValid = false;
+        console.log(casestudy_obj);
+        validator.errorCode.push( casestudy_obj.message );
+    }
+
+
+    if (validator.isValid) {
+        $(".expression_footer .validator-text").text("{% trans 'The Expression is valid.' %}");
+        $(".expression_footer .validator-text").addClass("text-success").removeClass("text-danger");
+    }
+    else {
+        $(".expression_footer .validator-text").html("<strong>{% trans 'The Expression is not valid' %}:</strong> "  
+                + validator.errorCode.join().split(',').join(' , ') );
+        $(".expression_footer .validator-text").addClass("text-danger").removeClass("text-success");
+    }
+    
+
+
+
+    // ------------------ SCRIVE I CAMPI PER IL DB
+
+    var arr_expression_id = new Array();
+    var str_expression_id_string = "";
+    var expression_data = expression_view.find(".expression_data");
+    $.each(expression_data , function(i, value) {
+        // recupero l'oggetto di ogni div
+        var obj = $(value).data();
+        // console.log("obj" , obj);
+        if (obj.type == "layer"){
+            if (obj.isVector) {
+                if (obj.selected_opt_value == null)
+                    obj.selected_opt_value = "";
+                arr_expression_id.push( "'" + obj.id + "#" + obj.selected_opt_value + "'" );
+                str_expression_id_string += "'" + obj.id + "#" + obj.selected_opt_value + "'" ;
+            }
+            else {
+                arr_expression_id.push(parseInt( obj.id ));
+                str_expression_id_string += parseInt( obj.id );
+            }
+        }
+        if (obj.type == "operator"){
+            arr_expression_id.push(  "'" + obj.text + "'" );
+            str_expression_id_string += obj.code;
+        }
+        if (obj.type == "number"){
+            arr_expression_id.push( "'" + obj.text + "'");
+            str_expression_id_string += "'" + obj.text + "'";
+        }
+        if (obj.type == "brackets_open"){
+            arr_expression_id.push("[");
+            str_expression_id_string += "(";
+        }
+        if (obj.type == "brackets_close"){
+            arr_expression_id.push("]");
+            str_expression_id_string += ")";
+        }
+        if (obj.type == "functions"){
+            arr_expression_id.push("['"+obj.name.toUpperCase()+"'" );
+            str_expression_id_string += obj.name.toUpperCase() + "(";
+        }
+        if (obj.type == "functions_close"){
+            var param = "";
+            if (obj.hasParams) {
+                var param_obj = expression_view.find(".expression_data[data-index='"+obj.index+"']").eq(0).data();
+                arr_expression_id.push( "'(" + param_obj.param + ")']");
+                str_expression_id_string += ",'" + param_obj.param + "')";
+            }
+            else {
+                arr_expression_id.push( "]");
+                str_expression_id_string +=  ")";
+            }
+        }
+    });
+    var str_expression_id = arr_expression_id.join();
+    str_expression_id = str_expression_id.replaceAll("[," , "[");
+    str_expression_id = str_expression_id.replaceAll(",]" , "]");
+
+    $("#expression_id").val(str_expression_id);
+    
+    $("#expression_id_string").val(str_expression_id_string);
+
+    console.log(str_expression_id_string);
+
+    setExpressionPlaceholder(str_expression_id);
+
+    // console.log(validator);
+
+}
+
+
+function setSortable() {
+    $( ".expression_view").sortable({
+        cancel: "input, select, option",
+        items: ".expression_data",
+
+        placeholder: "ui-state-highlight expression_data expr_template",
+        start: function (event, ui) {
+            $(".ui-state-highlight").width($(ui.item).width());   
+            $(".ui-state-highlight").append("<span/>");         
+            // disabilito il popover per non farlo aprire quando si seleziona per trascinarlo
+            $(".expression_view .show-popover").popover('hide');  
+            $(".expression_view .show-popover").popover('disable');  
+            
+            var data_index = $(ui.item).attr("data-index");
+            $(".expression_view .expression_data").addClass("ui-state-disabled");
+            $(".expression_view .expression_data[data-index='"+data_index+"'").removeClass("ui-state-disabled");
+            
+        },
+        stop: function (event, ui) {
+            // console.log(event, ui);
+            setTimeout(function(){  
+                $(".expression_view .show-popover").popover('enable');  
+                $(".expression_view .expression_data").removeClass("ui-state-disabled");
+                setValidator();
+            }, 200);
+        
+
+        }
+
+    });
+    
+    // $( ".expression_view").disableSelection();
+}
+
+
+function setPopover(t) {
+    // http://jsfiddle.net/J7nDz/5/
+    
+    $.each(t , function( key, value ) {
+        // loop negli elementi con il popover, lo creo quando viene appeso
+        $(value).data("expression_data" , t);   // mi memorizzo il set dello snippet, ad esempio le parentesi di apertura e chiusura, o il param della funzione resize
+        if ($(value).hasClass("show-popover")) {
+
+
+            // se dei popover sono già aperti aggiungo la classe disabled
+            if ($(".expression_view .expression_data.is-open").length > 0){
+                t.addClass("ui-state-disabled");
+            }
+
+
+            $(value).popover({
+                html: true, 
+                placement: 'top',
+                trigger: "click",
+                toggle: "popover",
+                // container: 'body',
+                content: function() {
+                    return $('#tpl_popover #popover-content').html();
+                }
+            });
+
+            $(value).on('show.bs.popover', function(e) {  
+                // e.stopImmediatePropagation();
+                // console.log(e);
+                $(this)
+                    .removeClass("is-close")
+                    .addClass("is-open");
+
+
+                $.each($(".expression_view .show-popover") , function(k, v) {
+                    // console.log($(v) , $(v).hasClass("is-close"));
+                    var _t = $(v).data("expression_data");
+                    $(v).removeClass("ui-state-disabled");                     
+                    _t.removeClass("ui-state-disabled"); 
+                
+                    if (!$(v).hasClass("is-open")) {
+                        $(v).addClass("ui-state-disabled");       
+                        _t.addClass("ui-state-disabled");              
+                    }
+                });
+                
+                // $(this).removeClass("ui-state-disabled , is-close");
+                
+            });
+            // $(value).on('shown.bs.popover', function(e) {  
+            //     // e.stopImmediatePropagation();
+
+            // })
+
+
+            // quando nascondo il popover lo imposto chiuso con le classi
+            $(value).on('hide.bs.popover', function(e) {  
+                // e.stopImmediatePropagation();
+                $(this)
+                    .removeClass("is-open")
+                    .addClass("is-close");
+                
+                var _t = $(this).data("expression_data");
+                $(this).removeClass("ui-state-disabled");
+                _t.removeClass("ui-state-disabled");
+                if ($(".expression_view .show-popover.is-open").length > 0) {
+                    $(this).addClass("ui-state-disabled"); 
+                    _t.addClass("ui-state-disabled"); 
+                }
+                else 
+                    $(".expression_view .expression_data").removeClass("ui-state-disabled");
+
+            })
+            //$(value).on('hidden.bs.popover', function(e) {  
+                // e.stopImmediatePropagation();
+                // $(this).removeClass("ui-state-disabled");
+                // if ($(".expression_view .show-popover.is-open").length > 0) 
+                //     $(this).addClass("ui-state-disabled"); 
+            //})
+
+        
+            // var popover_id = $(value).attr("aria-describedby");
+            // console.log(value);
+            
+        }
+
+    });
+
+    // $('.expression_view .show-popover').on('inserted.bs.popover', function () {
+    //     console.log(this);
+    // })
+
+}
+
+
+// click sul rimuovi del popover
+function removeExpressionElement(btn) {
+    var _id = btn.parent().parent().attr("id");
+    var t = $(".expression_data[aria-describedby='"+_id+"']");
+    var _obj = t.data();
+    t.popover("hide");
+    $(".expression_data[data-index='"+_obj.index+"']").remove();
+    $(".show-popover").popover('reposition');
+    setValidator();
+}
+
+// set the select of case study
+function getCaseStudy() {
+
+    var url = "{% url 'api_casestudies_list' %}";
+    var cs = $("#expression_casestudy");
+    
+    var send_data = {};
+    var id = 0;
+    if (cs.length){
+        id = $("#expression_casestudy").attr("data-id");
+        if (id > 0) {
+            url = "{% url 'api_casestudies_detail'  id='@id' %}";
+            url = url.replace('@id' , id);      
+            
+        }
+    }
+    else {
+        send_data = {
+            module: "",
+            cstype: ""
+        }
+    }
+    
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: send_data,
+        success: function(data)
+        {
+            // // console.log(data);
+            
+            if (id == 0) {
+                // sto nella lista dei geodb
+                // se sono nella pagina di nuovo / edit, creo la select dei CS
+                if (!is_list) {
+                    var tmp = [];
+                    for (var i = 0; i < data.objects.length; i++) {
+                        var e = data.objects[i];
+                        $("#casestudy").append("<option value='"+e.id+"'>#" + e.id+ " - " +e.label+"</option>");
+                    };
+                    $("#casestudy").val($("#expression_casestudy_edit").attr("data-id"));
+                }
+                else {
+                    // se sono nella pagina di lista dei geodb, creo una lista di oggetti
+                    // la chiave dell'oggetto è l'id del cs
+                    var casestudy_obj_list = {};
+                    $.each(data.objects , function(i , val) {
+                        casestudy_obj_list[val.id] = val;
+                    });
+                    
+                    console.log(casestudy_obj_list);
+                    
+                    // getGeoDataBuilder(casestudy_obj_list);
+
+                }
+            }
+            else {
+                // se sto vedendo un id specifico, sono nella pagina di detail o di edit
+                // qui carico l'info del singolo CS relativo alla expression
+                var obj = data.objects;
+                obj["success"] = true;
+                casestudy_obj = obj;
+                $("#expression_casestudy_title").text( obj.label );
+                $("#expression_casestudy_description").html("<br />" +  obj.description + "<br />" );
+                if (!obj.description) {
+                    $("#expression_casestudy_description").hide();
+                }
+                if (obj.inputs.length > 0) {
+                    if (obj.inputs[0].thumbnail) {
+                        if (obj.inputs[0].thumbnail.length > 0) {
+                            $("#expression_casestudy_thumb")
+                                .attr("title" , obj.label )
+                                .attr("src" , obj.inputs[0].thumbnail )
+                                .removeClass("hide");
+                        }
+                    }
+                }
+                var cs_url = "{% url 'casestudies_detail'  id='@id' %}";
+                cs_url = cs_url.replace('@id' , id); 
+                $("#expression_casestudy_view_btn").attr("href" , cs_url);                    
+                $("#expression_casestudy_view_btn").removeClass("hide");                    
+            }
+
+            setGeodataBuilder();
+            
+        },
+        error: function (resp, status) {
+            casestudy_obj = {
+                success: false,
+                message: KEY_STUDY_MISSING,
+                resp: resp,
+                status: status,
+                id: id
+            };
+
+            $("#expression_casestudy_view_btn").remove();
+            $("#expression_casestudy_description")
+                .html("<strong>" + KEY_STUDY_MISSING + "</strong>")
+                .addClass("text-danger");
+            
+            setGeodataBuilder();
+
+            // // console.log(resp);
+        }
+    });
+}
+
+
+
+function getLayerById(t) {
+    var _obj = t.data();
+    var id = Number(_obj.btn.attr("data-id"));
+    // se è un livello, recupero dal ws get_layer_by_id i campi del livello
+    var url = "{% url 'get_layer_by_id'  id='@id' %}";
+    url = url.replace('@id' , id); 
+    // var exp_obj = {};
+    $.ajax({
+        type: "GET",
+        url: url,
+        async: false,
+        dataType: 'json',
+
+        success: function(data)
+        {
+            _obj.layer = data;
+            _obj.id = data.id;
+            _obj.text = data.title;
+            _obj.name = _obj.text;
+            _obj.isVector = data.is_vector;
+            _obj.status = data.status;
+            
+        },
+        error: function (resp, status) {
+            _obj.layer = false;
+            _obj.isValid = false;
+            _obj.text = resp.statusText;
+            _obj.code = "'"+id+":"+resp.status+"'";
+            _obj.isVector = false;
+            _obj.status = resp.status;
+        }
+    });
+    return _obj;
+}
+
+
+
+
+function initStickyExpression() {
+    var expression_editor = $("#expression_editor");
+    var div_sticky = $("#expression_editor_content");
+    var nav_navbar = $("nav.navbar");
+    // var to = expression_editor.position().top + nav_navbar.height();
+    if (expression_editor.length){
+        var to = expression_editor.position().top + $(".expression_label").height();
+        var h = div_sticky.height() + $(".expression_label").height()
+        setSticky(expression_editor, to, div_sticky, h);
+        $(window).scroll(function() {
+            setSticky(expression_editor, to , div_sticky, h);
+        });
+    }
+}
+
+
+
+function showFilter() {
+    var btn = $("#show-search");
+    if (btn.length) {
+        var filter = $("#div-filter");
+
+        btn.click(function(e) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            if (filter.hasClass("hidden-sm"))
+                filter.removeClass("hidden-sm").removeClass("hidden-xs").hide().slideDown();
+            else 
+                filter.slideUp("fast" , function() {
+                    filter.addClass("hidden-sm").addClass("hidden-xs").show();
+                });
+        });
+    }
+
+}
+
+
+
+function cloneGeodatabuilder() {
+    {% if user.is_authenticated %}
+        
+  		$("body").on("click" , ".gdb_clone_btn" , function(e) {
+			var gdb_title = $(this).attr("data-gdb_title");
+			var gdb_id = $(this).attr("data-id");
+            var url = "{% url 'geodatabuilder_clone'  id='@id' %}";
+            url = url.replace('@id' , gdb_id);      
+			$("#confirm_geodatabuilder_clone .gdb_title").text(gdb_title);
+			$("#confirm_geodatabuilder_clone .gdb_clone_confirm_btn").attr("data-id" , gdb_id);
+			$("#confirm_geodatabuilder_clone .gdb_form").attr("action" , url);
+			$("#confirm_geodatabuilder_clone").modal("show");  
+		});
+
+    {%endif%}
+
+    $('#confirm_geodatabuilder_clone').on('hidden.bs.modal', function (e) {
+        $("#id_label").val("");
+        $("#expression_text").val("");
+        $("#id_label").val("");
+        $("#expression_text").val("");    
+    })
+    
+} 
+
+
+function setExpressionPlaceholder(exp) {
+    // var exp = expression_view.find(".expression_data");
+    var loader = $("<span>").addClass("text-light");
+    if (exp.length && ( is_detail || is_edit) ) {    
+        loader.text("{% trans 'Loading Expression...' %}");
+        $(".expression .loader").html(loader);
+        $(".expression .loader").addClass("expr_template");
+    }
+    else if (exp.length && !is_detail) {
+        $(".expression .loader").empty();
+        $(".expression .loader").hide();
+        $(".expression .loader").removeClass("expr_template");
+    }
+    else {
+        loader.text("{% trans 'Empty Expression' %}");
+        $(".expression .loader").html(loader);
+        $(".expression .loader").show();
+        $(".expression .loader").addClass("expr_template");
+    }
+}
+
+
+
+// recupera la lista dei layer usati
+
+function setLayerUsed() {
+      
+        $.each( expression_view.find(".expression_data") , function( index, value ) {
+            
+            console.log()
+            _obj = $(value).data();
+            if (_obj.type == "layer") {
+                var exp_list = $("#expression_layers");
+                var exp_obj = $("#expression_layers_template .item").clone();
+                exp_obj.find(".item_title").text(_obj.text); 
+                var url = "{% url 'layer_detail'  layername='@layername' %}";
+                url = url.replace('@layername' , _obj.layer.alternate);      
+                exp_obj.find(".item_detail_url").attr("href" , url + "");
+                exp_obj.find(".abstract").text(_obj.layer.abstract);
+                exp_obj.find(".item_thumbnail_url").css("background-image" , "url('" + _obj.layer.thumbnail_url + "')");
+                exp_obj.find(".item_not_approved").addClass("hide");
+                exp_obj.find(".item_is_approved").addClass("hide");
+                exp_obj.find(".start-spacer").addClass("hide");
+
+                exp_obj.find(".icon-calendar-o").addClass("hidden");
+                exp_obj.find(".icon-map-marker").addClass("hidden");
+
+                exp_obj.find(".icon-star a").attr("title" , _obj.layer.rating + "");
+                exp_obj.find(".icon-eye a").attr("title" , _obj.layer.popular_count + "");
+
+                exp_obj.find(".icon-user a").attr("title" , _obj.layer.owner_name + "");
+                exp_obj.find(".icon-user a").attr("href" , "/people/profile/" + _obj.layer.owner__username + "");
+                
+                // if (!_obj.layer.is_approved) 
+                //    exp_obj.find(".item_not_approved").removeClass("hide");
+                
+                // if (_obj.layer.is_approved && _obj.layer.is_published) 
+                //    exp_obj.find(".item_is_approved").removeClass("hide");
+                
+                if (!_obj.isValid) {
+                    exp_obj.find(".item_detail_url").remove();
+                    exp_obj.find(".item_thumbnail_url").remove();
+                    exp_obj.find(".icons-snippet-item").remove();
+                    var str = "";
+                    var code_arr = _obj.code.split(":")
+                    var id = code_arr[0].split("'").join("");
+                    var error_code = code_arr[1].split("'").join("");
+                    str += "Layer id " + id + " ";
+                    str += _obj.text;
+                    exp_obj.find(".item_title").text(str).addClass("text-danger"); 
+                    exp_obj.find(".start-spacer").removeClass("hide");
+                    exp_obj.find(".item-details").attr("class" , "item-details col-md-12 not-valid-layer");
+
+                }
+
+
+                exp_obj.appendTo(exp_list);
+            }
+        });
+    }
+
+
+
+    function getStringOperator(item) {
+        if(item == "+") 
+            return "+";
+        else if(item == "-") 
+            return "−";
+        else if(item == "*") 
+            return "×";
+        else if(item == "/") 
+            return "÷";
+        else 
+            return item;
+    }
+
+
+
+
+function getGeoDataBuilder() {
+
+
+
+    var send_data = {};
+    var url = "";
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: send_data,
+        success: function(data)
+        {
+            console.log(jQuery.parseJSON(data.geodatabuilder_list));            
+        },
+        error: function (resp, status) {
+            
+        }
+    });
+}
+
+
+
+
+
+
+
+{% comment %}
+    // https://stackoverflow.com/questions/23506472/how-to-re-position-a-bootstrap-popover-after-dynamic-content-insertion/32652272
+{% endcomment %}
+$(function () {
+
+    $.fn.popover.Constructor.prototype.reposition = function () {
+        var $tip = this.tip()
+        var autoPlace = true
+
+        var placement = typeof this.options.placement === 'function' ? this.options.placement.call(this, $tip[0], this.$element[0]) : this.options.placement
+
+        var pos = this.getPosition()
+        var actualWidth = $tip[0].offsetWidth
+        var actualHeight = $tip[0].offsetHeight
+
+        if (autoPlace) {
+            var orgPlacement = placement
+            var viewportDim = this.getPosition(this.$viewport)
+
+            placement = placement === 'bottom' &&
+                pos.bottom + actualHeight > viewportDim.bottom ? 'top' : placement === 'top' &&
+                pos.top - actualHeight < viewportDim.top ? 'bottom' : placement === 'right' &&
+                pos.right + actualWidth > viewportDim.width ? 'left' : placement === 'left' &&
+                pos.left - actualWidth < viewportDim.left ? 'right' : placement
+
+            $tip
+                .removeClass(orgPlacement)
+                .addClass(placement)
+        }
+
+        var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight)
+
+        this.applyPlacement(calculatedOffset, placement)
+    }
+})
+
+
+
+</script>
+
+
+

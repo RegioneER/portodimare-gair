@@ -1,0 +1,52 @@
+Getting Started
+================
+
+Geo data portal of Adriatic Ionian Region (GAIR) offers many datasets and functionalities to support transnational cooperation networks for the implementation 
+of ICZM and MSP in the Adriatic Ionian region. 
+
+.. warning::
+	| In GAIR many contents and features are public so unregistered users have read-only access to public maps, layers and documents.
+	| In order to create maps, add layers or documents, edit the data and share these resources with other users, you need to sign in.
+
+.. warning::
+	| Currently only registrations made by PORTODIMARE project partners and their collaborators will be accepted. 
+	| For more information please write an e-mail to supportGAIR@regione.emilia-romagna.it
+
+
+GAIR users' profiles are hierarchical and inclusive in nature. 
+The supported profiles are:
+
+a) General public (un-registerd users): explore, search, filter and view public maps, layers, documents, case studies and archived model outputs 
+b) Registered users (e.g. Citizen, Stakeholders, Scientists, Policy makers and planners):  all elements stated in a) plus privileges to view,   create/,upload maps, layers and documents;  and default case studies and archived model outputs;  
+c) Power users (e.g. PPs and invited policy makers and planners, specific scientific networks): all elements stated in b) plus privileges to access to restricted maps, performs analysis and archive model outputs;  
+d) Managers/Editors: all elements stated in c) plus privileges to create new pages/web contents in the CMS area and to configure modules case studies and default parameters;   
+e) Administrators: all stated in d) plus privileges to create users, manage user profiles and authorization and access to a low-level admin interface for all GAIR contents. 
+
+.. See the :ref:`user-info` section for further instruction to how sign-in.
+
+See the User-info section for further instruction to how sign-in.
+
+Supported Browsers
+------------------
+
+GAIR is known to be working on all modern web browsers.
+
+This list includes (but is not limited to):
+
+- `Google Chrome <http://www.google.com/chrome/>`_.
+- `Apple Safari <https://www.apple.com/safari/>`_.
+- `Mozilla Firefox <https://www.mozilla.org/en-US/firefox/new/>`_.
+- `Microsoft Edge <https://developer.microsoft.com/en-us/microsoft-edge/>`_.
+
+.. - Microsoft Internet Explorer.
+
+.. Internet Explorer
+.. ^^^^^^^^^^^^^^^^^
+
+.. Versions of Microsoft Internet Explorer older than 10, exhibit known issues when used to browse GAIR site.
+.. As such a message is displayed warning the user that they should upgrade their browser.
+
+..  .. figure:: img/ie_message.png
+..        :align: center
+
+..        *Internet Explorer error message*

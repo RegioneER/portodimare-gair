@@ -1,0 +1,114 @@
+{% load i18n %} 
+{% verbatim %}
+
+<div ng-if="results.length == 0" ng-cloak class="col-md-12 col-sm-12 col-xs-12 icons-snippet">
+	{% endverbatim %}
+	<h2 class="h3">{% trans "No content created yet." %}</h2>
+	{% verbatim %}
+</div>	
+
+
+<div class="_row flex-grid flex-article-list resourcebase-snippet">
+
+	
+	<article ng-repeat="item in results | orderBy: ['-starred','-date'] " 
+		class="col-md-12 col-sm-12 col-xs-12"
+		resource_id="{{ item.id }}" ng-cloak class="ng-cloak">
+		
+			<div style="width: 100%;">
+
+				<div class="col-md-1 col-sm-1 col-xs-2 no-gutter text-center icons-snippet">
+					
+					<button
+						class="btn btn-default btn-xs "
+						ng-if="cart"
+						ng-click="cart.toggleItem(item)"
+						data-toggle="tooltip"
+						data-placement="right"
+						title="Select"><span ng-class="cart.getFaClass(item.id)" class="fa fa-lg"></span></button>
+					
+					<div class="item-items ">
+						
+						{% endverbatim %}
+						{% include 'base/_list_item.html' %}
+						{% verbatim %}
+
+					</div>
+				
+				</div>
+				<div class="col-md-11 col-sm-11 col-xs-10 profile-avatar" ng-class="{ 'default' : item.starred }">
+					
+					
+					<div 
+						style="background-image: url('{{ item.thumbnail_url || '/static/img/img_placeholder.jpg'  }}');" 
+						class="col-lg-4 col-md-4 col-sm-12 col-xs-12 item-thumb">
+						<a href="{{ item.detail_url }}" title="{% endverbatim %}{% trans 'View layer'%}{% verbatim %} {{ item.title }}"> 
+							<!-- <img ng-src="" /> -->
+						</a>
+					</div>
+					
+
+					<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 item-details" >
+				
+						<p class="item-meta" ng-if="item.category__gn_description">
+							<span class="item-category">{{ item.category__gn_description }}</span><br>
+							<span class="item-category" ng-if="item.group"><a href="/groups/group/{{ item.group }}/activity/">
+								<span class="fa fa-group" aria-hidden="true" style="margin-right: 8px;"></span>
+								{{ item.group_name }}</a><br></span>
+							<span class="item-category" ng-if="item.has_time">
+								<span class="fa fa-clock-o" aria-hidden="true" style="margin-right: 8px;"></span>
+								{% trans "Temporal Serie" %}<br></span>
+						</p>
+						<h3 class="item-detail-title">
+							<!-- <span ng-if="item.store_type == 'remoteStore'" title="Remote Service" class="fa fa-external-link fa-1" style="vertical-align:  middle;padding-right: 10px;"></span>
+							<span ng-if="item.store_type == 'dataStore'" title="Vector Data" class="fa fa-pencil-square-o fa-1" style="vertical-align:  middle;padding-right: 10px;"></span>
+							<span ng-if="item.store_type == 'coverageStore'" title="Raster Data" class="fa fa-picture-o fa-1" style="vertical-align:  middle;padding-right: 10px;"></span>
+							<span ng-if="item.store_type == 'dataset'" title="File/Dataset" class="fa fa-newspaper-o fa-1" style="vertical-align:  middle;padding-right: 10px;"></span>
+							<span ng-if="item.store_type == 'map'" title="Map" class="fa fa-map-o fa-1" style="vertical-align:  middle;padding-right: 10px;"></span>
+							-->
+							<a class="title" 
+								data-name="{{ item.name }}"
+								data-id="{{ item.id }}"
+								data-keywords="{{item.keywords}}"
+								href="{{ item.detail_url }}">
+									{{ item.title }}
+								</a> 
+						</h4>
+			
+						<em ng-if="item.store_type == 'remoteStore'">
+							{% endverbatim %}
+							<span ng-if="item.online == true"><span class="fa fa-power-off text-success"></span> {% trans "Service is" %} {% trans "online" %}</span>
+							<span ng-if="item.online == false"><span class="fa fa-power-off text-danger"></span> {% trans "Service is" %} {% trans "offline" %}</span>
+							{% verbatim %}
+						</em>
+						
+						<div class="alert alert-warning" ng-if="item.is_approved == false">{% trans "PENDING APPROVAL" %}</div>
+						<div class="alert alert-danger" ng-if="item.is_approved == true && item.is_published == false">{% trans "UNPUBLISHED" %}</div>
+
+						<p class="abstract">{{ item.abstract | limitTo: 300 }}{{ item.abstract.length  > 300 ? '...' : ''}}</p>
+
+						<div style="margin-top: 5px;"></div>
+						
+						<a class="btn btn-info create-map" ng-if="item.detail_url.indexOf('/layers_ext/') > -1" 
+							title="{% endverbatim %}{% trans "Create a Map" %}{% verbatim %}"
+							href="{% endverbatim %}{% url "new_map" %}?layer={% verbatim %}{{ item.detail_url.substring(12) }}">
+							{% endverbatim %}
+							<span class="fa fa-map-marker"></span> {% trans "Create a Map" %}</a>
+							{% verbatim %}
+						
+						<div class="end-spacer" style="margin-top: 30px;"></div>
+				
+					</div>
+			
+				</div>
+				
+				<div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 40px;"></div>
+
+			</div>
+
+	</article>
+
+		</div>
+
+
+{% endverbatim %}

@@ -1,0 +1,28 @@
+Creating a New Account
+======================
+
+.. warning:: 
+	| Currently only registrations made by PORTODIMARE project partners and their collaborators will be accepted. 
+	| For more information please write an e-mail to supportGAIR@regione.emilia-romagna.it
+
+From any page in the web interface, you will see a :guilabel:`Register` link at the top-right of web page. Click that link, and the register form will appear.
+
+   .. figure:: img/register_button.png
+      :alt: Register Button
+      :align: center
+      :name: register_button
+
+      Register Button
+
+On the next page, fill out the form. Enter enter your email address, a user name and password in the releted fields, and click on :guilabel:`Sign up` button.
+
+   .. figure:: img/register_form.png
+      :alt: Registering for a new account
+      :align: center
+      :name: register_form
+
+      Registering for a new account
+
+| An automatic notification of the user request is sent to GAIR support staff, will evaluate whether to authorize the registration.
+| Please write an e-mail to supportGAIR@regione.emilia-romagna.it to confirm if user belongs to PORTODIMARE project partners.
+| The user will be notified with an email accepting the registration.

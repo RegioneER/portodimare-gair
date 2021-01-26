@@ -1,0 +1,108 @@
+.. _data-types:
+
+Data Types
+==========
+
+| GAIR welcome page shows a variety of information about available dataset.
+| You can explore the existing data using many search tools and filters (see :ref:`finding-data`) or through the links of the navigation bar at the top of the page.
+
+| There are main types of resources that GAIR can manage:
+
+#. Layers
+#. Remote Services
+#. Maps
+#. Documents
+#. GeoDataBuilder
+#. Case Studies
+
+Documents and layers can be accessed from the :guilabel:`Data` dropdown menu of the navigation bar.
+
+.. figure:: img/data_menu.png
+   :alt: Data menu
+   :align: center
+   :name: data_menu
+
+   Data menu
+
+The :guilabel:`Maps` menu let you to manage maps.
+
+.. figure:: img/maps_menu.png
+   :alt: Maps menu
+   :align: center
+   :name: maps_menu
+
+   Maps menu
+
+.. _document-data-type:
+
+Layers
+------
+
+| Layers are a primary component of GAIR.
+| Layers are publishable resources representing a raster or vector spatial data source. Layers also are associated with metadata.
+
+By clicking the Layers link you will get a list of all published layers. If logged, you will also see the unpublished layers in the same list (according to the user permission).
+
+| GAIR allows the authenticated user to upload vector and raster data in their original projections using a web form.
+| Vector data can be uploaded, in many different formats (ESRI Shapefile, KML and so on...). Satellite imagery and other kinds of raster data can be uploaded as GeoTIFFs.
+
+Remote Services
+---------------
+
+| A list of registered Remote Services 
+
+( in progress )
+
+Maps
+----
+
+| Maps are a primary component of GAIR.
+| Maps are comprised of various layers and their styles. Layers can be both layers stored in GAIR geodatabase as well as remote layers either served from other WMS servers or by web service layers such as EMODnet services.
+
+GAIR maps also contain other information such as map zoom and extent, layer ordering, and style.
+
+Authenticated user can create a map combine existing layers and share the resulting map for public viewing.
+Once the data has been uploaded, GAIR lets the user search for it geographically or via keywords and create maps.
+
+See :ref:`working-with-maps` for further information
+
+Geodatabuilder
+--------------
+
+| *GeoDataBuilder* is a GAIR section, to browse, create and manage (if you are GAIR singed in user) geo expression to combine geospatial information stored on the Geoportal.
+| The aim is to produce new layer, useful for *Case Studies* analysis.
+
+See :ref:`geodatabuilder` section of this guide for details.
+
+
+Case studies
+-------------
+
+| GAIR Geoportal is a strayegic tool for geospatial analysis in support of Maritime Spatial Planning (MSP) and marine environmental management, implementing the Case Study driven approach.
+|
+| The Geoportal holds a series of case studies organized respectively in modules for:
+| - :ref:`Particle Tracking simulation (ParTrac)<partrac>`,
+| - :ref:`Maritime Use Conflict (MUC) Analysis<muc>`,
+| - :ref:`Cumulative Effects Assessment (CEA)<cea>`, 
+| - :ref:`Allocated Zones for Aquaculture (AZA)<aza>`,
+| - :ref:`Small Scale Fisheries (SSF)<ssf-msf>`,
+| - :ref:`Medium Scale Fisheries (MSF)<ssf-msf>`,
+| - :ref:`Coastal Oil Spill Vulnerability Assessment (OIL SPIL)<oil_spil>`.
+
+Case studies, related to modules, can be accessed from the :guilabel:`Case Studies` dropdown menu of the navigation bar.
+
+.. figure:: img/case_studies_menu.png
+     :alt: Case Studies Dropdown menu
+     :align: center
+     :name: case_studies_lmenu
+
+     Case Studies Dropdown menu
+
+See :ref:`case_studies` section of this guide for details.
+
+Documents
+---------
+
+| GAIR allows authenticated user to publish tabular and text data and to manage metadata and associated documents.
+| Documents can be uploaded directly from your disk (see :ref:`uploading-documents` for further information).
+| Through the document detailed page is possible (according to the user permission) to view, download and manage a document.

@@ -1,0 +1,112 @@
+{% extends "groups/group_base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block title %} {% trans "Explore Groups" %} - {{ block.super }} {% endblock %}
+
+{% block body_class %}{% trans "groups explore" %}{% endblock %}
+
+
+
+
+{% block sidebar %}
+<div class="list-group">
+	<div class="list-group-item">
+        {% if user.is_authenticated %}
+        <a href="{% url "group_create" %}" class="btn btn-info btn-block" target="_self">
+            {% trans "Create a New Group" %}
+        </a>
+        {% endif %}
+		<div style="margin-top: 30px;"></div>
+	</div>
+</div>
+
+
+{% include "search/_search_user_content.html" %}
+
+<div id="slide-pane">
+
+    <nav class="filter">
+        <h4 class="padding-LR">
+            <a href="#" class="toggle toggle-nav">
+                <span class="fa fa-chevron-right"></span>
+                {% trans "Group Categories" %}
+            </a>
+        </h4>
+        <ul class="nav closed_ node-treeview-content" id="group-categories">
+        {% verbatim %}
+            <li ng-repeat="category in groupCategories" ng-if="category.member_count > 0">
+            <a data-value="{{ category.slug }}" data-filter="group_profile__categories__slug__in" 
+            ng-click="multiple_choice_listener($event)" class="btn-clear-link {{category.active}}">
+                {{ category.name | limitTo: 25 }}{{ category.name.length > 25 ? '...' : ''}}
+                <span class="badge pull-right">{{ category.member_count }}</span>
+            </a>
+            </li>
+        {% endverbatim %} 
+        </ul>
+    </nav>
+
+</div>
+
+{% if user.is_authenticated %}
+<div class="text-center">
+    <div style="margin-top: 30px;"></div>
+    <a href="{% url "group_category_create" %}" 
+        class="btn btn-link" target="_self">
+        {% trans "Create a New Group Category" %}
+    </a>
+    <div style="margin-top: 30px;"></div>
+</div>
+{% endif %}
+
+{% endblock sidebar %}
+
+
+
+{% block body %}
+
+    {% with include_type_filter='true' %}
+    {% with facet_type='groups' %}
+    
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="page-header">
+                <h1 class="page-title"> 
+                    {% trans 'Explore Groups' %} 
+                </h1>
+            </div>
+        </div>
+    </div>        
+
+
+
+
+    <div class="container flex-grid">
+        <div class="col-md-12 col-sm-12 col-xs-12"> 
+            <h2 class="pull-left h3" ng-bind="total_counts + ' {{ facet_type | title }} found'"></h2>
+        </div>
+    
+        {% include "_bulk_permissions_form.html" %}
+        <div class="col-md-12 col-sm-12 col-xs-12 grid-spacer">
+                {% include 'search/_group_snippet.html' %}
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 50px;"></div>
+
+    </div>
+
+
+
+    {% endwith %}
+    {% endwith %}
+{% endblock %}
+
+{% block extra_script %}
+{{ block.super }}
+  <script type="text/javascript">
+  SEARCH_URL = '{% url 'api_dispatch_list' api_name='api' resource_name='groups' %}'
+  </script>
+  {% with include_spatial='false' %}
+  {% include 'search/search_scripts.html' %}
+  {% endwith %}
+{% endblock extra_script %}

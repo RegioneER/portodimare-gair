@@ -1,0 +1,97 @@
+{% extends "geonode_base.html" %}
+{% load i18n avatar_tags %}
+{% load bootstrap_tags %}
+
+{% block title %} {% trans "Change your avatar" %} - {{ block.super }} {% endblock %}
+
+
+{% block nav_user_isactive %}
+active_menu
+{% endblock nav_user_isactive %}
+
+
+
+{% block body_outer %}
+
+
+
+
+<div class="container">
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="pull-left">
+                    
+                    <small><a class="btn-dark-light-link breadcrumb-title" 
+                        href="{% url "profile_edit" user.username %}">
+                        {% trans "Back to edit your profile information" %}</a> /</small>
+
+                    <h1 class="page-title"> 
+                        {% trans 'Change your avatar' %} 
+                    </h1>
+                </div>
+                
+                
+            </div>
+
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-3 col-sm-3 col-xs-12 profile-image"">
+                    <h2 class="h4 h-label">{% trans "Your current avatar: " %}</h2>
+                    {% autoescape off %}{% avatar user %}{% endautoescape %}
+                
+
+                <a class="btn btn-primary btn-block btn-danger" 
+                href="{% url 'avatar_delete' %}" id="delete_avatar" 
+                style="visibility: hidden">{% trans "Delete Your Avatar" %}</a>
+
+            </div>
+            <div class="col-md-8 col-md-offset-1 col-sm-8 col-sm-offset-1 col-xs-12">
+                <div class="" style="margin-top: 11px;"></div>
+                <form id="avatar-file-form" enctype="multipart/form-data" method="POST" action="{% url 'avatar_add' %}">
+                    {{ upload_avatar_form }}  
+                    {% csrf_token %} 
+                    <input id="avatar-file" type="submit" class="btn btn-info pull-right" style="visibility: hidden" value="{% trans "Upload New Image" %}" />
+                    <div style="margin-top: 30px;;"></div>          
+                </form>
+
+                {% if not avatars %} 
+                    <p>{% trans "You haven't uploaded an avatar yet. Please upload one now." %}</p>
+                    <div class="" style="margin-top: 15px;"></div>
+                {% else %} 
+                <form method="POST" class="primary_avatar_form" action="{% url 'avatar_change' %}">
+                    <fieldset id="primary_avatar_form_list"> 
+                    {{ primary_avatar_form.as_p }}
+                    </fieldset>
+                    <div class="" style="margin-top: 30px;"></div>
+
+                    <p>{% csrf_token %}<input type="submit" class="btn btn-info" value="{% trans "Choose new Default" %}" /></p>
+                </form>
+                <div class="" style="margin-top: 30px;"></div>
+
+                {% endif %}
+                
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 50px;"></div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_script %}
+{{ block.super }}
+<script type="text/javascript">
+    $('#id_avatar').change(function() {
+        $('#avatar-file').css('visibility', 'visible');
+    });
+    {% if avatars %}
+    $('#delete_avatar').css('visibility', 'visible');
+    {% endif %}
+</script>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% load i18n %}
+
+
+<div class="_sort_filters btn-group pull-right" role="group" aria-label="tools">
+    <div class="btn-group" role="group">
+        
+        <span id="run_icon" class="fa fa-circle-o-notch fa-spin"></span>
+
+        <button id="sort_btn"
+            type="button" class="btn btn-default dropdown-toggle hidden" 
+            data-toggle="dropdown" 
+            aria-haspopup="true" 
+            aria-expanded="false">
+
+            <div class="hidden sort-btn" data-value="label">
+                <span class="fa fa-sort-alpha-asc fa-lg"></span>
+                <span class="fa fa-angle-down fa-lg"></span>
+            </div>
+            <div class="hidden sort-btn" data-value="-label">
+                <span class="fa fa-sort-alpha-desc fa-lg"></span>
+                <span class="fa fa-angle-down fa-lg"></span>
+            </div>
+            <div class="hidden sort-btn" data-value="updated">
+                <span class="fa fa-clock-o"></span>
+                <span class="fa fa-clock-o fa-level-up"></span>
+                <span class="fa fa-angle-down fa-lg"></span>
+            </div>
+            <div class="hidden sort-btn" data-value="-updated">
+                <span class="fa fa-clock-o"></span>
+                <span class="fa fa-clock-o fa-level-down"></span>
+                <span class="fa fa-angle-down fa-lg"></span>
+            </div>
+            
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-right" id="sort">
+        
+            <li><a target="_self" data-value="-updated" data-filter="order_by" title="{% trans "Most recent" %}">{% trans "Most recent" %}</a></li>
+            <li><a target="_self" data-value="updated" data-filter="order_by" title="{% trans "Less recent" %}">{% trans "Less recent" %}</a></li>
+            <li><a target="_self" data-value="label" data-filter="order_by" title="{% trans "A - Z" %}">{% trans "A - Z" %}</a></li>
+            <li><a target="_self" data-value="-label" data-filter="order_by" title="{% trans "Z - Z" %}">{% trans "Z - A" %}</a></li>
+        
+        </ul>
+        
+        </div>
+</div>

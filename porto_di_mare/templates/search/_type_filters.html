@@ -1,0 +1,23 @@
+{% load i18n %}
+{% load base_tags %}
+<nav class="filter">
+  <h4 class="padding-LR">
+    <a href="#" class="toggle toggle-nav" target="_self" title="{% trans header %}">
+      <span class="fa fa-chevron-down"></span>{% trans header %}</a></h4>
+  <ul class="nav node-treeview-content" id="types">
+        {% facets as facets %}
+
+        {% for facet, count in facets.items %}
+        {% if count > 0 %}
+        <li>
+            <a id="{{ facet }}" class="btn-clear-link"
+            target="_self" title="{{ facet|get_facet_title|title }}{{ count|pluralize}}"
+            data-value="{{ facet }}" data-filter="{{ filter }}" 
+            ng-click="multiple_choice_listener($event)">{{ facet|get_facet_title|title }}{{ count|pluralize}}
+            <span class="badge pull-right">{{ count }}</span>
+            </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+  </ul>
+</nav>

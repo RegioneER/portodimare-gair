@@ -1,0 +1,38 @@
+{% extends "groups/group_base.html" %}
+{% load i18n %}
+
+{% block title %}{{ group.title }} — {{ block.super }}{% endblock %}
+{% block body_class %}{% trans "groups remove" %}{% endblock %}
+
+{% block body_outer %}
+<div class="container">
+
+  <div class="page-header">
+    <small>
+		<a class="btn-dark-light-link breadcrumb-title" 
+		href="{% url "group_detail" group.slug %}">
+		{{ group.title }}</a> /</small>
+    
+    <h1 class="page-title">{% trans "Remove Group" %}</h1>
+  </div>
+  
+  <div class="row">
+    <div class="col-md-12">
+      <form action="{% url "group_remove" group.slug %}" method="POST">
+        <p>
+          {% blocktrans with group.title as group_title %}
+            Are you sure you want to remove the group <strong>{{ group_title }}</strong> ?
+          {% endblocktrans %}
+        </p>
+        {% csrf_token %}
+        <input type="hidden" value="{{ group.slug }}" />
+        <div class="form-actions">
+          <input type="submit" value="{% trans "Yes, I am sure" %}" class="btn btn-danger" />
+          <a href="{% url "group_detail" group.slug %}" class="btn btn-info">{% trans "No, don't remove it" %}</a>
+        </div>
+      </form>
+	</div>
+	<div class="col-md-12" style="margin-top: 50px;"></div>
+</div>
+</div>
+{% endblock %}

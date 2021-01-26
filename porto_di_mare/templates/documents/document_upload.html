@@ -1,0 +1,110 @@
+{% extends "documents/document_upload_base.html" %}
+{% load bootstrap_tags %}
+{% load i18n %}
+
+{% block title %} {% trans "Upload Document" %} - {{ block.super }} {% endblock %}
+
+{% block body_class %}documents upload{% endblock body_class %}
+
+{% block head %}
+    
+    {{ block.super }}
+{% endblock %}
+
+
+
+
+
+{% block sidebar %}
+
+
+
+<h4 class="padding-LR">{% trans "Permissions"  %}</h4>
+<form id="permission_form">
+	{% include "_permissions.html" %}
+</form>
+
+{% endblock %}
+ 
+
+
+
+
+{% block body %}
+
+
+<div class="row">
+    <div class="col-md-12">
+      <div class="page-header">
+
+				<small><a class="btn-dark-light-link breadcrumb-title" 
+					href="{% url "document_browse" %}?limit={{ CLIENT_RESULTS_LIMIT }}">{% trans "Explore Documents" %}</a> /</small>
+
+        <h1 class="page-title">{% trans "Upload Documents" %}</h1>			
+      </div>
+    </div>
+  
+    <div class="col-md-3 col-sm-12 col-xs-12">
+      <p>
+        {% trans "Allowed document types:" %}
+        <br />
+      </p>
+      <p>		
+  
+        {% for doc in ALLOWED_DOC_TYPES %}
+        <span class="label label-default">.{{ doc }}</span>
+        {% endfor %}
+      </p>
+    </div>
+    <div class="col-md-9 col-sm-12 col-xs-12">
+      <form id="upload_form" method="post" enctype="multipart/form-data" action="{% url "document_upload" %}">
+
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+        <!-- <input type="hidden" name="no__redirect" value="True" /> -->
+        {{ form.as_p }}
+        <button type="submit" id="upload-button" class="btn btn-info">{% trans "UPLOAD" %}</button>
+      </form>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 50px;"></div>
+
+  </div>
+  
+
+{% endblock %}
+
+
+
+{% block extra_script %}
+{{ block.super }}
+{% include "_permissions_form_js.html" %}
+
+<script type="text/javascript">
+  var DATA_UPLOAD_MAX_MEMORY_SIZE_str = "{{DATA_UPLOAD_MAX_MEMORY_SIZE}}";
+  var DATA_UPLOAD_MAX_MEMORY_SIZE = 0;
+  if (DATA_UPLOAD_MAX_MEMORY_SIZE_str.trim().length > 0) 
+    DATA_UPLOAD_MAX_MEMORY_SIZE = parseInt(DATA_UPLOAD_MAX_MEMORY_SIZE_str);
+
+    $('#id_doc_file').on('change', function(e){
+        console.log(e);
+        if ( DATA_UPLOAD_MAX_MEMORY_SIZE > 0 && $(this).context.files[0].size > DATA_UPLOAD_MAX_MEMORY_SIZE) {
+          $('#id_doc_file').val("");
+          return false;
+        }
+        if($('#id_title').val() == ''){
+            $('#id_title').val($('#id_doc_file').val().replace("C:\\fakepath\\", ""));
+        }
+    });
+    $("#id_links").select2({
+        width: '100%'
+    });
+    $('#upload_form').submit(function(e){
+      $('#permissions').val(JSON.stringify(permissionsString($('#permission_form'),'base')));
+      console.log(e);
+      // return false;
+    });
+
+    $('#upload-button').click(function(){
+      $('#_resource_uploading').modal('toggle');
+    });
+</script>
+{% endblock extra_script %}

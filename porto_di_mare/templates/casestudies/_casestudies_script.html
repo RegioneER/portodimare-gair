@@ -1,0 +1,1743 @@
+{% load i18n %}
+
+  <script type="text/javascript"> 
+
+
+    var RUN_CASESTUDIES_ERROR_TITLE = "{% trans 'An Error Occurred' %}";
+    var RUN_CASESTUDIES_ERROR_MESSAGE = "{% trans 'For any problems contact us.' %}";
+
+
+
+    var item_module = "{{ item.module }}".trim().toLocaleLowerCase();
+
+    var has_inputs = false;
+    var inputs_obj = {};
+    
+    {% if user.is_authenticated %}
+        {% for input in item.inputs %}
+            {% if input.code == "SENS" or input.code == "WEIGHTS" or input.code == "PCONFLICT" %}  
+                has_inputs = true;
+                var obj = {
+                    code : "{{input.code}}",
+                    file : "{{input.file}}",
+                    label: "{{input.label}}",
+                    url: "{{input.url}}"
+                };
+                inputs_obj[obj.code] = obj;
+            {% endif %}
+        {% endfor %}
+    {% endif %}  
+
+    
+    var RUN_CASESTUDIES_ENDPOINT = "{% url 'api_casestudies_run' %}";
+    var CLONE_CASESTUDIES_ENDPOINT = "{% url 'api_casestudy_clone' %}";
+    var EDIT_CASESTUDIES_ENDPOINT = "{% url 'api_casestudy_edit' %}";
+    var DELETE_CASESTUDIES_ENDPOINT = "{% url 'api_casestudy_delete' %}";
+    var DELETE_LAYERS_CASESTUDIES_ENDPOINT = "{% url 'api_casestudy_delete_layers' %}";
+    var RUN_CASESTUDY_ENDPOINT = "{% url 'api_casestudy_run' %}"
+    var CREATE_AND_UPLOAD_ENDPOINT = "{% url 'api_create_and_upload' %}"
+    var CREATE_AND_UPLOAD_JSON_MATRIX = "{% url 'create_and_upload_json_matrix' %}"
+    var CASESTUDIES_LIST_ENDPOINT = "{% url 'casestudies' %}";
+
+    var EXPRESSIONLAYERS_URL = "{{ expressionlayers_url }}";
+    var EXPRESSIONLAYERS_PATH = "{{ expressionlayers_path }}";
+    var hasLayerUsed = false;
+    var hasSortable = false;
+    var hasPopover = false;
+    var hasWriteExpression = false;
+
+    
+    var is_valid_matrix = true;
+    var is_valid_checked = false;
+    // /mnt/volumes/statics/uploaded/result_expressions/result_gmjjmdtp.tif
+
+    {% if user.is_authenticated %}
+    var user_is_authenticated = true;
+    {% else %}
+    var user_is_authenticated = false;
+    {% endif %}
+
+    
+
+
+    function uploadJsonMatrix() {
+        var tabs = $("#inputs .nav-tabs li");
+        for (var i = 0; i < tabs.length; i++) {
+            var tab = tabs.eq(i);
+            var tab_name = tab.attr("data-tab-name");
+            var table = $("#" + tab_name + " table");
+            var tds = table.find("tbody td.get_value");
+            var jsonArray = new Array();
+        
+            for(var j = 0; j < tds.length; j++) {
+                var td = tds.eq(j);   
+                if (tab_name.toLowerCase() == "weights") {                    
+                    jsonArray.push({
+                        u: td.attr("data-col-name").toUpperCase(),
+                        p: td.attr("data-row-name").toUpperCase(),
+                        w: Number( td.find("input.get_input_value[name='weights_"+td.attr("data-col-name")+"_"+td.attr("data-row-name")+"_w']").val() ),
+                        d: Number( td.find("input.get_input_value[name='weights_"+td.attr("data-col-name")+"_"+td.attr("data-row-name")+"_d']").val() )
+                    });
+                }
+
+                if (tab_name.toLowerCase() == "sens") {                    
+                    jsonArray.push({
+                        p: td.attr("data-row-name").toUpperCase(),
+                        e: td.attr("data-col-name").toUpperCase(),                        
+                        s: Number( td.find("input.get_input_value[name='sens_"+td.attr("data-col-name")+"_"+td.attr("data-row-name")+"']").val() )
+                    });
+                }
+
+
+                if (tab_name.toLowerCase() == "pconflict") {  
+                    var score = Number( td.find("input.get_input_value[name='pconflict_"+td.attr("data-col-name")+"_"+td.attr("data-row-name")+"']").val() );                  
+                    if (!isNaN(score)) {
+                        jsonArray.push({
+                            u1: td.attr("data-col-name").toUpperCase(),
+                            u2: td.attr("data-row-name").toUpperCase(), 
+                            score: score
+                        });
+                    }
+                }                
+            }
+            var _data_obj = {
+                name : tab_name.toLowerCase(),
+                data : JSON.stringify( jsonArray) 
+            }
+            
+            console.log("callApiCasestudies " + i , eval( _data_obj.data ).length);
+
+            if ( eval( _data_obj.data ).length > 0) {
+                
+
+                callApiCasestudies(
+                    CREATE_AND_UPLOAD_JSON_MATRIX , 
+                    _data_obj
+                    , responseUploadJsonMatrix,
+                    "POST");
+            
+            }
+
+
+
+
+        }
+    }
+    
+
+    function responseUploadJsonMatrix(resp) {
+        console.log("responseUploadJsonMatrix" , resp);
+        var r = resp.data;
+        console.log(r);
+        
+        if (!r.success) {
+            var alertObj = {};
+            alertObj["message"] = r.message;
+            setAlertFeedback(alertObj);
+            // alert(r.message); 
+            console.log(r);
+            return;
+        }
+
+
+        var codedlabel_url = $("#codedlabels_template > select option[value='"+r.name.toUpperCase() +"']").attr("data-url");
+        var input_url = $("#inputs_"+r.name.toLowerCase() ).attr("data-url");
+        
+
+        var _data = new FormData();   
+            _data.append("otype", "inputs");
+            _data.append("parent_id", "{{item.id}}");
+            _data.append("clurl", codedlabel_url);
+            _data.append("filepath", r.jsonFile);  
+            _data.append("url", input_url);  
+        
+        $.ajaxQueue({
+            url: CREATE_AND_UPLOAD_ENDPOINT,
+            async: false,
+            type: "PUT",
+            data: _data,
+            processData: false,
+            contentType: false,
+            xhr: function() {
+                var req = $.ajaxSettings.xhr();
+                if (req) {
+                    req.upload.addEventListener('progress', function(evt) {
+                        if(evt.lengthComputable) {
+                            var pct = (evt.loaded / evt.total) * 100;
+                        }
+                    }, false);
+                }
+                return req;
+            },
+            beforeSend: function () {
+                console.log("beforeSend")
+            },
+            error: function (jqXHR) {
+                self.polling = false;
+                if (jqXHR === null) {
+                    console.log("Unexpected Error")
+                } else {
+                    console.log("jqXHR Error")
+                    console.log(jqXHR);
+                }
+            },
+            success: function (resp, status) {
+                console.log("success")
+                console.log( status );
+                console.log(resp);
+            }
+        });
+        
+    }
+
+
+
+    function getInputs() {
+     
+        $.each(inputs_obj, function(i, el){
+            setInputs(el);
+        });
+
+        $("#matrixInput_btn").removeClass("hide");
+    }
+
+    function setInputs(obj) {
+
+        var url = "{% url 'api_inputs_list' %}";
+   
+        if (obj.file == "None")
+            return false;
+
+        $.ajax({
+            type: "GET",
+            url: url,
+            async: true,
+            data: {"file" : obj.file },
+            dataType: 'json',
+
+            success: function(data)
+            {
+                data["label"] = obj.label;
+                data["url"] = obj.url;
+                if ( obj.code.toUpperCase() == "WEIGHTS" && data.objects.length ) {
+                    setMatrixWeights(data);
+                }
+                if ( obj.code.toUpperCase() == "SENS" && data.objects.length ) {
+                    setMatrixSens(data);
+                }
+                if ( obj.code.toUpperCase() == "PCONFLICT" && data.objects.length) {
+                    setMatrixPconflict(data);
+                }
+            },
+            error: function (resp, status) {
+                console.log(resp, status);
+                // alert("setInputs: Si è verificato un errore");
+                var alertObj = {};
+                setAlertFeedback(alertObj);
+            }
+        });
+        
+    }
+
+
+
+
+
+    function setRunLayerModal() {
+        $(".run-layer .link_run_thumbnail").on("click" , function(e) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            var id = $(this).attr("data-target");
+            var item = $("#" + id);
+            var modal = $('.thumbnail_zoom');
+            modal.find(".run_thumbnail").attr("src" , item.find(".run_thumbnail").attr("src") );
+            modal.find(".run_label").text(item.find(".run_label").text() );
+            modal.find(".run_description").text( item.find(".run_description").text() );
+            modal.find(".run_file").attr("href" , item.find(".run_file").attr("href") );
+
+            if ( item.hasClass("hasnot-file") ) {
+                modal.find(".file-space").hide();
+                modal.find(".run_file").hide();
+            }
+            else if ( item.hasClass("has-file") ) {
+                modal.find(".file-space").show();
+                modal.find(".run_file").show();
+            }
+
+            modal.modal("show");
+
+            modal.on('hidden.bs.modal', function (e) {
+                modal.find(".run_thumbnail").attr("src" , "");
+                modal.find(".runlabel").text("");
+                modal.find(".run_file").attr("href" , "#");
+                modal.find(".file-space").hide();
+                modal.find(".run_file").hide();                
+            })
+        });
+    }
+
+    
+
+    function runCaseStudies() {
+       
+
+        
+
+        $("#cs_run_btn").prop("disabled" , "disabled");
+        $("#customCheckAll").prop("disabled" , true);
+        $(".customCheckSingle").prop("disabled" , true);
+        $("#cs_run_btn .run_icon").removeClass("hidden");
+        $("#run_casestudy_description").empty();
+        $("#run_casestudy_outputs").empty();
+        $("#run_casestudy_label").empty();
+        $(".data_created span.text").empty();
+        $(".data_updated span.text").empty();
+        $(".owner span.text").empty();
+        $("#run-tab").addClass("hidden");
+
+        var _id = "{{ item.id }}";
+        var _layer_selected = $(".layer-checkbox:checked");
+        var selected_layers_str = "";
+        var comma = ",";
+
+        $("#warning-run-cs").slideDown('fast', function() {
+
+
+            uploadJsonMatrix();
+
+
+
+            // lista dei layer selezionati
+            for (var i = 0; i < _layer_selected.length; i++) {
+                var layer = _layer_selected.eq(i);
+
+                if (layer.attr("data-is-expression") == "1") {
+                    var codedlabel_url = layer.attr("data-code-label-url");
+                    var filepath = layer.attr("data-file");
+                
+                    var form = $("#form-casestudy-detail")[0];
+
+                    var _data = new FormData();   
+                        _data.append("otype", "layers");
+                        _data.append("parent_id", "{{item.id}}");
+                        _data.append("clurl", codedlabel_url);
+                        _data.append("filepath", filepath);  
+                    
+                    $.ajaxQueue({
+                        url: CREATE_AND_UPLOAD_ENDPOINT,
+                        async: false,
+                        type: "PUT",
+                        data: _data,
+                        processData: false,
+                        contentType: false,
+                        xhr: function() {
+                            var req = $.ajaxSettings.xhr();
+                            if (req) {
+                                req.upload.addEventListener('progress', function(evt) {
+                                    if(evt.lengthComputable) {
+                                        var pct = (evt.loaded / evt.total) * 100;
+                                        console.log(pct)
+                                        //$('#prog > .progress-bar').css('width', pct.toPrecision(3) + '%');
+                                    }
+                                }, false);
+                            }
+                            return req;
+                        },
+                        beforeSend: function () {
+                            console.log("beforeSend")
+                        },
+                        error: function (jqXHR) {
+                            self.polling = false;
+                            if (jqXHR === null) {
+                                console.log("Unexpected Error")
+                            } else {
+                                console.log("jqXHR Error")
+                                console.log(jqXHR);
+                            }
+                        },
+                        success: function (resp, status) {
+                            console.log("success")
+                            console.log( status );
+                            console.log(resp);
+                        }
+                    });
+
+
+                }
+                var label = layer.attr("data-code-label");
+                // console.log ( i , _layer_selected.length  )
+
+                if ( i+1 == _layer_selected.length )
+                    comma = "";
+
+                selected_layers_str += label + comma;
+            } 
+            
+            console.log("selected_layers" , selected_layers_str);
+
+            callApiCasestudies(
+                    RUN_CASESTUDIES_ENDPOINT , 
+                    {
+                        id : _id,
+                        selected_layers : selected_layers_str
+                    } 
+                    , runCaseStudy);
+        
+        
+        });
+    }
+
+    function createAndUploadCb(resp) {
+        // // console.log(resp);
+    }
+
+    function runCaseStudy(resp) {
+
+        console.log("runCaseStudy" + resp);
+
+        if (resp.success) {
+            // return false;
+
+            callApiCasestudies(RUN_CASESTUDY_ENDPOINT , {id : resp.data.objects.run_id} , runCaseStudyRead);
+        }
+        else {
+            // alert("Si è verificato un errore");
+            
+            var alertObj = {
+                title : RUN_CASESTUDIES_ERROR_TITLE,
+                message : RUN_CASESTUDIES_ERROR_MESSAGE,
+
+            };
+            setAlertFeedback(alertObj);
+
+            $("#warning-run-cs").slideUp();
+
+
+            $("#cs_run_btn").prop("disabled" , false);
+            $("#customCheckAll").prop("disabled" , false);
+            $(".customCheckSingle").prop("disabled" , false);
+            $("#cs_run_btn .run_icon").addClass("hidden");
+        }
+    }
+
+    function runCaseStudyRead(resp) {        
+        
+        if (resp.success) {
+            // creare il run da qui            
+            var data = resp.data.objects;
+            
+         
+            $("#run .data_created span.text").text(data.created);
+            $("#run .data_updated span.text").text(data.updated);
+            $("#run .owner span.text").text(data.owner);
+            
+            for(var i = 0; i < data.outputs.length; i++ ) {
+                var t = $("#run_casestudy_outputs_template").clone();
+                var run = data.outputs[i];
+                if (run.thumbnail)
+                    t.find(".run_thumbnail").attr("src" , run.thumbnail);
+                
+                if (run.description)
+                    t.find(".run_description").text(run.description);
+                t.find(".run_file").attr("href" , run.file);
+                t.addClass("has-file").removeClass("hasnot-file");
+                if (!run.file) {
+                    t.find(".run_file").remove();
+                    t.addClass("hasnot-file").removeClass("has-file");
+                }
+                t.find(".run_label").text(run.label);
+                t.attr("id" ,  "run-" + i);
+                t.find("a.link_run_thumbnail").attr("data-target" , "run-" + i);
+                $("#run_casestudy_outputs").append(t);
+                t.removeClass("hidden");
+            }
+
+            for(var i = 0; i < data.outputlayers.length; i++ ) {
+                var t = $("#run_casestudy_outputlayers_template").clone();
+                var run = data.outputlayers[i];
+                if (run.thumbnail)
+                    t.find(".run_thumbnail").attr("src" , run.thumbnail);
+
+                if (run.description)
+                    t.find(".run_description").text(run.description);
+                    
+                t.find(".run_file").attr("href" , run.file);
+                t.addClass("has-file").removeClass("hasnot-file");
+                if (!run.file) {
+                    t.find(".run_file").remove();
+                    t.addClass("hasnot-file").removeClass("has-file");
+                }
+                t.find(".run_label").text(run.label);
+                t.attr("id" ,  "run-outputlayers-" + i);
+                t.find("a.link_run_thumbnail").attr("data-target" ,  "run-outputlayers-" + i);
+                $("#run_casestudy_outputlayers").append(t);
+                t.removeClass("hidden");
+            }
+
+            $("#run, #run-tab").removeClass("hidden");
+            $('#run-tab a').tab('show');
+
+        }
+        else {
+            // alert("Si è verificato un errore");
+            var alertObj = {};
+            setAlertFeedback(alertObj);
+        }
+
+        $("#cs_run_btn").prop("disabled" , false);
+        $("#customCheckAll").prop("disabled" , false);
+        $(".customCheckSingle").prop("disabled" , false);
+        $("#cs_run_btn .run_icon").addClass("hidden");
+        
+        $("#warning-run-cs").slideUp();
+
+
+        setRunLayerModal();
+    }
+
+    
+
+
+    
+
+
+    function changeCodedlabelsSelect(s) {
+        s.change(function(e) {
+            e.stopImmediatePropagation();
+            var codedlabel = s.val();
+            var i = s.attr("data-target");
+            var u = s.find("option:checked").attr("data-url");
+            var c = $("#customCheck" + i);
+            c.attr("data-code-label" , codedlabel)
+                .attr("data-code-label-url" , u);
+
+            checkCheckboxCodedLabel(i);
+        });
+    }
+
+    function checkCheckboxCodedLabel(i) {
+        var c = $("#customCheck" + i);
+        if (c.length > 0) {
+            
+            if (c.attr("data-code-label").trim() == "") {
+                c.attr("disabled" , true)
+                    .removeClass("active");
+            }
+            else {
+                c.attr("disabled" , false)
+                    .addClass("active");
+            }
+        }
+    }
+
+    
+    function setModalLayerImage() {
+        $(".img-thumbnail-link , .layer-thumbs-tpl .count").on("click" , function(e) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+            var i = $(this).attr("data-target");
+            var item = $("#item-" + i);
+            var modal = $('.layer_thumbnail_zoom');
+
+            if ( item.data("layer_obj").type == "layer") {
+                var layer_img = $("#layers-image-tpl").clone();
+                layer_img.attr("id" , "");
+                modal.find(".modal-body .modal-body-content").append(layer_img);
+                modal.find(".layer_thumbnail").attr("src" , item.find(".layer_thumbnail").attr("src") ).removeClass("hide");
+            }
+            if ( item.data("layer_obj").type == "expression") {
+                var layer_carousel = $("#layers-carousel-tpl").clone();
+                layer_carousel.attr("id" , "layers-carousel");
+                modal.find(".modal-body .modal-body-content").append(layer_carousel);
+                modal.find(".modal-body .modal-body-abstract").text(item.data("layer_obj").desc_expression);
+                var layer_arr = item.data("layer_obj").layers_arr;
+
+                for (var i = 0; i < layer_arr.length; i++) {
+                    layer_carousel.find(".carousel-indicators").append(
+                        "<li data-target='#layers-carousel' data-slide-to='"+i+"'></li>"
+                    );
+                    
+                    layer_carousel.find(".carousel-inner").append(
+                        "<div class='item'><img src='"+layer_arr[i].thumbnail+"' alt='"+layer_arr[i].title+"' class='layer_thumbnail' /><div class='carousel-caption'><h3>"+layer_arr[i].title+"</h3></div></div>"
+                    );
+                    
+                    if (i == 0){
+                        layer_carousel.find(".carousel-indicators li").addClass("active");
+                        layer_carousel.find(".carousel-inner .item").addClass("active");
+                    }
+                }
+
+                layer_carousel.removeClass("hide");
+
+            }
+
+            modal.find(".layer_label").text(item.find(".layer_label").text() );
+
+            if ( item.hasClass("hasnot-file") ) {
+                modal.find(".file-space").hide();
+                modal.find(".layer_file").hide();
+                modal.find(".layer_file").attr("href" , "#" );
+            }
+            else if ( item.hasClass("has-file") ) {
+                modal.find(".file-space").show();
+                modal.find(".layer_file").show();
+                modal.find(".layer_file").attr("href" , item.attr("data-layer-file") );
+            }
+
+            modal.modal("show");
+
+            modal.on('hidden.bs.modal', function (e) {
+                modal.find(".layer_thumbnail").attr("src" , "");
+                modal.find(".layer_label").text("");
+                modal.find(".layer_file").attr("href" , "#");
+                modal.find(".file-space").hide();
+                modal.find(".layer_file").hide();
+                modal.find(".modal-body .modal-body-content").empty();
+                modal.find(".modal-body .modal-body-abstract").empty();
+            })
+        });
+
+
+        $("#customCheckAll").change(function() {
+            $(".layer-checkbox.active").prop('checked', $(this).prop('checked'));
+            $(".layer-checkbox.active").trigger("change");
+
+        });
+        
+        $(".layer-checkbox").change(function() {
+            var isOneChecked = false;
+            var isChecked = $(this).is(":checked");
+            var id = $(this).attr("data-forloop-counter");
+            var item = $("#item-" + id);
+            if (isChecked) {
+                item.addClass("selected");
+                isOneChecked = true;
+            }
+            else 
+                item.removeClass("selected");
+
+            checkCheckbox();
+
+        });
+
+        $(".layer-checkbox").trigger("change");
+
+        
+    }
+
+    function checkCheckbox() {
+        var c = $(".layer-checkbox");
+        var isOneChecked = false;
+        var counterCheckbox = 0;
+        var counterChecked = 0;
+
+        $("#remove_selected_layers").prop("disabled" , true);
+        $("#remove_selected_layers").addClass("text-danger-light");
+        $("#remove_selected_layers").removeClass("text-danger");
+
+        
+        
+        for(var i = 0 ; i < c.length; i++) {
+            var checkbox = c.eq(i);
+            var isChecked = checkbox.is(":checked");                
+            var isDisabled = checkbox.is(":disabled");                
+            if (isChecked) {
+                counterChecked++;
+                isOneChecked = true;
+                
+            }
+            if (!isDisabled) 
+                counterCheckbox++;
+        }
+        $("#layers-tot").text(counterCheckbox);
+        $("#layers-counter").text(counterChecked);
+        
+        
+        $("#cs_run_btn").attr("disabled" , !isOneChecked);
+        is_valid_checked = !isOneChecked;
+        if ( !is_valid_matrix ) {
+            $("#cs_run_btn").attr("disabled" , true) ;
+        }
+
+        if (isOneChecked) {
+            $("#remove_selected_layers").prop("disabled" , false);
+            $("#remove_selected_layers").removeClass("text-danger-light");
+            $("#remove_selected_layers").addClass("text-danger");
+            $("#remove_selected_layers").click(function(e) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+
+                var layers = new Array();
+
+                $.each($(".item-layer.selected"), function(key , val) {
+                    var l = {
+                        target: $(val).find(".remove-btn").attr("data-target"),
+                        url: $(val).find(".remove-btn").attr("data-url"),
+                    };
+                
+                    layers.push(l);
+                });
+
+                // console.log(layers);
+
+                deleteLayers(layers);
+
+            });
+        }
+
+
+
+
+        $("#customCheckAll").prop("indeterminate", false);
+        
+        if (counterChecked < c.length-1 && counterChecked > 0) {
+            $("#customCheckAll").prop("indeterminate", true);
+        }
+    }
+
+
+    
+    function getLayersThumnail(t) {
+        var exp = t.find(".geodatabuilder_expression_arr").text();
+        var arr = eval("[" + exp + "]");
+        var layers_arr = [];
+        $.each(arr, function(i, el){
+            if($.inArray(el, layers_arr) === -1 && el >= 0 && typeof(el) == "number") 
+                layers_arr.push(el);
+        });
+
+        var tot_grid = 4;
+        if (layers_arr.length < tot_grid)
+            tot_grid = layers_arr.length;
+
+
+        for (var i = 0; i < layers_arr.length; i++) {
+            t.data("layer_obj").layers_arr.push( getLayerObjById(layers_arr[i]) ); 
+        }
+        
+        for (var i = 0; i < tot_grid; i++) {
+
+            var layers_th = $("#layer-thumbs-tpl").clone();
+            layers_th.attr("id" , "");
+            t.find(".layer-thumbs").append(layers_th);
+            
+            var layers_class = "col-md-12";
+            
+            if (layers_arr.length > 1)
+                layers_class = "col-md-6 col-sm-6 col-xs-6";
+            
+            layers_th.addClass(layers_class).addClass("th-" + i).addClass("no-gutter");
+            
+            if (t.data("layer_obj").layers_arr[i].thumbnail.trim().length > 0) 
+                t.find(".layer-thumbs-tpl.th-"+i+" .img-thumbnail")
+                    .attr("src" , t.data("layer_obj").layers_arr[i].thumbnail )
+                    .attr("title" , t.data("layer_obj").layers_arr[i].title );
+            else 
+                t.find(".layer-thumbs-tpl.th-"+i+" .img-thumbnail")
+                    .attr("src" , t.data("layer_obj").layers_arr[i].thumbnail )
+                    .attr("title" , t.data("layer_obj").layers_arr[i].title );
+
+            if (i == tot_grid - 1 && layers_arr.length > tot_grid) {
+                layers_th.append("<span class='count' data-target='"+t.attr("data-target-id")+"'> + " + parseInt(layers_arr.length - tot_grid) + "</span>");
+            }
+
+        }
+    }
+
+
+
+    function getLayerObjById(item) {
+        var url = "{% url 'get_layer_by_id'  id='@id' %}";
+        url = url.replace('@id' , item); 
+        var layer_obj = {
+            thumbnail: "",
+            title: ""
+        }
+        $.ajax({
+            type: "GET",
+            url: url,
+            async: false,
+            dataType: 'json',
+
+            success: function(data)
+            {
+                layer_obj.thumbnail = data.thumbnail_url;
+                layer_obj.title = data.title;
+            },
+            error: function (resp, status) {
+                layer_obj.thumbnail = "/static/img/404.jpg";
+                layer_obj.title = "{% trans 'Layer Not Found' %}";
+            }
+        });
+        return layer_obj;
+    }
+
+    function getCodedlabelsList() {
+        var url = "{% url 'api_codedlabels_list' %}";
+     
+        $.ajax({
+            type: "GET",
+            url: url,
+            async: false,
+            dataType: 'json',
+
+            success: function(data)
+            {
+                setCodedlabelsSelect(data.objects);
+            },
+            error: function (resp, status) {
+                // console.log(resp, status);
+            }
+        });
+    }
+
+
+    function setCodedlabelsSelect(data) {
+        var codedlabelsSelect_obj = {};
+
+        for (var i = 0 ; i < data.length; i++) {
+            var d = data[i];
+            codedlabelsSelect_obj[d.group] = new Array();
+        }
+
+        for (var i = 0 ; i < data.length; i++) {
+            var d = data[i];
+            codedlabelsSelect_obj[d.group].push(d);
+        }
+
+        var codedlabelsSelect = $("#codedlabels_template>select");
+        jQuery.each( codedlabelsSelect_obj, function( group, val ) {
+      
+            codedlabelsSelect.append("<optgroup label='"+group+"'></optgroup>");
+            for (var i = 0 ; i < val.length; i++) {
+                codedlabelsSelect.find("optgroup[label='"+group+"']")
+                    .append("<option data-url='"+val[i].url+"' value='"+val[i].code+"'>"+val[i].label.trim()+"</option>");
+            }
+        });
+        
+    }
+
+    function setMatrixPconflict(data_obj) {
+        var data = data_obj.objects;
+        var matrix_obj = {
+            data: {},
+            table: [],
+            label: data_obj.label
+        };
+
+        var matrix_tot_obj = {};
+
+        var matrix_arr = [];
+
+        var temp = null;
+        for (var i = 0 ; i < data.length; i++) {
+            var d = data[i];
+            
+            matrix_tot_obj[d.u1] = new Array(); 
+            matrix_tot_obj[d.u2] = new Array(); 
+
+        }        
+
+        var i = 0;
+        
+        matrix_obj.table.push(matrix_tot_obj);
+        matrix_obj.table.push(matrix_tot_obj);
+        
+        jQuery.each( matrix_tot_obj, function( u, val ) {
+            matrix_obj.data[u] = {};
+       
+            jQuery.each( matrix_tot_obj, function( p, valp ) {                
+                matrix_obj.data[u][p] = 0;                
+
+            });           
+        });
+
+        for (var i = 0 ; i < data.length; i++) {
+
+            var _w, _score;
+            if (data[i].u2 == undefined) {
+                _score = 0;
+            }
+            else {
+                _score = roundToTwo(data[i].score); //.toFixed(2);
+            }
+            if (_score == undefined)
+                _score = 0;
+
+            matrix_obj.data[ data[i].u1 ][ data[i].u2 ] = _score;
+        }
+        doTable(matrix_obj , "pconflict");
+        $("#inputs_pconflict").attr("data-url" , data_obj.url);
+        $("#li_pconflict").removeClass("hidden");
+    }
+
+    function setMatrixWeights(data_obj) {
+        var data = data_obj.objects;
+        var matrix_obj = {
+            data: {},
+            table: [],
+            label: data_obj.label
+        };
+
+        var matrix_uses_obj = {};
+        var matrix_pressure_obj = {};
+
+        var matrix_uses_arr_obj = [];
+        var matrix_pressure_arr_obj = [];
+
+        var matrix_arr = [];
+
+        for (var i = 0 ; i < data.length; i++) {
+            var d = data[i];
+            
+            matrix_uses_obj[d.u] = new Array();
+            matrix_uses_arr_obj.push(matrix_uses_obj[d.u]);
+
+            matrix_pressure_obj[d.p] = new Array();
+            matrix_pressure_arr_obj.push(matrix_pressure_obj[d.p]);
+        }        
+
+        var i = 0;
+      
+        matrix_obj.table.push(matrix_uses_obj);
+        matrix_obj.table.push(matrix_pressure_obj);
+
+        jQuery.each( matrix_uses_obj, function( u, val ) {
+            matrix_obj.data[u] = {};
+        
+            jQuery.each( matrix_pressure_obj, function( p, valp ) {                
+                matrix_obj.data[u][p] = {
+                w: 0,
+                d: 0
+            };                
+
+            });           
+        });
+
+        for (var i = 0 ; i < data.length; i++) {
+
+            var _w, _p, _d;
+            if (data[i].p == undefined) {
+                _w = 0;
+                _d = 0;
+            }
+            else {
+                _w = roundToTwo(data[i].w); //.toFixed(2);
+                _d = roundToTwo(data[i].d); //.toFixed(2);
+            }
+            
+            matrix_obj.data[ data[i].u ][ data[i].p ] = {
+                w: _w,
+                d: _d
+            };
+        }
+
+        doTable(matrix_obj , "weights");
+        $("#inputs_weights").attr("data-url" , data_obj.url);
+        $("#li_weights").removeClass("hidden");
+ 
+    }
+
+    function setMatrixSens(data_obj) {
+        var data = data_obj.objects;
+        var matrix_obj = {
+            data: {},
+            table: [],
+            label: data_obj.label
+        };
+
+        var matrix_enviroment_obj = {};
+        var matrix_pressure_obj = {};
+
+        var matrix_enviroment_arr_obj = [];
+        var matrix_pressure_arr_obj = [];
+
+        var matrix_arr = [];
+
+        for (var i = 0 ; i < data.length; i++) {
+            var d = data[i];
+            
+            matrix_enviroment_obj[d.e] = new Array();
+            matrix_enviroment_arr_obj.push(matrix_enviroment_obj[d.e]);
+
+            matrix_pressure_obj[d.p] = new Array();
+            matrix_pressure_arr_obj.push(matrix_pressure_obj[d.p]);
+        }        
+
+        var i = 0;
+        matrix_obj.table.push(matrix_enviroment_obj);
+        matrix_obj.table.push(matrix_pressure_obj);
+
+        jQuery.each( matrix_enviroment_obj, function( u, val ) {
+            matrix_obj.data[u] = {};
+      
+            jQuery.each( matrix_pressure_obj, function( p, valp ) {                
+                matrix_obj.data[u][p] = 0;                
+
+            });           
+        });
+
+        for (var i = 0 ; i < data.length; i++) {
+
+            var _w, _s;
+            if (data[i].p == undefined) {
+                _s = 0;
+            }
+            else {
+                _s = roundToTwo(data[i].s); //.toFixed(2);
+            }
+            
+            matrix_obj.data[ data[i].e ][ data[i].p ] = _s;
+        }
+        doTable(matrix_obj , "sens");
+        $("#inputs_sens").attr("data-url" , data_obj.url);
+        $("#li_sens").removeClass("hidden");
+  
+    }
+
+    
+    function doTable(matrix_obj , name) {
+       
+        var t = $("#casestudyInputsTemplate").clone();
+        
+        t.attr("id" , "inputs_" + name).addClass("input_table");
+        t.appendTo($("#" + name + " .casestudyInputs"));
+        $("#" + name + " h4").text(matrix_obj.label);
+
+        $("#inputs_" + name + " thead tr").append("<td class='table_cell_empty'>&nbsp;</td>");
+
+        var counter_col = 0;
+        jQuery.each( matrix_obj.table[0], function( x, val ) {
+            counter_col++;
+            var codedlabel = $("#codedlabels_template > select option[value='"+x.trim()+"']").text().trim();
+            $("#inputs_" + name + " thead tr").append("<td data-col='"+counter_col+"' id='td_"+name.toLowerCase()+"_"+x.toLowerCase()+"'><span data-toggle='tooltip' data-placement='bottom' data-original-title='"+codedlabel+"'>" + x + "</span></td>");            
+        });
+        
+        
+        var counter_row = 0;
+
+        jQuery.each( matrix_obj.table[1], function( y, val ) {
+            counter_row++;
+            var codedlabel = $("#codedlabels_template > select option[value='"+y.trim()+"']").text().trim();
+            $("#inputs_" + name + " tbody").append("<tr id='tr_"+name.toLowerCase()+"_"+y.toLowerCase()+"'></tr>");
+            $("#inputs_" + name + " tbody #tr_" + name.toLowerCase()+"_"+y.toLowerCase()).append("<td data-row='"+counter_row+"' class='v_header' id='td_"+name.toLowerCase()+"_"+y.toLowerCase()+"'><div data-toggle='tooltip' data-placement='right' data-original-title='"+codedlabel+"'>" + y + "</div></td>");
+            counter_col = 0;
+            jQuery.each( matrix_obj.data, function( v, val_v ) { 
+                counter_col++;
+                if (val_v[y] == undefined)
+                    val_v[y] = 0; 
+                
+                if (name.toLowerCase() == "pconflict") { 
+                    var _hide_input_class = " get_input_value ";
+                    if(v.toLowerCase() == y.toLowerCase() || counter_col > counter_row ) {
+                        _hide_input_class = " hidden ";
+                    }
+                    $("#inputs_" + name + " tbody #tr_" + name.toLowerCase()+"_"+y.toLowerCase())
+                        .append("<td class='get_value' data-col-name='"+v.toLowerCase()+"'  data-row-name='"+y.toLowerCase()+"' data-col='"+counter_col+"'  data-row='"+counter_row+"' ><input data-decimal='0' data-min='0' data-max='6' minlength='1' maxlength='1' data-toggle='tooltip' data-placement='left' data-original-title='score'  class='form-control input-pconflict "+_hide_input_class+"' placeholder='score' title='score' name='" + name.toLowerCase()+"_"+v.toLowerCase()+"_"+y.toLowerCase()+"' data-orig-value='"+val_v[y]+"' value='"+val_v[y]+"' /></td>");
+                }
+                if (name.toLowerCase() == "sens")
+                    $("#inputs_" + name + " tbody #tr_" + name.toLowerCase()+"_"+y.toLowerCase()) 
+                        .append("<td class='get_value' data-col-name='"+v.toLowerCase()+"'  data-row-name='"+y.toLowerCase()+"' data-col='"+counter_col+"'  data-row='"+counter_row+"' ><input data-decimal='1' minlength='1' maxlength='4' data-min='0' data-max='1' data-toggle='tooltip' data-placement='left' data-original-title='sensitivity' class='form-control input-sens get_input_value' title='sensitivity' placeholder='sensitivity' name='" + name.toLowerCase()+"_"+v.toLowerCase()+"_"+y.toLowerCase()+"' data-orig-value='"+val_v[y]+"' value='"+val_v[y]+"' /></td>");
+                
+                if (name.toLowerCase() == "weights")
+                    $("#inputs_" + name + " tbody #tr_" + name.toLowerCase()+"_"+y.toLowerCase())
+                        .append("<td class='get_value' data-col-name='"+v.toLowerCase()+"'  data-row-name='"+y.toLowerCase()+"' data-col='"+counter_col+"'  data-row='"+counter_row+"' ><input data-decimal='1' minlength='1' maxlength='4' data-min='0' data-max='1' data-toggle='tooltip' data-placement='left' data-original-title='weight' class='form-control input-weight get_input_value' placeholder='weight' title='weight' name='" + name.toLowerCase()+"_"+v.toLowerCase()+"_"+y.toLowerCase()+"_w' data-orig-value='"+val_v[y].w+"' value='"+val_v[y].w+"' /><input data-decimal='1' data-min='0' minlength='1' maxlength='8' data-max='100000' data-toggle='tooltip' data-placement='left' data-original-title='distance' class='form-control get_input_value' title='distance' placeholder='distance' name='" + name.toLowerCase()+"_"+v.toLowerCase()+"_"+y.toLowerCase()+"_d' data-orig-value='"+val_v[y].d+"' value='"+val_v[y].d+"' /></td>");
+            });
+        });
+        
+        t.removeClass("hidden");
+
+
+        $(".input_table input").blur(function(e) {
+            e.stopImmediatePropagation();
+            $(".input_table td").removeClass("td_selected");
+            var i = $(this);
+            validateNumber(i);
+
+            if ($(".input_table .input-error").length)
+                is_valid_matrix = false;
+            else 
+                is_valid_matrix = true;
+
+            if ( !is_valid_matrix ) {
+                $("#cs_run_btn").attr("disabled" , true);
+                $("#cs_run_error strong").text("{% trans 'Inputs Matrix have some errors' %}"); 
+            }
+            else {
+                $("#cs_run_error strong").empty(); 
+                $("#cs_run_btn").attr("disabled" , is_valid_checked);
+            } 
+                
+        });
+
+        $(".input_table input").focus(function(e) {
+            e.stopImmediatePropagation();
+            var i = $(this);
+            i.removeClass("input-error");
+            var td = i.parent();
+            var col = td.attr("data-col");
+            var row = td.attr("data-row");
+            $(".input_table td[data-row='"+row+"']").addClass("td_selected");
+            $(".input_table td[data-col='"+col+"']").addClass("td_selected");
+        });
+    }
+    
+    
+        
+
+    {% if layers and expressions %}
+    function createLayersCaseStudy(layers) {
+
+        $("#layers-list").empty();
+
+        // var layers = {{layers | safe}};
+        var expressions = []; // {{expressions | safe}};
+        
+        console.log("layers");
+        console.log(layers);
+
+        var layers_list = [];        
+
+        for(var i = 0; i < layers.length; i++) {
+            layers[i]["type"] = "layer";
+            var split_label = layers[i]["label"].split("|");
+            layers[i]["group_name"] = split_label[0].trim().toLowerCase();
+            if (split_label.length > 0) 
+                layers[i]["label"] = split_label[1].trim();
+            layers_list.push(layers[i]);
+        }
+        for(var i = 0; i < expressions.length; i++) {
+            expressions[i]["type"] = "expression";
+            expressions[i]["group_name"] = "expression";
+            layers_list.push(expressions[i]);
+        }
+
+        console.log("layers_list"); 
+        console.log(layers_list);
+            
+        if (item_module == "cea" || item_module == "muc") {
+
+            var layer_list_group = {};
+            var layer_list_order = ["casestudy" , "use", "env", "usepres" , "expression"];
+
+            for(var i = 0; i < layers_list.length; i++) {
+
+                var group_name = layers_list[i]["group_name"];
+                // layer_list_group[group_name] = new Array();
+                if(!layer_list_group[group_name]) {
+                    layer_list_group[group_name] = new Array();
+                }
+                layers_list[i]["i"] = i;
+                layer_list_group[group_name].push(layers_list[i]);
+            }
+
+            for (var i = 0; i < layer_list_order.length; i++) {
+                var group_name = layer_list_order[i];
+        
+                if (layer_list_group[group_name] != undefined) {
+                    if (layer_list_group[group_name].length > 0) {
+                        var t = $("#template-group-item-layer").clone();
+                        t.attr("id" , "");
+                        t.find(".group_name").text(group_name.toUpperCase());
+                        t.appendTo("#layers-list");
+                        t.removeClass("hide");
+                    }
+                
+
+                    for (var j = 0; j < layer_list_group[group_name].length; j++) {
+                        appendLayersCaseStudy(layer_list_group[group_name][j],  j );
+                    }
+                }
+            }
+        }
+        else {
+            for(var i = 0; i < layers_list.length; i++) {
+                layers_list[i]["i"] = i;
+                appendLayersCaseStudy(layers_list[i] , i);
+            }
+        }
+
+
+        console.log(layer_list_group);
+        
+
+        
+        setModalLayerImage();
+        
+    }
+
+    {% endif %}
+
+
+
+    function appendLayersCaseStudy(layer, count) {
+        var t = $("#template-item-layer").clone();
+        var l = layer;
+        var i = l["i"];
+        t.attr("id" , "item-" + ( i + 1)).attr("data-target-id" , ( i + 1));
+        t.find(".custom-control-input").removeClass("layer-checkbox-tpl").addClass("layer-checkbox");
+
+        if (l["type"] == "layer") {                           
+            // t.find(".custom-checkbox").removeClass("hide");     
+            var layers_th = $("#layer-thumbs-tpl").clone();
+            layers_th.attr("id" , "");
+            t.find(".layer-thumbs").append(layers_th);
+            layers_th.addClass("col-md-12");
+            if (l.thumbnail) { 
+                t.find(".img-thumbnail")
+                    .attr("src" , l.thumbnail)
+                    .attr("alt" , l.label)
+                    .attr("title" , l.label);
+            }
+            t.attr("data-layer-file" , l.file);
+            t.find(".layer-checkbox")
+                .attr("data-code-label" , l.code )
+                .attr("data-is-expression" , "0" );
+            t.find(".run-expression , .expression_updated").remove();
+            t.data( "layer_obj", {
+                type: l["type"]
+            });
+        }
+        if (l["type"] == "expression") {
+            l.file = l.file_path;
+            if (l.file_path) {
+                t.find(".expression_updated").removeClass("hide").text(l.file_updated);  
+                t.attr("data-layer-file" , EXPRESSIONLAYERS_URL + l.file );
+            }
+            t.find(".geodatabuilder_expression_arr").text(l.expression);  
+            t.find(".geodatabuilder_expression_string").text(l.expression_id_string);                  
+            var e_obj = $.extend(true, {}, expression_obj);
+            var exp = l.expression;        
+            t.find(".layer-checkbox")
+                .attr("data-is-expression" , "1" );
+
+            t.data( "layer_obj", {
+                type: l["type"],
+                id: parseInt( l.id ),
+                label: l.label,
+                desc_expression: l.desc_expression,
+                expression: l.expression,
+                expression_id_string: l.expression_id_string,
+                casestudy_api_id: parseInt( "{{ item.id }}" ),
+                layers_arr: []
+            });
+
+            if (user_is_authenticated) {
+                t.find(".run-expression_btn").attr("data-divid" , t.attr("id")); 
+                t.find(".run-expression_btn").click(function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    var divid = $(this).attr("data-divid");
+                    runExpressionLayer($("#" + divid));
+                });                
+
+                var codedlabelsSelect = $("#codedlabels_template>select");
+                var codedlabelsSelect_exp = codedlabelsSelect.clone();
+                t.find(".custom-select").append(codedlabelsSelect_exp);
+                t.find(".custom-select > select").attr("data-target" , (i + 1));
+                
+            }
+            
+            getLayersThumnail(t);
+
+        }
+
+        if (l.file) {
+            t.addClass("has-file");         
+            t.find(".layer-checkbox")
+                .addClass("active")
+                .attr("data-file" , EXPRESSIONLAYERS_PATH + l.file );    
+            t.find(".custom-checkbox, .custom-select").removeClass("hide");
+            t.find(".custom-checkbox input").prop("disabled" , false);
+                
+        }
+        else { 
+            t.addClass("hasnot-file");
+            t.find(".custom-checkbox, .custom-select").addClass("hide");
+            t.find(".custom-checkbox input").prop("disabled" , true);
+        }
+
+        
+        // console.log(l);
+        t.find(".remove-btn")
+            .attr( "data-url" , l.url )
+            .attr( "data-target" , (i + 1));
+
+
+        t.find(".img-thumbnail-link")
+            .attr( "data-target" , (i + 1));
+        t.find(".layer_label")
+            .text(l.label);
+        t.find(".layer-checkbox")
+            .attr("data-forloop-counter" , (i + 1) )
+            .attr("id" , "customCheck" + (i + 1));
+        
+        
+
+        t.find(".custom-control-label").attr("for" , "customCheck" + (i + 1));
+        t.appendTo("#layers-list");
+
+        if ( ( count + 1) % 3 == 0) 
+            $("#layers-list").append('<div class="col-md-12 col-sm-12 hidden-xs"></div>');
+
+        
+
+        if (l["type"] == "expression") {
+            checkCheckboxCodedLabel((i + 1));
+            changeCodedlabelsSelect(t.find(".custom-select>select"));
+        }
+
+        t.find(".remove-btn").click(function(e) {
+            e.stopImmediatePropagation();
+            var layers = new Array();
+            var l = {
+                target: $(this).attr("data-target"),
+                url: $(this).attr("data-url"),
+            };
+            layers.push(l);
+            deleteLayers(layers);
+            
+			
+        });
+
+        t.removeClass("hide");
+    }
+
+
+
+function resetCloneModal() {
+    $("#confirm_casestudies_clone .cs_title").text("");
+    $("#id_label").val("");
+    $("#cs_text").val("");
+    $("#confirm_casestudies_clone .cs_title").text("");
+    $("#confirm_casestudies_clone .cs_clone_confirm_btn").attr("data-id" , "");
+}
+function resetEditModal() {
+    $("#confirm_casestudies_edit .cs_title").text("");
+    $("#id_label_edit").val("");
+    $("#cs_text_edit").val("");
+    $("#confirm_casestudies_edit .cs_title").text("");
+    $("#confirm_casestudies_edit .cs_edit_confirm_btn").attr("data-id" , "");
+}
+function resetDeleteModal() {
+    $("#confirm_casestudies_delete_layers .cs_title").text("");
+}
+
+
+function deleteLayers(l) {
+    console.log(l);
+    for (var i = 0; i < l.length; i++) {
+        var cs_layer_title = $("#item-" + l[i].target + " .layer_label").text().trim();
+        $("#confirm_casestudies_delete_layers .cs_title").append( cs_layer_title + "<br />");
+    }
+    $("#confirm_casestudies_delete_layers .cs_delete_confirm_btn").data("layers_list", l);
+    $("#confirm_casestudies_delete_layers").attr("data-tot" , l.length);
+    $("#confirm_casestudies_delete_layers").attr("data-tot-deleted" , 0);
+    $("#confirm_casestudies_delete_layers").modal("show");  
+    $("#confirm_casestudies_delete_layers .cs_delete_confirm_btn").click(function(e) {
+        e.stopImmediatePropagation();
+        var l = $("#confirm_casestudies_delete_layers .cs_delete_confirm_btn").data("layers_list");
+    console.log(l);
+
+        $(this).prop("disabled" , true);
+        $(this).find(".run_icon").removeClass("hidden");
+
+        for (var i = 0; i < l.length; i++) {
+            var _data_obj = {
+                id : "{{ item.id }}",
+                url: l[i].url
+            }
+            callApiCasestudies(
+                DELETE_LAYERS_CASESTUDIES_ENDPOINT , 
+                _data_obj
+                , responseDeleteLayers,
+                "POST");
+        }
+    });  
+}
+
+
+    function responseDeleteLayers(resp) {
+        var tot_deleted = $("#confirm_casestudies_delete_layers").attr("data-tot-deleted" );
+        tot_deleted++;    
+        $("#confirm_casestudies_delete_layers").attr("data-tot-deleted" , tot_deleted);
+        
+        if (resp.success) {
+            var tot = $("#confirm_casestudies_delete_layers").attr("data-tot" );
+            
+
+            if (tot == tot_deleted) {
+                // createLayersCaseStudy();
+                var target = $("#confirm_casestudies_delete_layers .cs_delete_confirm_btn").attr("data-target");
+                // $("#item-" + target).fadeOut("200", function () {
+                //     createLayersCaseStudy(resp.data.layers);
+                // });
+                $("#confirm_casestudies_delete_layers").modal("hide");  
+                console.log(resp);
+                $("#confirm_casestudies_delete_layers .cs_delete_confirm_btn").prop("disabled" , false);
+                $("#confirm_casestudies_delete_layers .run_icon").addClass("hidden");
+                createLayersCaseStudy(resp.data.layers);
+                checkCheckbox();
+                $("#customCheckAll").prop("checked" , false);
+
+                if ( $("#layers-list *").length == 0 ) {
+                    $("#layers, #tab_cs").empty();
+                }
+
+            }
+        }   
+        else {
+            // alert("Si è verificato un errore");
+            $("#confirm_casestudies_delete_layers .cs_delete_confirm_btn").prop("disabled" , false);
+            $("#confirm_casestudies_delete_layers .run_icon").addClass("hidden");            
+            var alertObj = {};
+            setAlertFeedback(alertObj);            
+        }
+    }
+
+    function setCaseStudiesList() {
+        
+        {% if user.is_authenticated %}
+        
+  		
+          
+          
+
+
+        /*
+            --------------------------------------------------------------------------------------
+
+            Tasto di CLONE
+        */
+          
+        $("body").on("click" , ".cs_clone_btn" , function(e) {
+
+            resetCloneModal();
+            
+			var cs_id = $(this).attr("data-id");
+            var cs_title = $("#label_cs_" + cs_id).text().trim();
+			
+			$("#confirm_casestudies_clone .cs_title").text(cs_title);
+			$("#confirm_casestudies_clone .cs_clone_confirm_btn").attr("data-id" , cs_id);
+			$("#confirm_casestudies_clone").modal("show");  
+		});
+
+
+		$("body").on("click" , ".cs_clone_confirm_btn" , function(e) {
+			
+			var cs_id = $(this).attr("data-id");
+            var cs_label_default = $("#label_cs_" + cs_id).text().trim();
+            var cs_description_default = $("#description_cs_" + cs_id).text().trim();
+
+			if (!cs_id.length) {
+				// alert("{% trans 'Case Study id is not set' %}");
+                var alertObj = {};
+                alertObj["message"] = "{% trans 'Case Study id is not set' %}";
+                setAlertFeedback(alertObj);
+				return false;
+			}
+
+            if (user_is_authenticated) {
+				$(this).prop("disabled" , true);
+				$(this).find(".run_icon").removeClass("hidden");
+
+                var cs_label = $("#id_label").val().trim();
+                if (cs_label.length == 0)
+                    cs_label = cs_label_default;
+
+                var cs_description = $("#cs_text").val().trim();
+                if (cs_description.length == 0)
+                    cs_description = cs_description_default;
+
+                var _data_obj = {
+                    id : cs_id,
+                    label : cs_label,
+                    description : cs_description,
+                } 
+                callApiCasestudies(
+                    CLONE_CASESTUDIES_ENDPOINT , 
+                    _data_obj
+                    , cloneCaseStudies,
+                    "POST");
+            }
+
+        });
+
+
+
+
+
+    
+    
+
+
+
+        /*
+            --------------------------------------------------------------------------------------
+
+            Tasto di remove
+        */
+    
+
+        $("body").on("click" , ".cs_edit_btn" , function(e) {
+
+            resetEditModal();
+            
+			var cs_id = $(this).attr("data-id");
+            var cs_title = $("#label_cs_" + cs_id).text().trim();
+			
+			$("#confirm_casestudies_edit .cs_title").text(cs_title);
+			$("#confirm_casestudies_edit .cs_edit_confirm_btn").attr("data-id" , cs_id);
+			$("#confirm_casestudies_edit").modal("show");  
+		});
+
+
+		$("body").on("click" , ".cs_edit_confirm_btn" , function(e) {
+			
+			var cs_id = $(this).attr("data-id");
+            var cs_label_default = $("#label_cs_" + cs_id).text().trim();
+            var cs_description_default = $("#description_cs_" + cs_id).text().trim();
+
+			if (!cs_id.length) {
+				// alert("{% trans 'Case Study id is not set' %}");
+                var alertObj = {};
+                alertObj["message"] = "{% trans 'Case Study id is not set' %}";
+                setAlertFeedback(alertObj);
+				return false;
+			}
+
+            if (user_is_authenticated) {
+				$(this).prop("disabled" , true);
+				$(this).find(".run_icon").removeClass("hidden");
+
+                var cs_label = $("#id_label_edit").val().trim();
+                if (cs_label.length == 0)
+                    cs_label = cs_label_default;
+
+                var cs_description = $("#cs_text_edit").val().trim();
+                if (cs_description.length == 0)
+                    cs_description = cs_description_default;
+
+                var _data_obj = {
+                    id : cs_id,
+                    label : cs_label,
+                    description : cs_description,
+                } 
+                callApiCasestudies(
+                    EDIT_CASESTUDIES_ENDPOINT , 
+                    _data_obj
+                    , editCaseStudies,
+                    "POST");
+            }
+
+        });
+
+
+
+    /*
+        --------------------------------------------------------------------------------------
+
+        Tasto di REMOVE
+    */
+    
+
+
+
+        $("body").on("click" , ".cs_delete_btn" , function(e) {
+
+            resetDeleteModal();
+            
+			var cs_id = $(this).attr("data-id");
+            var cs_title = $("#label_cs_" + cs_id).text().trim();
+			
+			$("#confirm_casestudies_delete .cs_title").text(cs_title);
+			$("#confirm_casestudies_delete .cs_delete_confirm_btn").attr("data-id" , cs_id);
+			$("#confirm_casestudies_delete").modal("show");  
+		});
+
+
+		$("body").on("click" , ".cs_delete_confirm_btn" , function(e) {
+			
+			var cs_id = $(this).attr("data-id");
+            var cs_label_default = $("#label_cs_" + cs_id).text().trim();
+            var cs_description_default = $("#description_cs_" + cs_id).text().trim();
+
+			if (!cs_id.length) {
+				// alert("{% trans 'Case Study id is not set' %}");
+                var alertObj = {};
+                alertObj["message"] = "{% trans 'Case Study id is not set' %}";
+                setAlertFeedback(alertObj);
+				return false;
+			}
+
+            if (user_is_authenticated) {
+				$(this).prop("disabled" , true);
+				$(this).find(".run_icon").removeClass("hidden");
+                var _data_obj = {
+                    id : cs_id
+                } 
+                callApiCasestudies(
+                    DELETE_CASESTUDIES_ENDPOINT , 
+                    _data_obj
+                    , deleteCaseStudies,
+                    "POST");
+            }
+
+        });
+
+
+        {%endif%}
+	}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function cloneCaseStudies(resp) {
+    var obj = resp.data.objects;
+    
+    if (!resp.success) {
+        return cloneError();
+    }
+    if (!obj.success) {
+        return cloneError();
+    }
+    if (obj.length == 0) {
+        return cloneError();
+    }
+    var CASESTUDIES_DETAIL_ENDPOINT = "{% url 'casestudies_detail' '@id' %}";
+    CASESTUDIES_DETAIL_ENDPOINT = CASESTUDIES_DETAIL_ENDPOINT.replace('@id' , obj.id);
+    location.href = CASESTUDIES_DETAIL_ENDPOINT;        
+}
+
+function cloneError() {
+    // alert("{% trans 'An error are occured' %}");
+    $("#confirm_casestudies_clone").modal("hide");  
+    var alertObj = {};
+    setAlertFeedback(alertObj);
+    $("#confirm_casestudies_clone .cs_clone_confirm_btn").prop("disabled" , false);
+    $("#confirm_casestudies_clone .cs_clone_confirm_btn").find(".run_icon").addClass("hidden");
+    return false;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+function editCaseStudies(resp) {
+    var obj = resp.data.objects;
+    var alertObj = {};
+    if (!resp.success) {
+        alertObj["message"] = resp.message;
+        return editError(alertObj);
+    }
+    if (!resp.data.success) {
+        alertObj["message"] = ERROR_MESSAGE_PERMISSION;
+        return editError(alertObj);
+    }
+    
+    $("#confirm_casestudies_edit").modal("hide");  
+
+    $("#confirm_casestudies_edit .cs_edit_confirm_btn").prop("disabled" , false);
+    $("#confirm_casestudies_edit .cs_edit_confirm_btn").find(".run_icon").addClass("hidden");
+    $("title").text(obj.label + " - " + SITE_NAME);
+    $("#label_cs_" + obj.id).text(obj.label);
+    $("#description_cs_" + obj.id).text(obj.description); 
+    $(".abstract .item-description p").text(obj.description);
+    $(".page-title").text(obj.label);
+    $(".cs_edit_btn").attr("data-cs_title" , obj.label);
+    $(".cs_clone_btn").attr("data-cs_title" , obj.label);
+    $(".cs_delete_btn").attr("data-cs_title" , obj.label);
+    $("#updated").text( obj.updated );
+    $("#updated").attr("datetime" , obj.updated);
+
+    alertObj["type"] = "success";
+    alertObj["title"] = "";
+    alertObj["message"] = SUCCESS_MESSAGE_EDIT;
+    setAlertFeedback(alertObj);
+
+    // var CASESTUDIES_DETAIL_ENDPOINT = "{% url 'casestudies_detail' '@id' %}";
+    // CASESTUDIES_DETAIL_ENDPOINT = CASESTUDIES_DETAIL_ENDPOINT.replace('@id' , obj.id);
+    // location.href = CASESTUDIES_DETAIL_ENDPOINT;        
+}
+
+function editError(alertObj) {
+    // alert("{% trans 'An error are occured' %}");
+    $("#confirm_casestudies_edit").modal("hide");  
+    
+    setAlertFeedback(alertObj);
+    $("#confirm_casestudies_edit .cs_edit_confirm_btn").prop("disabled" , false);
+    $("#confirm_casestudies_edit .cs_edit_confirm_btn").find(".run_icon").addClass("hidden");
+    return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+function deleteCaseStudies(resp) {
+    var obj = resp.data.objects;
+    
+    var obj = resp.data.objects;
+    var alertObj = {};
+    if (!resp.success) {
+        alertObj["message"] = resp.message;
+        return editError(alertObj);
+    }
+    if (!resp.data.success) {
+        alertObj["message"] = ERROR_MESSAGE_PERMISSION;
+        return editError(alertObj);
+    }
+    
+    location.href = CASESTUDIES_LIST_ENDPOINT;        
+}
+
+function deleteError() {
+    // alert("{% trans 'An error are occured' %}");
+    $("#confirm_casestudies_delete").modal("hide");  
+    var alertObj = {};
+    setAlertFeedback(alertObj);
+    $("#confirm_casestudies_delete .cs_delete_confirm_btn").prop("disabled" , false);
+    $("#confirm_casestudies_delete .cs_delete_confirm_btn").find(".run_icon").addClass("hidden");
+    return false;
+}
+
+
+
+    /*
+        --------------------------------------------------------------------------------------
+
+    */
+
+
+
+
+    
+
+    function roundToTwo(num) {    
+        return +(Math.round(num + "e+2")  + "e-2");
+    }
+
+
+    
+
+
+    $(document).ready(function() {
+        $('#confirm_casestudies_clone').on('hidden.bs.modal', function () {
+            resetCloneModal();
+        });
+        $('#confirm_casestudies_edit').on('hidden.bs.modal', function () {
+            resetEditModal();
+        });
+        $('#confirm_casestudies_delete_layers').on('hidden.bs.modal', function () {
+            resetDeleteModal();
+        });
+
+
+
+            
+    });
+  </script>

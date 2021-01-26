@@ -1,0 +1,225 @@
+{% extends "groups/group_base.html" %}
+{% load i18n %}
+
+{% block title %}{{ object.title|default:object.slug }} - {{ block.super }}{% endblock %}
+
+{% block head %}
+{% if TWITTER_CARD %}
+{% include "groups/_group_twittercard.html" %}
+{% endif %}
+{% if OPENGRAPH_ENABLED %}
+{% include "groups/_group_opengraph.html" %}
+{% endif %}
+{{ block.super }}
+{% endblock %}
+
+{% block body_class %}{% trans "groups" %}{% endblock %}
+
+
+
+{% block sidebar %}
+
+
+
+<div class="list-group">
+
+
+    
+            
+    <div class="list-group-item">
+        <div class="profile-image">
+            {% if object.logo %}
+            <img src="{{ object.logo.url }}" alt="{{ object.title }}" />
+            {% else %}
+            <img src="/static/img/img_placeholder.jpg" alt="{{ object.title }}" />
+            {% endif %}
+        </div>
+    </div>
+
+   
+
+    
+
+    <div class="list-group-item">
+        <table class="table table-user-profile">
+            <tbody>
+            {% if object.email %}
+                <tr>
+                    <td class="table-user-profile-attribute">{% trans 'Email' %}</td>
+                    <td class="table-user-profile-attribute">
+
+                        <a href="mailto:{{ object.email }}">{{ object.email }}</a>
+                    </td>
+                </tr>
+            {% endif %}
+            
+        
+    
+            {% if object.categories.exists %}
+                <tr>
+                    <td class="table-user-profile-attribute">{% trans 'Category' %}</td>
+                    <td class="table-user-profile-attribute">
+                        <a title="{% trans 'Category' %}" href="{{ category.get_absolute_url }}"><span
+                            class="label label-info">{{ category.name }}</span></a>
+                    </td>
+                </tr>
+            {% endif %}
+
+
+            {% if object.keyword_list %}
+                <tr>
+                    <td class="table-user-profile-attribute">{% trans 'Keywords' %}</td>
+                    <td>
+                        {% for keyword in object.keyword_list %}
+                        <span class="label label-default">{{ keyword }}</span>
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% else %}
+            {% endif %}
+
+
+            </tbody>
+        </table>
+
+
+       
+
+
+    </div>
+
+
+    <div class="list-group-item">
+            
+        
+
+            <h4>{% trans "Permissions" %}</h4>
+            <p>
+                {% blocktrans with object.get_access_display as access %}
+                This group is <strong>{{ access }}</strong>.
+                {% endblocktrans %}
+                {% if object.access == "public" %}
+                {% trans "Anyone may join this group." %}
+                <form class="uniForm" method="POST" action="{% url "group_join" object.slug %}">
+                    {% csrf_token %}
+                    {% if not is_member %}
+                    <div style="margin-top: 15px;"></div>
+                    <input type="submit" class="btn btn-default btn-md btn-block"
+                        value="{% trans "Join Group" %}" />
+                    {% endif %}
+                </form>
+                {% else %} {% if object.access == "public-invite" %}
+                {% trans "Anyone may view this group but membership is by invitation only." %}
+                {% else %} {% if object.access == "private" %}
+                {% trans "Membership is by invitation only." %}
+                {% endif %} {% endif %} {% endif %}
+            </p>
+            
+        </div>
+
+    {% if can_view %}
+    <div class="list-group-item">
+        <a
+        class="btn btn-info btn-block" href="{% url "group_activity" object.slug %}">{% trans "Group Activities" %}</a></div>
+    {% endif %}
+
+    <li class="list-group-item">
+            <h4>{% trans "Managers" %}</h4>
+            {% for manager in object.get_managers %}
+            {% with manager as profile %}
+            {% include "people/_profile_about_item.html" %}
+            {% endwith %}
+            {% endfor %}
+        </li>
+        
+    {% if is_manager %}
+        <div class="list-group-item"><a
+            class="btn btn-info btn-block" href="{% url "group_update" object.slug %}">{% trans "Edit Group Details" %}</a></div>
+        <div class="list-group-item"><a
+            class="btn btn-info btn-block" href="{% url "group_members" object.slug %}">{% trans "Manage Group Members" %}</a></div>
+        <div class="list-group-item"><a
+            class="btn btn-block btn-danger" href="{% url "group_remove" object.slug %}">{% trans "Delete this Group" %}</a></div>
+        {% endif %}
+
+
+</div>
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+{% block body %}
+
+    
+<div class="page-header">	
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-left">
+                
+                <small><a class="btn-dark-light-link breadcrumb-title" href="{% url "group_list" %}">{% trans "Explore Groups" %}</a> /</small>
+                <h1 class="page-title">{{ object.title|default:object.slug }}</h1>
+             
+            </div>
+        </div>
+        <div class="col-md-12" style="margin-top: 25px;"></div>
+        <div class="col-md-12">
+            <div class="pull-left icon-list" data-toggle="tooltip" data-placement="top"
+                title="{% trans 'Last Modified' %}" itemprop="dateModified"
+                datetime="{{object.last_modified}}">
+                <span class="fa fa-calendar"></span>
+                {{ object.last_modified }}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-md-9 abstract">
+        <h2 class="h4 h-label">
+            {% trans "Abstract" %}
+        </h2>
+        <p>
+            {{ object.description }}
+        </p>
+		<div style="margin-top: 25px;"></div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="h4 h-label">{% trans "Members" %}</h2>
+        <div class="tab-content paginate paginate-auto" id="search-content">
+            {% include 'people/_profile_list_item.html' %}
+        </div>
+    </div>
+    <div class="col-md-12">
+        {% include 'search/_pagination.html' %}
+    </div>
+</div>
+{% endblock %}
+
+
+{% block extra_script %}
+{{ block.super }}
+<script type="text/javascript">
+    SEARCH_URL = '{% url 'api_dispatch_list' api_name='api' resource_name='profiles' %}' + '?group=' + '{{ object.slug }}';
+</script>
+{% with include_spatial='false' %}
+{% include 'search/search_scripts.html' %}
+{% endwith %}
+{% endblock extra_script %}

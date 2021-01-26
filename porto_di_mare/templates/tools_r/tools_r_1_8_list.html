@@ -1,0 +1,79 @@
+{% extends "tools_r/tools_r_base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block title %} Tools R 1.8  | {{ block.super }} {% endblock %}
+
+{% block body_class %}Tools R 1.8 list{% endblock %}
+ 
+ 
+{% block sidebar %}
+    
+    {% with cta_text='Create new AZA' %}
+    {% include "tools_r/_tool_r_list_filter.html" %}
+    {% endwith %}
+
+{% endblock sidebar %}  
+
+
+
+
+{% block body %}
+
+
+    {% with include_type_filter='true' %}
+    {% with facet_type='tools_r' %}
+    {% with header='Type' %}
+    {% with filter='type__in' %}
+    {% with cta_text='Open AZA'  %}
+
+
+
+    {% with page_title='Explore Allocated Zones for Aquaculture (AZA)' %}
+    {% include 'base/_page-header.html' %}
+    {% endwith %}
+
+
+    
+    {% include 'tools_r/_tools_r_resourcebase_snippet_v2.html' %}
+           
+        
+        
+
+
+    {% endwith %}
+    {% endwith %}
+    {% endwith %}
+    {% endwith %}
+    {% endwith %}
+    {% include "_bulk_permissions_form.html" %}
+
+
+{% endblock %}
+
+
+
+
+
+{% block extra_script %}
+{{ block.super }}
+  {% if GEONODE_SECURITY_ENABLED %}
+    {% include "_permissions_form_js.html" %}
+  {% endif %}
+
+  {% include "tools_r/_tools_r_script_1_8.html" %}
+
+  <script type="text/javascript">
+    var hasLayerUsed = false;
+    var hasSortable = false;
+    var hasPopover = false;
+  
+    $(document).ready(function() {    
+     
+        setFilter() ;
+        
+    });
+</script>
+
+
+{% endblock extra_script %}

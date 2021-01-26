@@ -1,0 +1,443 @@
+{% extends "tools_r/tools_r_base.html" %}
+{% load i18n %}
+
+{% block title %} Tools R 1.12 | {{ block.super }} {% endblock %}
+
+
+{% block body_class %}ToolsR detail{% endblock %}
+
+{%comment%}
+{% block sidebar %}
+
+{% endblock %}
+{%endcomment%}
+
+{% block body_outer %}
+
+<div class="container" id="ToolsR">
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="pull-left">
+                    <small><a class="btn-dark-light-link breadcrumb-title" 
+                        href="{% url "tools_r_1_12_list" %}">{% trans "Explore MSF" %}</a> /</small>
+
+                    <h1 class="page-title"> 
+                        {{ tools_r.label }} 
+                    </h1>
+                    <h2 class="h3">Tools R 1.12 - Medium Scale Fisheries (MSF)</h2>
+                </div>
+                <div class="pull-right">
+                    <a href="{% url 'tools_r_1_12_edit'  id=tools_r.id %}" class="btn btn-info">{%trans 'Edit MSF' %}</a>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 25px;"></div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" 
+                    data-original-title="{% trans 'Owner' %}">
+                        <span class="fa fa-user"></span>
+                        {% if tools_r.owner.get_full_name.strip %}
+                        {{ tools_r.owner.get_full_name }}
+                        {% else %}
+                        {{ tools_r.owner.username }}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" 
+                    data-original-title="{% trans 'Created' %}">
+                        <span class="fa fa-calendar"></span>
+                        {{ tools_r.created }}
+                    </div>
+                    
+                    <div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" 
+                    data-original-title="{% trans 'Updated' %}">
+                        {{ tools_r.updated }}
+                    </div>
+
+
+
+                    <div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" 
+                    data-original-title="{% trans 'Type' %}">
+                        <span class="fa fa-circle"></span>
+                        {{ type_value }}
+                    </div>
+
+
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+            <form id="tools_r_1_12_form"  
+                method="post" 
+                enctype="multipart/form-data" 
+                action="{% url "tools_r_1_12_detail" tools_r.id %}" 
+            >
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+                <input type="hidden" name="status" value="update" />
+     
+                <div class="col-md-8 col-lg-8 col-sm-8 col-xs-12">
+                    
+                    <div class="sr-only"> {{ tools_r.input_layers }} </div>
+                    <div class="sr-only"> {{ tools_r.input_criteria }} </div>
+                    <div class="sr-only status_tool"> {{ tools_r.status }} </div>
+                    <div class="sr-only response_inputLayers"> {{ resp_command.response }} </div>
+                    <div class="sr-only form_pairwiseMatrixPS"> {{ tools_r.pairwise_matrix_ps }} </div> 
+                    <div class="sr-only form_pairwiseMatrixTR"> {{ tools_r.pairwise_matrix_tr }} </div> 
+                    <div class="sr-only form_fishingGearPS"> {{ tools_r.fishing_gear_ps }} </div> 
+                    <div class="sr-only form_fishingGearTR1224"> {{ tools_r.fishing_gear_tr1224 }} </div> 
+                    <div class="sr-only form_fishingGearTR2440"> {{ tools_r.fishing_gear_tr2440 }} </div>                
+                </div>
+
+                
+                  
+                <div class="clearfix"></div>
+                {% comment %}    
+                {% if request.user.is_superuser %}    
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        
+                        <input type="checkbox" name="public" id="id_public" {% if tools_r.public %} checked {% endif %}>
+                        <label for="id_public">{% trans " Public" %}</label>
+                    </div>
+                </div>
+                {% else %}
+                <div class="sr-only"><input type="checkbox" name="public" id="id_public" {% if tools_r.public %} checked {% endif %}></div>
+                
+                {% endif %}
+                {% endcomment %}    
+                
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                       
+                        {% include 'tools_r/_tools_r_layers.html' %}
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 15px;"></div>
+
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+
+                    <ul  class="nav nav-tabs">
+                        
+                        <li class="active">
+                            <a data-toggle="tab" href="#layers">
+                                {% trans "Layers" %}</a>
+                        </li>		
+
+                        <li class="">
+                            <a data-toggle="tab" href="#matrix-ps">
+                                {% trans "Matrix PS" %}</a>
+                        </li>	
+                        <li class="">
+                            <a data-toggle="tab" href="#matrix-tr">
+                                {% trans "Matrix TR" %}</a>
+                        </li>							
+                        <li>
+                            <a data-toggle="tab" href="#fishing-gear-ps">
+                                {% trans "Fishing Gear PS" %}</a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#fishing-gear-tr1224">
+                                {% trans "Fishing Gear TR1224" %}</a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#fishing-gear-tr2440">
+                                {% trans "Fishing Gear TR2440" %}</a>
+                        </li>							
+                    </ul>
+        
+                </div>
+                
+                <div class="tab-content col-md-12 col-sm-12 col-xs-12">		
+        
+                    <div class="tab-pane row active" id="layers">
+                        
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 15px;"></div>
+
+                        
+                        <div class="col-md-8 col-sm-8 col-xs-12 abstract">
+                            <h2 class="h5 h-label">Layers</h2>
+                            <div class="row" id="tools_r_layers">
+
+                            </div>
+                            <div class="row hide" id="tools_r_layers_template">
+                                <div class="item col-md-12 col-sm-12 col-xs-12 item-container ">
+                                    <div class="row">
+                                        <div class="col-md-1 col-sm-2 col-xs-2 no-gutter text-center icons-snippet">
+                                            <div class="item-items ">
+                                                {% include 'base/_list_item.html' %}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-11 col-sm-10 col-xs-10 profile-avatar">
+                                            <div 
+                                                class="item_thumbnail_url col-md-4 col-sm-4 col-xs-12 item-thumb">
+                                                
+                                            </div>
+                                            <div class="col-md-8 col-sm-8 col-xs-12 item-details">
+                                                
+                                                <div class="start-spacer hide" style="margin-top: 30px;"></div>
+                                                
+                                                <h3 class="title item_title h4">
+                                                </h3>
+                                                <div class="alert alert-warning item_not_approved hide">{% trans "PENDING APPROVAL" %}</div>
+                                                <div class="alert alert-danger item_is_approved hide">{% trans "UNPUBLISHED" %}</div>
+
+                                                <p class="abstract"></p>
+
+                                                <div style="margin-top: 5px;"></div>
+                                                <a class="btn btn-info item_detail_url"  
+                                                    href="#">
+                                                    {% trans "View Layer" %}</a>
+                                                <div class="end-spacer" style="margin-top: 30px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-12 info">
+                                <h2 class="h5 h-label">
+                                    {% trans 'Results' %}
+                                </h2>
+                                <div class="more">
+                                    {% if resp_command.check %}
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <div class="list-group">
+                                                <div class="list-unstyled-selected" style="margin-bottom: 5px;;">
+                                                    <a style="text-decoration:none;" target="_blank"
+                                                        href="{{tools_r.output_files}}Fish_Suitability_Index_PS_MSF.png"
+                                                            class="btn btn-info btn-md btn-block">{% trans "Fish Suitability Index PS MSF (PNG)" %}</a>
+                                                </div>    
+                                                <div class="list-unstyled-selected" style="margin-bottom: 5px;;">
+                                                    <a style="text-decoration:none;" target="_blank"
+                                                        href="{{tools_r.output_files}}Fish_Suitability_Index_TR1224_MSF.png"
+                                                            class="btn btn-info btn-md btn-block">{% trans "Fish Suitability Index TR1224 MSF (PNG)" %}</a>
+                                                </div>  
+                                                <div class="list-unstyled-selected" style="margin-bottom: 5px;;">
+                                                    <a style="text-decoration:none;" target="_blank"
+                                                        href="{{tools_r.output_files}}Fish_Suitability_Index_TR2440_MSF.png"
+                                                            class="btn btn-info btn-md btn-block">{% trans "Fish Suitability Index TR2440 MSF (PNG)" %}</a>
+                                                </div>   
+                                                <div class="list-unstyled-selected" style="margin-bottom: 5px;;">   
+                                                    <a style="text-decoration:none;" target="_blank"
+                                                        href="{{tools_r.output_files}}Fishing_Pressure_MSF.png"
+                                                            class="btn btn-info btn-md btn-block">{% trans "Fishing Pressure MSF (PNG)" %}</a>
+                                                </div>    
+                                                <div class="list-unstyled-selected" style="margin-bottom: 5px;;">   
+                                                    <a style="text-decoration:none;" target="_blank"
+                                                        href="{{tools_r.output_files}}Fishing_Pressure_PS_MSF.png"
+                                                            class="btn btn-info btn-md btn-block">{% trans "Fishing Pressure PS MSF (PNG)" %}</a>
+                                                </div>
+                                                <div class="list-unstyled-selected" style="margin-bottom: 5px;;">   
+                                                    <a style="text-decoration:none;" target="_blank"
+                                                        href="{{tools_r.output_files}}Fishing_Pressure_TR1224_MSF.png"
+                                                            class="btn btn-info btn-md btn-block">{% trans "Fishing Pressure TR1224 MSF (PNG)" %}</a>
+                                                </div>
+                                                <div class="list-unstyled-selected" style="margin-bottom: 5px;;">   
+                                                    <a style="text-decoration:none;" target="_blank"
+                                                        href="{{tools_r.output_files}}Fishing_Pressure_TR2440_MSF.png"
+                                                            class="btn btn-info btn-md btn-block">{% trans "Fishing Pressure TR2440 MSF (PNG)" %}</a>
+                                                </div>
+                                                <div class="list-unstyled-selected" style="margin-bottom: 5px;;">   
+                                                    <a style="text-decoration:none;" target="_blank"
+                                                        href="{{tools_r.output_files}}GT_interpolated_PS_MSF.png"
+                                                            class="btn btn-info btn-md btn-block">{% trans "GT interpolated PS MSF (PNG)" %}</a>
+                                                </div>
+                                                <div class="list-unstyled-selected" style="margin-bottom: 5px;;">   
+                                                    <a style="text-decoration:none;" target="_blank"
+                                                        href="{{tools_r.output_files}}GT_interpolated_TR1224_MSF.png"
+                                                            class="btn btn-info btn-md btn-block">{% trans "GT interpolated TR1224 MSF (PNG)" %}</a>
+                                                </div>
+                                                <div class="list-unstyled-selected" style="margin-bottom: 5px;;">   
+                                                    <a style="text-decoration:none;" target="_blank"
+                                                        href="{{tools_r.output_files}}GT_interpolated_TR2440_MSF.png"
+                                                            class="btn btn-info btn-md btn-block">{% trans "GT interpolated TR2440 MSF (PNG)" %}</a>
+                                                </div>
+                                                <div class="list-unstyled-selected" style="margin-bottom: 5px;;">
+                                                    <a style="text-decoration:none;" target="_blank"
+                                                        href="{{tools_r.output_files}}pairwise_matrix_PS.csv"
+                                                            class="btn btn-info btn-md btn-block">{% trans "Pairwise matrix PS (CSV)" %}</a>
+                                                </div>
+                                                <div class="list-unstyled-selected" style="margin-bottom: 5px;;">
+                                                    <a style="text-decoration:none;" target="_blank"
+                                                        href="{{tools_r.output_files}}pairwise_matrix_TR.csv"
+                                                            class="btn btn-info btn-md btn-block">{% trans "Pairwise matrix TR (CSV)" %}</a>
+                                                </div>
+                                                <div class="list-unstyled-selected" style="margin-bottom: 5px;;">
+                                                    <a style="text-decoration:none;" target="_blank"
+                                                        href="{{tools_r.output_files}}Fishing_Gear_PS.csv"
+                                                            class="btn btn-info btn-md btn-block">{% trans "Fishing Gear PS (CSV)" %}</a>
+                                                </div>
+                                                <div class="list-unstyled-selected" style="margin-bottom: 5px;;">
+                                                    <a style="text-decoration:none;" target="_blank"
+                                                        href="{{tools_r.output_files}}Fishing_Gear_TR1224.csv"
+                                                            class="btn btn-info btn-md btn-block">{% trans "Fishing Gear TR1224 (CSV)" %}</a>
+                                                </div>
+                                                <div class="list-unstyled-selected" style="margin-bottom: 5px;;">
+                                                    <a style="text-decoration:none;" target="_blank"
+                                                        href="{{tools_r.output_files}}Fishing_Gear_TR2440.csv"
+                                                            class="btn btn-info btn-md btn-block">{% trans "Fishing Gear TR2440 (CSV)" %}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                    <!-- Modal Alert -->
+                                    <div class="list-group">
+                                        <div class="alert alert-danger">
+                                            <span class="modal-title h4">
+                                                <span class="error-layer">
+                                                    {{ resp_command.response }}
+                                                </span>
+                                            </span>
+                                        </div>    
+                                    </div>    
+                                    {% endif %}
+                                
+                                </div>
+
+                                            
+                        {% if user.is_authenticated %}
+
+                            <button 
+                                style="margin-left: 0;"
+                                type="button" 
+                                class="btn btn-default btn-block ssf_clone_btn" 
+                                data-title="{{tools_r.label}}"
+                                data-id="{{tools_r.id}}">  
+                                {% trans 'CLONE CASE STUDY' %}
+                            </button>
+
+                            <div style="margin-bottom: 11px;"></div>
+                        {% endif %}
+
+
+                
+                        {% if  user.id == tools_r.owner.id or user.is_superuser %}
+                            <div id="tools_r_1_12_remove">
+
+                                <a href="{% url 'tools_r_1_12_remove' id=tools_r.id %}" id="edit_tools_r_btn" 
+                                    class="btn btn-danger btn-block">{% trans "REMOVE TOOL" %}</a>            
+                            </div>
+                            {% endif %}
+
+                        </div>
+
+                        
+                    </div>
+
+                    <div class="tab-pane row active_" id="matrix-ps">
+                        {% include "tools_r/_tool_r_12_matrix_ps.html" %}
+                    </div>
+                    <div class="tab-pane row active_" id="matrix-tr">
+                        {% include "tools_r/_tool_r_12_matrix_tr.html" %}
+                    </div>
+        
+        
+        
+                    <div class="tab-pane row active_" id="fishing-gear-ps">
+                        {% include "tools_r/_tool_r_12_fishinggear_ps.html" %}
+                    </div>
+                    <div class="tab-pane row active_" id="fishing-gear-tr1224">
+                        {% include "tools_r/_tool_r_12_fishinggear_tr1224.html" %}
+                    </div>
+                    <div class="tab-pane row active_" id="fishing-gear-tr2440">
+                        {% include "tools_r/_tool_r_12_fishinggear_tr2440.html" %}
+                    </div>
+        
+                </div>
+
+                
+
+            </form>
+
+            
+
+        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 50px;"></div>
+
+    </div>    
+
+</div>
+
+{% include 'tools_r/_confirm_tools_r_clone.html' %}
+  
+ 
+{% endblock %} 
+
+
+
+{% block extra_script %}
+{{ block.super }}
+  {% if GEONODE_SECURITY_ENABLED %}
+    {% include "_permissions_form_js.html" %}
+  {% endif %}
+
+  {% include "tools_r/_tools_r_script_1_12.html" %}
+
+  <script type="text/javascript">
+  var hasLayerUsed = true;
+  var hasPopover = false;
+
+  $(document).ready(function() {    
+
+    var readonly = ($(".status_tool").text().indexOf('clone') === -1);
+     
+    var pairwise_matrix_ps = JSON.parse($(".form_pairwiseMatrixPS").text().trim());
+    setTableMatrix(pairwise_matrix_ps, "#module_r_12_table_ps", "option.setMatrixPS", readonly);
+    var pairwise_matrix_tr = JSON.parse($(".form_pairwiseMatrixTR").text().trim());
+    setTableMatrix(pairwise_matrix_tr, "#module_r_12_table_tr", "option.setMatrixTR", readonly);
+    var fishing_gear_ps = JSON.parse($(".form_fishingGearPS").text().trim());
+    setFishingGearMatrix(fishing_gear_ps, "fishing-gear-content-ps", readonly); 
+    var fishing_gear_tr1224 = JSON.parse($(".form_fishingGearTR1224").text().trim());
+    setFishingGearMatrix(fishing_gear_tr1224, "fishing-gear-content-tr1224", readonly); 
+    var fishing_gear_tr2440 = JSON.parse($(".form_fishingGearTR2440").text().trim());
+    setFishingGearMatrix(fishing_gear_tr2440, "fishing-gear-content-tr2440", readonly); 
+    inputLayers_obj.write();
+    var check = false;
+    if ($(".response_inputLayers").text().indexOf('fail') > -1 || $(".response_inputLayers").text().indexOf('wait') > -1){     
+        $(".inputLayers_footer .text").html("<strong>"+$(".response_inputLayers").text()+"</strong> ");
+        $(".inputLayers_footer .text").addClass("text-danger").removeClass("text-success");
+        if ($(".response_inputLayers").text().indexOf('wait') > -1)
+            $(".save_tools_r_btn").attr("disabled" , true);
+    }
+    else {
+        $(".inputLayers_footer .text").text("");
+        $(".inputLayers_footer .text").addClass("text-success").removeClass("text-danger");
+        check = checkOutputFiles();
+    }
+
+    cloneToolsR12();
+
+    $("#tools_r_1_12_form").submit(function(e) {
+        e.stopImmediatePropagation();
+        $(".save_tools_r_btn")
+            .attr("disabled" , true)
+        $(".save_tools_r_btn .text-btn")
+            .text("wait, run process...");
+        $(".save_tools_r_btn")
+            .find(".run_icon").removeClass("hidden");
+        $(".inputLayers_footer .text").empty();
+
+    });
+
+    $("#tools_form_r_clone").submit(function(e) {
+        $(".save_tools_r_btn")
+            .attr("disabled" , true)
+        $(".save_tools_r_btn")
+            .find(".run_icon").removeClass("hidden");
+    });
+    
+ });
+</script>
+
+
+  {% with include_spatial='true' %}
+  {% include 'search/search_scripts.html' %}
+  {% endwith %}
+{% endblock extra_script %}
+

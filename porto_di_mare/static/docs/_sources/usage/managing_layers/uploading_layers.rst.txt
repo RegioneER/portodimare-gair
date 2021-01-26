@@ -1,0 +1,60 @@
+.. _uploading-layers:
+
+Layers Uploading
+================
+
+.. warning::
+	| Remember: only authenticated user can upload layers.
+
+| The most important resource type in GeoNode is the *Layer*. A layer represents spatial information so it can be displayed inside a map.
+
+The *Layer Uploading* page can be reached from the :guilabel:`Upload Layer` link of the :guilabel:`Data` drop dow menu in the navigation bar.
+
+.. figure:: img/upload_layer_link.png
+   :alt: Link for Layers Uploading
+   :align: center
+   :name: upload_layer_link
+
+   Link for Layers Uploading
+
+There is also an :guilabel:`Upload Layers` button in the *Layers Page*.
+
+.. figure:: img/upload_layer_link_from_list.png
+   :alt: Button for Layers Uploading
+   :align: center
+   :name: upload_layer_link_from_list
+    
+   Button for Layers Uploading
+
+The *Layers Uploading* page looks like the one in the picture below.
+
+.. figure:: img/layers_uploading_page.png
+   :alt: The Layers Uploading page
+   :align: center
+   :name: layers_uploading_page
+    
+   The Layers Uploading page
+
+| Through the :guilabel:`Choose Files` button (or dropping) you can select files from your disk, make sure they are valid raster or vector spatial data. 
+
+.. note::
+    | Maybe you need to change also the default Permissions settings, according to the visibility you want for the layer on the geoportal. 
+    | Remember to assign the permissions to your staff group, so all the group members will have those permissions (see :ref:`layer-permissions` for further information on how to set permissions).
+
+.. note:: 
+	| Also remember to fill in the metadata section appropriately (see :ref:`layer-metadata` for further information on how to to fill in the metadata).
+
+| Select the *charset*, then click on :guilabel:`Upload files` to start the process or click :guilabel:`Clear` to remove all the loaded files form the page.
+
+.. figure:: img/upload_shapefile.*
+   :alt: Shapefile Uploading
+   :align: center
+   :name: upload_shapefile
+
+   Shapefile Uploading
+
+In this example the ``foul ares poligons`` ESRI Shapefile, with all its mandatory files (`.shp`, `.shx`, `.dbf` and `.prj`), has been chosen.
+A progress bar shows the operation made during the layer upload and alerts you when the process is over.
+When the process ends click the :guilabel:`Layer Info` to check the layer has been correctly uploaded.
+
+The next paragraphs explains how to create a layer from scratch, how to set permissions, how to explore the layer properties and how to edit them.

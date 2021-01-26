@@ -1,0 +1,153 @@
+{% load i18n %}
+
+{% if items|length == 0 %}
+<div class="col-md-12 col-sm-12 col-xs-12 text-center icons-snippet">
+    <h3>{% trans "No content created yet." %}</h3>
+</div>
+{% endif %}
+
+
+
+
+<div class="row flex-grid flex-article-list" id="geodatabuilder-list">
+
+
+{% for  item in items   %}
+
+
+<article resource_id="{{ item.id }}" 
+class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+    <div class="panel panel-default">
+        
+        <div class="pane-heading">
+        
+           <div class="cs_title clear_">
+                
+                {% if item.casestudy.label.split|length > 0  %}
+                <strong>{{ item.casestudy.label }}</strong>
+                {% else %}
+                <strong class="text-danger-light">{% trans 'Case Study Not Found' %}</strong>
+                {% endif %}
+
+            </div>
+        
+            
+        </div>
+
+        <div class="item-thumb" 
+            {% for  layer in item.casestudy.layers   %}
+                {% if forloop.counter0 == 0 %}
+                    style="background-image: url('{{ layer.thumbnail }}');" 
+                {% endif %}
+            {% endfor %}
+            {% if item.casestudy.layers  %}
+            {% else %}
+                style="background-image: url('/static/img/img_placeholder.jpg');" 
+            {% endif %}
+        >
+            
+
+         
+
+        </div>
+            
+        <div class="panel-body">
+
+
+
+            <div class="pull-left icon-list" >
+                <span class="fa fa-user"></span>
+                &nbsp;&nbsp;<small>
+                {% if item.owner.get_full_name.split|length > 0  %}
+                    {{item.owner.get_full_name}}
+                {% else %}
+                    {{ item.owner.username }}
+                {% endif %}                
+                </small>
+            </div>
+
+
+            <div class="pull-left icon-list" data-toggle="tooltip" data-placement="right"
+                data-original-title="{% trans 'Updated Date' %}" itemprop="dateUpdated"
+                datetime="{{ item.updated}}">
+                <span class="fa fa-calendar"></span>
+                <small>{{ item.updated}}</small>
+            </div>
+
+            <div class="clearfix"></div>
+
+
+             <h3 class="item-detail-title">
+                <a href="{% url "geodatabuilder_detail" item.id %}">
+                    {{ item.label }}</a>
+            </h3>
+
+            
+            {% if item.desc_expression|length > 0  %}
+            <p class="abstract" >{{ item.desc_expression | truncatewords:30  }}</p>
+            {% else %}
+            <p class="abstract">
+                {% trans 'No description provided' %}
+                <br />
+            </p>
+            {% endif %}
+            
+            {% if item.expression|length > 0  %}
+            <!-- <p class="abstract" >{{ item.expression  }}</p>                 -->
+            {% endif %} 
+            
+
+    
+            
+            <!-- <div class="pull-left icon-list" id="updated" data-toggle="tooltip" data-placement="top"
+                data-original-title="{% trans 'Updated Date' %}" itemprop="dateModified"
+                datetime="{{ item.updated}}">
+
+                {{ item.updated}}
+            </div> -->
+
+            <div class="clearfix"></div>
+
+            
+
+            
+        </div>
+        <div class="panel-footer">
+        
+            <a class="btn btn-info" href="{% url "geodatabuilder_detail" item.id %}">
+                {% trans "View Expression" %}</a>
+
+            {% if user.is_authenticated %}
+            <button 
+                style="margin-left: 0;"
+                type="button" 
+                class="btn btn-dark gdb_clone_btn float-right" 
+                data-gdb_title="{{item.label}}"
+                data-toggle="tooltip" 
+                data-placement="left"
+                data-original-title="{% trans 'Clone Expression' %}"
+
+                data-id="{{item.id}}">  
+                <span class="sr-only">
+                {% trans 'CLONE' %}
+                </span>
+                <span class="fa fa-copy"></span>
+            </button>
+            {% endif %}
+            
+            
+        </div>
+    </div>
+</article>
+
+
+
+{% endfor %}
+
+    <div class="col-md-12" style="margin-top: 50px;"></div>
+
+
+</div>
+
+{% include 'search/_pagination_custom.html' %}

@@ -1,0 +1,89 @@
+{% load dialogos_tags %}
+{% load pagination_tags %}
+{% load bootstrap_tags %}
+{% load i18n %}
+{% load avatar_tags %}
+
+{% load i18n %}
+<div id="comments_section" class="comments paginate paginate-manual">
+
+	<h2 class="h4 h-label">{% trans 'Comments' %} <span class="total">({% comment_count resource %} {% trans 'total' %})</span></h2>
+
+  	{% if user.is_authenticated %}
+  	<div class="clearfix">
+    	<a href="#form_post_comment_div" role="button" class="btn btn-default" data-toggle="modal">{% trans 'Add Comment' %}</a>
+  	</div>
+  	{% else %}
+  
+  	<div class="clearfix">
+    	<p class="pull-right">{% trans 'Log in to add a comment' %}</p>
+  	</div>
+  	{% endif %}
+
+	<div style="margin-bottom: 50px;"></div>
+
+  	<div class="paginate-contents">
+		{% comments resource as comment_list %}
+		{% autopaginate comment_list 5 %}
+		{% for comment in comment_list %}
+		<article class="comment">
+      		<div class="avatar pull-left">
+			  <a href="{{ comment.author.get_absolute_url }}">{% autoescape off %}{% avatar comment.author 40 %}{% endautoescape %}</a>
+			</div>
+      		<p class="comment-description">
+        		{{ comment.comment }}
+			</p>
+            <p class="comment-author">
+				{% trans 'By' %} 
+				<a href="{{ comment.author.get_absolute_url }}" rel="author">{{ comment.author }}</a> 
+				{% trans "on" %} 
+				<time>{{ comment.submit_date|date:"M j, Y" }}</time>
+			</p>
+
+          	{% if comment|can_delete_comment:request.user %}
+          	<div class="comment-manage">
+            	<form method="POST" action="{% url 'delete_comment' comment.id %}">
+              		{% csrf_token %}
+              		<button type="submit" class="btn btn-danger btn-xs">{% trans "Delete" %}</button>
+            	</form>
+          	</div>
+          	{% endif %}
+    	</article>
+  		{% endfor %}
+  	</div>
+
+
+
+  	{% paginate %}
+
+
+
+</div>
+
+
+
+
+<!-- Modal -->
+{% if user.is_authenticated %}
+{% comment_form resource as form %}
+<div id="form_post_comment_div" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <span class="modal-title h4">{% trans 'Add Comment' %}</span>
+        </div>
+        <form action="{% comment_target resource %}" method="POST" id="form_post_comment">
+          <div class="modal-body">
+              {% csrf_token %}
+              {{ form|as_bootstrap }}
+          </div>
+          <div class="modal-footer">
+              <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Cancel" %}</button>
+              <button id="comment_submit_btn" class="btn btn-info">{% trans 'Submit Comment' %}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,158 @@
+{% extends "documents/document_upload_base.html" %}
+{% load staticfiles %}
+{% load bootstrap_tags %}
+{% load i18n %}
+
+{% block title %} {% trans "Upload Document's Thumbnail" %} - {{ block.super }} {% endblock %}
+
+{% block body_class %}data documents upload{% endblock body_class %}
+
+{% block head %}
+    {% include "geoext/ext_header.html" %}
+    {% include "geoext/app_header.html" %}
+    {{ block.super }}
+{% endblock %}
+
+
+
+
+
+{% block sidebar %}
+
+<div class="list-group">
+	<div class="list-group-item">
+			
+		<a href="{% url "document_browse" %}?limit={{ CLIENT_RESULTS_LIMIT }}"
+			class="btn btn-info btn-md btn-block">{% trans "Explore Documents" %}</a>
+	</div>
+</div>
+
+
+<h4 class="padding-LR">{% trans "Permissions"  %}</h4>
+<form id="permission_form">
+	{% include "_permissions.html" %}
+</form>
+
+{% endblock %}
+ 
+
+
+
+
+{% block body %}
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+      <div class="page-header">
+        <h1 class="page-title">{% trans "Upload Document's Thumbnail" %}</h1>			
+      </div>
+    </div>
+  
+    <div class="col-md-4">
+		<p>{% trans "Select them one by one:" %}</p>
+
+        <form id="file-uploader" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+            <!-- UI change to hide the list of previously uploaded files from the user -->
+            <input type="file" id="file-input" style="display: none;" multiple>
+            <input class="btn btn-link no-gutter" type="button" value="{% trans "Choose Files" %}" onclick="document.getElementById('file-input').click();">
+		</form>
+		
+		<section>
+		
+		<a href="{% url "document_thumb_upload" resource.id %}" 
+						data-toggle="tooltip" data-placement="left" title="{% trans "Clear" %}" 
+						id="clear-button" class="btn btn-danger">
+							<i class="fa fa-trash"></i>
+						</a>
+		
+		<a href="#" id="upload-button" class="btn btn-info text-uppercase">{% trans "Upload files" %}</a>
+		</section>
+
+		
+    </div>
+    <div class="col-md-8">
+
+	  
+
+        {% block additional_info %}{% endblock %}
+
+        {% if errors %}
+        <div id="errors" class="alert alert-danger">
+          {% for error in errors %}
+          <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <div id="upload-status"></div>
+
+        <section id="drop-zone">
+          <h3><i class="fa fa-cloud-upload"></i><br />{% trans "Or drop files here" %}</h3>
+        </section>
+
+        
+
+        <div class="widget">
+          	<ul id="global-errors"></ul>
+          	<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+					{% trans "Files to be uploaded" %}
+					</h3>
+				</div>
+													
+				<div id="file-queue" class="padding-LR ">
+
+				</div>
+
+				
+			</div>
+			<div class="checkbox" style="display:none;" id="style_upload_form_check">
+				{% trans "Is Upload Metadata XML Form" %} <input type="checkbox" name="style_upload_form" id="id_style_upload_form" checked="true"/>
+				<input type="text" name="layer_title" id="id_layer_title" value="{{ resource.alternate }}"/>
+			</div>
+        </section>
+
+   
+        </div>
+
+    </div>
+</div>
+{% endblock  %}
+
+{% block extra_script %}
+    {{ block.super }}
+    <script data-main="{% static 'js/upload/main' %}"
+      src="{% static 'lib/js/require.js' %}">
+    </script>
+    <script type="text/javascript">
+    {% autoescape off %}
+      csrf_token =  "{{ csrf_token }}",
+      form_target = "{% url "document_thumb_upload" docid=resource.id %}",
+      time_enabled = false,
+      mosaic_enabled = false,
+      userLookup = "{% url "account_ajax_lookup" %}"
+    {% endautoescape %}
+    </script>
+    {% if GEONODE_SECURITY_ENABLED %}
+        {% include "_permissions_form_js.html" %}
+    {% endif %}
+
+    <script type="text/javascript">
+        $('#id_doc_file').on('change', function(){
+            if($('#id_title').val() == ''){
+                $('#id_title').val($('#id_doc_file').val().replace("C:\\fakepath\\", ""));
+            }
+        });
+        $("#id_links").select2({
+            width: '100%'
+        });
+        $('#upload_form').submit(function(){
+          $('#permissions').val(JSON.stringify(permissionsString($('#permission_form'),'base')));
+        });
+    </script>
+{% endblock extra_script %}

@@ -1,0 +1,17 @@
+.. _managing_case_studies:
+
+Working with Case Studies
+===========================
+
+
+.. toctree::
+    :maxdepth: 1
+
+    partrac
+    muc
+    cea
+    aza
+    ssf
+    msf
+    oil_spill
+    

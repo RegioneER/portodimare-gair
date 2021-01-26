@@ -1,0 +1,55 @@
+{% extends "geonode_base.html" %}
+{% load i18n %}
+
+{% block body_outer %}
+
+<div class="container">
+
+
+  	<div class="row">
+		<div class="col-md-12">
+			<div class="page-header">
+				<small><a class="btn-dark-light-link breadcrumb-title" href="{{user.get_absolute_url}}">{{ user.name_long  }}</a> /</small>
+				<h1 class="page-title">{% trans "Invite Users" %}</h1>
+			</div>        
+		</div>
+  	</div>
+
+
+	<div class="row">
+		<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+		
+
+			<form id="invite-form" method="POST" action="{% url 'geonode.invitations:geonode-send-invite' %}">
+			
+				{% csrf_token %}
+				
+				<div class="form-group">
+					<label for="id_email">Email</label>
+					<input type="text" name="email" id="id_email" value="{{ form.email.value }}" class="form-control" placeholder="{% trans 'Email' %}">
+				</div>
+				
+				<div class="form-group">
+					{% for error in form.email.errors %}
+						<div class="alert alert-danger">{{ error }}</div>
+					{% endfor %}
+					{% if error_message %}
+						<div class="alert alert-warning">{{ error_message }}</div>
+					{% endif %}
+					{% if success_message %}
+						<div class="alert alert-success">{{ success_message }}</div>
+					{% endif %}
+				</div>
+				
+				<input type="submit" value="{% trans "Submit" %}" class="btn btn-info generic-ajax-submit">
+
+			</form>
+
+			<div style="margin-top: 50px;"></div>
+		
+		</div>
+
+	</div>
+	
+</div>
+{% endblock %}

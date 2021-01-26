@@ -1,0 +1,168 @@
+{% extends "metadata_base.html" %}
+{% load i18n %}
+{% load bootstrap_tags %}
+{% load base_tags %}
+{% load guardian_tags %}
+
+{% block title %}{{ document.alternate }} — {{ block.super }}{% endblock %}
+
+{% block body_class %}{% trans "data" %}{% endblock %}
+
+{% block body_outer %}
+
+{{ block.super }}
+
+
+<div class="container">
+
+
+
+	<div class="page-header">
+		<!-- <a href="{% url "document_browse" %}?limit={{ CLIENT_RESULTS_LIMIT }}" class="btn btn-primary pull-right">{% trans "Explore Documents" %}</a> -->
+		<h1 class="page-title">{% trans "Edit Metadata" %}</h1>
+	</div>
+
+
+
+	<div class="row">
+		<div class="col-md-12">
+			<p class="lead">
+				{% trans "Editing details for" %} {{ document.title }}
+			</p>
+			<form id="metadata_update" class="form-horizontal_" action="{% url "document_metadata" document.id %}"
+				method="POST">
+				{% if document_form.errors or category_form.errors or author_form.errors or poc.errors %}
+				<p class="bg-danger">{% blocktrans %}Error updating metadata. Please check the following fields:
+					{% endblocktrans %}</p>
+				<ul class="bg-danger">
+					{% if author_form.errors %}
+					<li>{% trans "Metadata Author" %}</li>
+					{{ author_form.errors }}
+					{% endif %}
+					{% if poc_form.errors %}
+					<li>{% trans "Point of Contact" %}</li>
+					{{ poc_form.errors }}
+					{% endif %}
+					{% for field in document_form %}
+					{% if field.errors %}
+					<li>{{ field.label }}</li>
+					{% endif %}
+					{% endfor %}
+
+					{% if category_form.errors %}
+					<li>{{ category_form.errors.as_ul }}</li>
+					{% endif %}
+				</ul>
+				{% endif %}
+				<div class="form-actions">
+					<input type="submit" id="btn_upd_md_up" class="btn btn-primary" value="{% trans "Update" %}" />
+				</div>
+
+
+
+
+							<ul id="layer_metadata_advanced_tabs" class="nav nav-tabs">
+								<li id="tab1" class="active">
+									<a data-toggle="tab" href="#details">
+										{% trans "Details" %}</a>
+								</li>
+								<li id="tab2">
+									<a data-toggle="tab" href="#category">
+										{% trans "Category" %}</a>
+								</li>							
+							</ul>
+
+
+
+					
+						
+				{% csrf_token %}
+
+						<div class="tab-content">
+
+						
+							<div class="tab-pane active" id="details">
+								<div class="form-controls padding-TB">
+									<div class="row">	
+									
+										
+											{% for field in document_form %}
+											<div class="col-xs-12 col-lg-12" style="margin-bottom: 15px;">
+												{% if user.is_superuser or field.label != "Starred" %}
+													{{ field.label }} {{ field }}
+												{% endif %}
+											</div>
+											{% endfor %}
+
+									</div>
+								</div>
+							</div>
+
+
+							<div class="tab-pane" id="category">				
+								<div class="row">
+									<div class="col-md-12">
+										<label class="control-label required-field">{% trans "Category" %}</label>
+										<fieldset id="category_form">
+											{% autoescape off %}
+											{% for choice in category_form.category_choice_field.field.choices %}
+											<div class="col-md-3 col-sm-4 col-xs-6">
+												<label class="fancy-checkbox">
+													<input type="radio" name="category_choice_field" value="{{ choice.0 }}"
+														{% ifequal category_form.initial choice.0 %} checked="checked"
+														{% endifequal %} />
+													{{ choice.1 }}
+												</label>
+											</div>
+											<!-- div class="radio col-md-6">
+								<input type="radio" name="category_choice_field" value="{{ choice.0 }}"
+								{% ifequal category_form.initial choice.0 %} checked="checked" {% endifequal %}>
+								{{ choice.1 }}
+								</input>
+							</div -->
+											{% endfor %}
+											{% endautoescape %}
+										</fieldset>
+									</div>
+
+									<div class="col-md-12 grid-spacer">
+										<fieldset class="form-controls modal-forms modal hide fade" id="poc_form">
+											<h2>{% trans "Point of Contact" %}</h2>
+											{{ poc_form|as_bootstrap }}
+											<button type='button' class="modal-cloose-btn btn btn-primary">{% trans "Done" %}</button>
+										</fieldset>
+										<fieldset class="form-controls modal-forms modal hide fade" id="metadata_form">
+											<h2>{% trans "Metadata Provider" %}</h2>
+											{{ author_form|as_bootstrap }}
+											<button type='button' class="modal-cloose-btn btn btn-primary">{% trans "Done" %}</button>
+										</fieldset>
+										<div class="form-actions">
+											<input type="submit" id="btn_upd_md_dwn" class="btn btn-primary"
+												value="{% trans "Update" %}" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block extra_script %}
+{{ block.super }}
+<script type="text/javascript">
+	$("#id_resource-links").select2({
+		placeholder: "{% trans "Select an option" %}",
+		allowClear: true
+	});
+</script>
+<style>
+	#s2id_id_resource-links {
+		width: '100%';
+		height: 100%;
+	}
+</style>
+{% endblock extra_script %}

@@ -1,0 +1,23 @@
+{% load i18n %}
+{% load base_tags %}
+<nav class="filter">
+
+    <h4 class="padding-LR"><a href="#" class="toggle toggle-nav"><span class="fa fa-chevron-right"></span>{% trans "Regions" %}</a></h4>
+    <ul class="nav closed node-treeview-content" id="regions">
+        <li class="padding-LR">
+            <div class="input-group search-box">
+            <label for="region_search_input" class="sr-only">
+                {% trans "Search by region" %}
+            </label>
+            <input name="region_search_input" id="region_search_input" type="text"
+                   placeholder="{% trans "Search by region" %}" class="form-control">
+            <span class="input-group-btn">
+                    <button type="submit" class="btn-info btn-circle" id="region_search_btn" >
+                        <span class="fa fa-search"></span></button>
+
+            </span>
+            </div>
+        </li>
+    </ul>
+
+</nav>

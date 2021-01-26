@@ -1,0 +1,70 @@
+{% load i18n %} 
+
+    <h2 class="h5 text-light" style="display: inline-block;">
+        {% trans "Operators:" %} &nbsp;
+    </h2>
+
+    <a 
+        href="#"
+        data-name="{% trans "ADDITION" %}"
+        data-tpl="#tpl_operator"
+        data-type="operator"
+        data-obj="obj_operator"
+        data-toggle="tooltip"
+        data-placement="bottom"
+        title="{% trans 'Description Button'%}"
+        data-original-title="{% trans 'Description Button'%}"
+        data-code="+"
+        data-text="&plus;"
+        class="btn-sm btn btn-dark-link_ btn-info  operator_btn">
+        &plus;
+        <span class="hidden">{% trans "ADDITION" %}</span>
+    </a>
+    <a 
+        href="#"
+        data-name="{% trans "SUBTRACTION" %}"
+        data-tpl="#tpl_operator"
+        data-type="operator"
+        data-obj="obj_operator"
+        data-toggle="tooltip"
+        data-placement="bottom"
+        title="{% trans 'Description Button'%}"
+        data-original-title="{% trans 'Description Button'%}"
+        data-code="-"
+        data-text="&minus;"
+        class="btn-sm btn btn-dark-link_ btn-info  operator_btn">
+        &minus;
+        <span class="hidden">{% trans "SUBTRACTION" %}</span>
+    </a>
+        <a 
+        href="#"
+        data-name="{% trans "MOLTIPLICATION" %}"
+        data-tpl="#tpl_operator"
+        data-type="operator"
+        data-obj="obj_operator"
+        data-toggle="tooltip"
+        data-placement="bottom"
+        title="{% trans 'Description Button'%}"
+        data-original-title="{% trans 'Description Button'%}"
+        data-code="*"
+        data-text="&times;"
+        class="btn-sm btn btn-dark-link_ btn-info  operator_btn expression_obj">
+        &times;
+        <span class="hidden">{% trans "MOLTIPLICATION" %}</span>
+    </a>
+    <a 
+        href="#"
+        data-name="{% trans "DIVISION" %}"
+        data-tpl="#tpl_operator"
+        data-type="operator"
+        data-obj="obj_operator"
+        data-toggle="tooltip"
+        data-placement="bottom"
+        title="{% trans 'Description Button'%}"
+        data-original-title="{% trans 'Description Button'%}"
+        data-code="/"
+        data-text="&divide;"
+        class="btn-sm btn btn-dark-link_ btn-info  operator_btn expression_obj">
+        &divide;
+        <span class="hidden">{% trans "DIVISION" %}</span>
+    </a>

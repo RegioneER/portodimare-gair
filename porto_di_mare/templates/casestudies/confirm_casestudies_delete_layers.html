@@ -1,0 +1,42 @@
+{% load i18n %}
+
+<div class="modal fade"  id="confirm_casestudies_delete_layers" data-backdrop="static"
+    data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                {% trans 'Do you want delete this Layer' %}                
+                ?
+            </div>
+            <div class="modal-body">
+                <strong class="cs_title"></strong>  
+                
+
+                <div style="margin-top: 15px;"></div>
+
+                
+
+                <small>
+                {% trans 'The operation is not reversible' %}
+                </small>
+            </div>
+                
+            <div class="modal-footer">
+                
+                
+
+                <button class="cs_delete_confirm_btn btn btn-danger">
+                    <span class='hidden run_icon fa fa-circle-o-notch fa-spin'></span>
+                    {% trans 'DELETE LAYER' %}                    
+                </button>
+
+                <button class="btn btn-default" data-dismiss="modal" aria-label="Close">
+                    {% trans 'Close' %}                                        
+                </button>
+
+
+            </div>
+        </div>
+    </div>
+</div>

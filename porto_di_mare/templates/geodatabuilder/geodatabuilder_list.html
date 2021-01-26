@@ -1,0 +1,153 @@
+{% extends "geodatabuilder/geodatabuilder_base.html" %}
+
+{% load i18n %}
+{% load staticfiles %}
+
+{% block title %} GeoDataBuilder | {{ block.super }} {% endblock %}
+
+
+
+{% block body_class %}GeoDataBuilder list{% endblock %}
+ 
+
+
+ 
+
+
+
+
+{% block sidebar %}
+
+<div class="list-group">
+	<div class="list-group-item">
+
+		<a href="{% url "geodatabuilder_create" %}" class="btn btn-info btn-md btn-block">
+			{% trans "Create new Expression" %}</a>
+		<div style="margin-top: 30px;"></div> 
+	</div>
+</div>
+
+
+
+<div class="row">
+        <div class="col-md-12">
+            <div class="padding-LR">
+                <div class="selections">
+                    <h4>{% trans "Filters" %}
+                        <small><a href="." id="clear-search"
+                                class="pull-right btn-link">{% trans "Clear" %}</a></small>
+                    </h4>
+                </div>
+
+                {% if SEARCH_FILTERS.TEXT_ENABLED %}
+                {% include "search/_cs_text_filter.html" %}
+                {% endif  %}
+
+            </div>
+    
+            <div id="slide-pane">
+
+                {% include "search/_geodatabuilder_filter.html" %}
+
+            </div>
+        </div>
+    </div>
+ 
+
+
+    
+{% endblock %}
+
+
+
+
+
+
+{% block body %}
+
+
+{% with include_type_filter='true' %}
+{% with facet_type='geodatabuilder' %}
+{% with header='Type' %}
+{% with filter='type__in' %}
+
+
+
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="pull-left">
+                    <h1 class="page-title"> 
+                        {% trans "Explore GeoDataBuilder" %} 
+                    </h1>
+                </div>
+            
+            
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 25px;"></div>
+            
+        </div>
+    </div>
+
+<div class="container flex-grid">
+    <div class="">
+        <div class="col-md-12 col-xs-12 col-sm-12"> 
+            <h2 class="pull-left h3">
+                {{ total_count }} {% trans ' found' %}
+            </h2>
+            {% include 'search/_sort_filters_custom.html' %}
+        </div>
+    
+        <div class="col-md-12 col-xs-12 col-sm-12 grid-spacer">
+            
+            
+                {% include 'geodatabuilder/_geodatabuilder_resourcebase_snippet.html' %}
+            
+
+        </div>
+    </div>
+    
+</div>
+
+    {% endwith %}
+    {% endwith %}
+    {% endwith %}
+    {% endwith %}
+    {% include "_bulk_permissions_form.html" %}
+
+
+
+{% include 'geodatabuilder/_confirm_geodatabuilder_clone.html' %}
+
+
+{% endblock %}
+
+
+
+
+
+{% block extra_script %}
+{{ block.super }}
+  {% if GEONODE_SECURITY_ENABLED %}
+    {% include "_permissions_form_js.html" %}
+  {% endif %}
+
+
+  <script type="text/javascript">
+    
+
+    
+    $(document).ready(function() {    
+        initGeodataBuilder();
+    });
+
+</script>
+
+
+
+  {% include "geodatabuilder/_geodatabuilder_script_v2.html" %}
+
+
+
+{% endblock extra_script %}

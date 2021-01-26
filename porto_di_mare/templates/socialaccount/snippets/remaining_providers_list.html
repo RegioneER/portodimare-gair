@@ -1,0 +1,65 @@
+{% load i18n %}
+{% load socialaccount %}
+{% load socialaccount_extra %}
+
+{% get_other_social_providers user as other_providers %}
+
+<div class="row">
+<div class="col-md-6">
+    <div class="row">
+    {% for provider in other_providers %}
+        <div class="col-md-6">
+            <a class="btn btn-default btn-block" title="{{provider.name}}" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+                <i class="fa fa-{{ provider.name|lower }}-square fa-2x" aria-hidden="true"></i>
+                {% if process == "login" %}
+                    {% trans "Sign in with" %}
+                {% elif process == "connect" %}
+                    {% trans "Connect with" %}
+                {% else %}
+                    {% trans "Sign up with" %}
+                {% endif %}
+                {{provider.name}}
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
+
+
+{%comment%}
+<!-- <div class="col-md-6">
+<div class="list-group">
+<a class="list-group-item" title="brand.name" href="">
+brand.name
+</a>
+<a class="list-group-item" title="brand.name" href="">
+    brand.name
+</a>
+<a class="list-group-item" title="brand.name" href="">
+        brand.name
+    </a>
+
+</div>
+</div> -->
+{%endcomment%}
+
+
+{% for provider in other_providers %}
+    {% if provider.id == "openid" %}
+    <div class="col-md-6">
+        <div class="list-group">
+        {% for brand in provider.get_brands %}
+            <a class="list-group-item" title="{{brand.name}}" href="{% provider_login_url provider.id openid=brand.openid_url process=process %}">
+                {{brand.name}}
+            </a>
+        {% endfor %}
+        </div>
+    </div>
+    {% endif %}    
+{% endfor %}
+
+
+
+</div>
+

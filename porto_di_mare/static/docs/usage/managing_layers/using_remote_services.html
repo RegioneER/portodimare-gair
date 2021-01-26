@@ -1,0 +1,307 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Using Remote Services &mdash; GAIR  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Working with Maps" href="../managing_maps/index.html" />
+    <link rel="prev" title="Creating a Layer from scratch" href="new_layer_from_scratch.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html"> GAIR
+          
+
+          
+            
+            <img src="../../_static/logo-adrion-portodimare.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                European Regional Development Fund - Instrument for Pre-Accession II Fund
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">About</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about/index.html">What is GAIR</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.html">Getting Started</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GAIR Help</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">GAIR Users Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data/index.html">Data</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Working with Layers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="layer_info.html">Layer Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layer_permissions.html">Changing the Layer Permissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layer_download.html">Downloading Layers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layer_editing.html">Layer Editing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layer_metadata.html">Layers Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="layer_styling.html">Layer Styling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uploading_layers.html">Layers Uploading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="new_layer_from_scratch.html">Creating a Layer from scratch</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Using Remote Services</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_maps/index.html">Working with Maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../publishing_data/index.html">Publishing Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_geodatabuilder/index.html">GeoDataBuilder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../case_studies/index.html">Case Studies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../modules_on_gair_interface/index.html">Working with Case Studies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../managing_documents/index.html">Working with Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../accounts_user_profile/index.html">Accounts and User Profile</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+ 
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GAIR</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">GAIR Users Guide</a> &raquo;</li>
+        
+          <li><a href="index.html">Working with Layers</a> &raquo;</li>
+        
+      <li>Using Remote Services</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/usage/managing_layers/using_remote_services.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="using-remote-services">
+<h1>Using Remote Services<a class="headerlink" href="#using-remote-services" title="Permalink to this headline">¶</a></h1>
+<p>In GAIR you can add new layers not only by loading them from your disk but also using <em>Remote Services</em>.
+In this section you will learn how to add a new service and how to load resources in GAIR through that.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<div class="last line-block">
+<div class="line">This functionality is reserved for GAIR’s Administrator staff.</div>
+</div>
+</div>
+<p>Click on the <span class="guilabel">Remote Services</span> link of the <span class="guilabel">Data</span> dropdown menu in the navigation bar.</p>
+<div class="figure align-center" id="remote-services-link">
+<img alt="Remote Services link" src="../../_images/remote_services_link.png" />
+<p class="caption"><span class="caption-text">Remote Services link</span></p>
+</div>
+<p>The page that opens will contain the list of the available services.</p>
+<div class="figure align-center">
+<img alt="Remote Services" src="../../_images/remote_services.png" />
+</div>
+<p>To configure a new service:</p>
+<ul>
+<li><p class="first">click on <span class="guilabel">Register a new Service</span></p>
+</li>
+<li><p class="first">type the <em>Service URL</em></p>
+</li>
+<li><p class="first">select the <em>Service Type</em></p>
+<div class="figure align-center">
+<img alt="Service Types" src="../../_images/service_type.png" />
+</div>
+</li>
+<li><p class="first">click on <span class="guilabel">Create</span></p>
+</li>
+</ul>
+<p>GAIR supports this <strong>types of remote services</strong>:</p>
+<ul>
+<li><p class="first"><em>Web Map Service</em></p>
+<p>Generic Web Map Service (WMS) based on a standard protocol for serving georeferenced map images over the Internet.
+These images are typically produced by a map server from data provided by one or more distributed geospatial databases.
+Common operations performed by a WMS service are: <em>GetCapabilities</em> (to retrieves metadata about the service, including supported operations and parameters, and a list of the available layers) and <em>GetMap</em> (to retrieves a map image for a specified area and content).</p>
+</li>
+<li><p class="first"><em>ArcGIS REST MapServer</em></p>
+<p>This map service provides basic information about the map, including the layers that it contains, whether the map is cached or not, its spatial reference, initial and full extents, whether the service is allowed to export tiles and max tiles export count, etc.
+A set of operations that manage the state and contents of the service are allowed: Edit Service, Refresh, Update Tiles.</p>
+</li>
+</ul>
+<p>Once the service has been configured, you can load the resources you are interested in through the <em>Import Resources</em> page where you will be automatically redirected to.
+Take a look at the gif below to see the whole process.</p>
+<div class="figure align-center" id="new-remote-service">
+<img alt="Service Types" src="../../_images/new_remote_service.gif" />
+<p class="caption"><span class="caption-text">A new Remote Service</span></p>
+</div>
+<div class="line-block">
+<div class="line">From the page where the services are listed, it is possible to click on the <em>Title</em> of a service. It opens the <em>Service Details</em> page.</div>
+<div class="line">Each service has its own metadata such as the <em>Service Type</em>, the <em>URL</em>, an <em>Abstract</em>, some <em>Keywords</em> and the <em>Contact</em> user.
+You can edit those metadata through the form available from the <span class="guilabel">Edit Service Metadata</span> button of the <em>Service Details</em> page (see the picture below).</div>
+</div>
+<div class="figure align-center" id="remote-service-metadata">
+<img alt="Remote Service metadata" src="../../_images/remote_service_metadata.png" />
+<p class="caption"><span class="caption-text">Remote Service metadata</span></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../managing_maps/index.html" class="btn btn-neutral float-right" title="Working with Maps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="new_layer_from_scratch.html" class="btn btn-neutral float-left" title="Creating a Layer from scratch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright CC-SA
+      <span class="lastupdated">
+        Last updated on Nov 24, 2020.
+      </span>
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

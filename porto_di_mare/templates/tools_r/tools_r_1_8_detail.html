@@ -1,0 +1,315 @@
+{% extends "tools_r/tools_r_base.html" %}
+
+{% load i18n %}
+
+{% block title %} Tools R 1.8  | {{ block.super }} {% endblock %}
+
+
+
+{% block body_class %}ToolsR detail{% endblock %}
+
+{%comment%}
+{% block sidebar %}
+
+{% endblock %}
+{%endcomment%}
+
+{% block body_outer %}
+
+<div class="container" id="ToolsR">
+    
+    <div class="page-header">
+           
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="pull-left">
+                    <small><a class="btn-dark-light-link breadcrumb-title" 
+                        href="{% url "tools_r_1_8_list" %}">{% trans "Explore AZA" %}</a> /</small>
+
+                    <h1 class="page-title"> 
+                        {{ tools_r.label }}
+                    </h1>
+                    <h2 class="h3">Tools R 1.8 - Allocated Zones for Aquaculture (AZA)</h2>
+                </div>
+                <div class="pull-right">
+                    <a href="{% url 'tools_r_1_8_create' %}" class="btn btn-info">{%trans 'Create New AZA' %}</a>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 25px;"></div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" 
+                    data-original-title="{% trans 'Owner' %}">
+                        <span class="fa fa-user"></span>
+                        {% if tools_r.owner.get_full_name.strip %}
+                        {{ tools_r.owner.get_full_name }}
+                        {% else %}
+                        {{ tools_r.owner.username }}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" 
+                    data-original-title="{% trans 'Created' %}">
+                        <span class="fa fa-calendar"></span>
+                        {{ tools_r.created }}
+                    </div>
+                    
+                    <div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" 
+                    data-original-title="{% trans 'Updated' %}">
+                        {{ tools_r.updated }}
+                    </div>
+
+                    <div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" 
+                    data-original-title="{% trans 'Type' %}">
+                        <span class="fa fa-circle"></span>
+                        {{ type_value }}
+                    </div>
+
+
+            </div>
+        </div>
+    </div>
+        <form id="tools_r_1_8_form"  
+            class="row"
+            method="post" 
+            enctype="multipart/form-data" 
+            action="{% url "tools_r_1_8_detail" tools_r.id %}" >
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+            <input type="hidden" name="status" value="update" />
+    
+            
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="sr-only"> {{ tools_r.input_layers }} </div>
+                <div class="sr-only"> {{ tools_r.input_criteria }} </div>
+                <div class="sr-only response_inputLayers"> {{ resp_command.response }} </div>
+            </div>
+                
+            
+            <div class="clearfix"></div>
+            
+            {% comment %}
+            {% if request.user.is_superuser %}
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input type="checkbox" name="public" id="id_public" {% if tools_r.public %} checked {% endif %}>
+                    <label for="id_public">{% trans "Public" %}</label>
+                </div>
+            </div>
+            {% else %}
+            <div class="sr-only">
+                <input type="checkbox" name="public" id="id_public" {% if tools_r.public %} checked {% endif %}>
+                <label for="id_public">{% trans "Public" %}</label>                    
+            </div>
+            {% endif %}
+            {% endcomment %}
+
+
+
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="row">
+                    {% include 'tools_r/_tools_r_layers.html' %}
+                </div>
+
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 15px;"></div>
+
+            
+        </form>
+
+        <div class="row">
+
+            <div class="col-md-8 col-sm-8 col-xs-12 abstract">
+                <h2 class="h5 h-label">Layers</h2>
+                <div class="row" id="tools_r_layers">
+
+                </div>
+                <div class="row hide" id="tools_r_layers_template">
+                    <div class="item col-md-12 col-sm-12 col-xs-12 item-container ">
+                        <div class="row">
+                            <div class="col-md-1 col-sm-2 col-xs-2 no-gutter text-center icons-snippet">
+                                <div class="item-items ">
+                                    {% include 'base/_list_item.html' %}
+                                </div>
+                            </div>
+                            <div class="col-md-11 col-sm-10 col-xs-10 profile-avatar">
+                                <div 
+                                    class="item_thumbnail_url col-md-4 col-sm-4 col-xs-12 item-thumb">
+                                    
+                                </div>
+                                <div class="col-md-8 col-sm-8 col-xs-12 item-details">
+                                    
+                                    <div class="start-spacer hide" style="margin-top: 30px;"></div>
+
+
+                                    <span class="title item_title h4">
+                                    </span>
+
+                                    <div class="alert alert-warning item_not_approved hide">{% trans "PENDING APPROVAL" %}</div>
+                                    <div class="alert alert-danger item_is_approved hide">{% trans "UNPUBLISHED" %}</div>
+
+                                    <p class="abstract"></p>
+
+                                    <div style="margin-top: 5px;"></div>
+                                    <a class="btn btn-info item_detail_url"  
+                                        href="#">
+
+                                        {% trans "View Layer" %}</a>
+
+                                    
+                                    <div class="end-spacer" style="margin-top: 30px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-4 col-sm-4 col-xs-12 info">
+                    <h2 class="h5 h-label">
+                        {% trans 'Results' %}
+                    </h2>
+                    <div class="more">
+                        {% if resp_command.check %}
+                        <div class="row">
+                            <div class="list-group">
+                                {% if not tools_r.output_files %}
+                                <div class="list-group-item list-unstyled-selected">
+                                    <a style="text-decoration:none;" target="_blank"
+                                        href="{{resp_command.output_files}}aquaculture_suitability.pdf"
+                                            class="btn btn-info btn-md btn-block">{% trans "Aquaculture suitability (PDF)" %}</a>
+                                </div>    
+                                <div class="list-group-item list-unstyled-selected">
+                                    <a style="text-decoration:none;" target="_blank"
+                                        href="{{resp_command.output_files}}aquaculture_suitability.tif"
+                                            class="btn btn-info btn-md btn-block">{% trans "Aquaculture suitability (TIF)" %}</a>
+                                </div>    
+                                <div class="list-group-item list-unstyled-selected">
+                                    <a style="text-decoration:none;" target="_blank"
+                                        href="{{resp_command.output_files}}aquaculture_suitability_histogram.pdf"
+                                            class="btn btn-info btn-md btn-block">{% trans "Aquaculture suitability histogram (PDF)" %}</a>
+                                </div>
+                                <div class="list-group-item list-unstyled-selected">   
+                                    <a style="text-decoration:none;" target="_blank"
+                                        href="{{resp_command.output_files}}aquaculture_suitability_constraints.tif"
+                                            class="btn btn-info btn-md btn-block">{% trans "Aquaculture suitability constraints (TIF)" %}</a>
+                                </div>  
+                                {% else %}
+                                <div class="list-group-item list-unstyled-selected">
+                                    <a style="text-decoration:none;" target="_blank"
+                                        href="{{tools_r.output_files}}aquaculture_suitability.pdf"
+                                            class="btn btn-info btn-md btn-block">{% trans "Aquaculture suitability (PDF)" %}</a>
+                                </div>    
+                                <div class="list-group-item list-unstyled-selected">
+                                    <a style="text-decoration:none;" target="_blank"
+                                        href="{{tools_r.output_files}}aquaculture_suitability.tif"
+                                            class="btn btn-info btn-md btn-block">{% trans "Aquaculture suitability (TIF)" %}</a>
+                                </div>    
+                                <div class="list-group-item list-unstyled-selected">
+                                    <a style="text-decoration:none;" target="_blank"
+                                        href="{{tools_r.output_files}}aquaculture_suitability_histogram.pdf"
+                                            class="btn btn-info btn-md btn-block">{% trans "Aquaculture suitability histogram (PDF)" %}</a>
+                                </div>
+                                <div class="list-group-item list-unstyled-selected">   
+                                    <a style="text-decoration:none;" target="_blank"
+                                        href="{{tools_r.output_files}}aquaculture_suitability_constraints.tif"
+                                            class="btn btn-info btn-md btn-block">{% trans "Aquaculture suitability constraints (TIF)" %}</a>
+                                </div>   
+                                {% endif %} 
+                            </div>
+                         </div>
+                         {% else %}
+                         <!-- Modal Alert -->
+                         <div class="list-group">
+                                     <div class="alert alert-danger">
+                                         <span class="modal-title h4">
+                                             <span class="error-layer">
+                                                {{ resp_command.response }}
+                                             </span>
+                                          </span>
+                                     </div>    
+                         </div>    
+                         {% endif %}
+                    
+                    </div>
+
+                    
+    
+            {% if  user.id == tools_r.owner.id or user.is_superuser %}
+                <div id="tools_r_1_8_remove">
+                    <br />
+                    <a href="{% url 'tools_r_1_8_remove' id=tools_r.id %}" id="edit_tools_r_btn" 
+                        class="btn btn-danger btn-block">{% trans "REMOVE TOOL" %}</a>            
+                </div>
+                {% endif %}
+
+            </div>
+
+                
+
+            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 50px;"></div>
+
+        </div>    
+    </div>    
+
+</div>
+
+  
+ 
+{% endblock %} 
+
+
+
+{% block extra_script %}
+{{ block.super }}
+  {% if GEONODE_SECURITY_ENABLED %}
+    {% include "_permissions_form_js.html" %}
+  {% endif %}
+
+  {% include "tools_r/_tools_r_script_1_8.html" %}
+
+  <script type="text/javascript">
+  var hasLayerUsed = true;
+  var hasPopover = false;
+
+  $(document).ready(function() {    
+  
+    inputLayers_obj.write();
+    var check = false;
+    if ($(".response_inputLayers").text().indexOf('fail') > -1 || $(".response_inputLayers").text().indexOf('wait') > -1){     
+        $(".inputLayers_footer .text").html("<strong>"+$(".response_inputLayers").text()+"</strong> ");
+        $(".inputLayers_footer .text").addClass("text-danger").removeClass("text-success");
+        if ($(".response_inputLayers").text().indexOf('wait') > -1)
+            $(".save_tools_r_btn").attr("disabled" , true);
+    }
+    else {
+        $(".inputLayers_footer .text").text("");
+        $(".inputLayers_footer .text").addClass("text-success").removeClass("text-danger");
+        check = checkOutputFiles();
+    }
+    
+     $("#tools_r_1_8_form").submit(function(e) {
+        e.stopImmediatePropagation();
+        // e.preventDefault();
+        $(".save_tools_r_btn")
+            .attr("disabled" , true)
+        $(".save_tools_r_btn .text-btn")
+            .text("wait, run process...");
+        $(".save_tools_r_btn")
+            .find(".run_icon").removeClass("hidden");
+        $(".inputLayers_footer .text").empty();
+        // $(".inputLayers_footer .text").html('<strong><div class="comment-loading" ><img src="/static/geonode/img/loading.gif" alt="loading" /> wait, run process... </div></strong> ');
+
+        return true;
+    });
+    
+ });
+</script>
+
+
+  {% with include_spatial='true' %}
+  {% include 'search/search_scripts.html' %}
+  {% endwith %}
+{% endblock extra_script %}
+

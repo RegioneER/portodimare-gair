@@ -1,0 +1,54 @@
+{% load i18n %}
+{% verbatim %}
+<ul class="list-unstyled icons-snippet-item">
+    
+    
+    <li class="icon-add">
+        <button
+            type="button"
+            class="btn btn-default btn-xs icon-add-btn"
+            data-toggle="tooltip"
+            data-placement="right"
+            data-name="{{ item.name }}"
+            data-id="{{ item.id }}"
+            data-keywords="{{item.keywords}}"
+            data-title-plus="{% endverbatim %}{% trans 'Add' %}{% verbatim %}"
+            data-title-minus="{% endverbatim %}{% trans 'Remove' %}{% verbatim %}"
+            title="{% endverbatim %}{% trans 'Add' %}{% verbatim %}"
+            >
+                <span class="fa fa-lg fa-plus icon-add-fa"></span></button>
+    
+
+
+    <li class="icon-user">
+        <a target="_self" 
+            data-toggle="tooltip" data-placement="right" title="{{ item.owner_name }}" data-original-title="{{ item.owner_name }}" 
+            href="/people/profile/{{ item.owner__username }}">
+            <span class="fa fa-user"></span></a></li>
+
+    <li class="icon-calendar-o">
+        <a target="_self" 
+            data-toggle="tooltip" data-placement="right" title="{{ item.date|date:'d MMM y' }}" data-original-title="{{ item.date|date:'d MMM y' }}" 
+            href="{{ item.detail_url }}#info"><span class="fa fa-calendar-o"></span></a></li>
+
+    <li class="icon-eye">
+        <a target="_self" 
+            data-toggle="tooltip" data-placement="right" title="{{ item.popular_count }}" data-original-title="{{ item.popular_count }}" 
+            href="{{ item.detail_url }}"><span class="fa fa-eye"></span></a></li>
+
+    <!--li class="icon-share"><a target="_self" 
+    data-toggle="tooltip" data-placement="right" title="" data-original-title="{{ item.share_count }}" 
+    href="{{ item.detail_url }}#share"><span class="fa fa-share"></span></a></li-->
+
+    <li class="icon-star">
+        <a target="_self" 
+            data-toggle="tooltip" data-placement="right" title="{{ item.rating }}" data-original-title="{{ item.rating }}" 
+            href="{{ item.detail_url }}#rate"><span class="fa fa-star"></span></a></li>
+
+    <li class="icon-map-marker">
+        <a target="_self" 
+            data-toggle="tooltip" data-placement="right" title="{% trans 'View Map' %}" data-original-title="{% trans 'View Map' %}" 
+            ng-if="item.detail_url.indexOf('/maps/') > -1" href="/maps/{{item.id}}/view">
+            <span class="fa fa-map-marker"></span></a></li>
+</ul>
+{% endverbatim %}

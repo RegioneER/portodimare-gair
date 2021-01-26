@@ -1,0 +1,55 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load bootstrap_tags %}
+{% load account socialaccount %}
+
+{% block title %}{% trans "Sign up" %}{% endblock %}
+
+{% block body_outer %}
+<div class="container">
+    <div class="page-header">
+        <h1>{% trans "Sign up" %}</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+        {% get_providers as socialaccount_providers %}
+        {% if socialaccount_providers %}
+            <p>{% blocktrans with site.name as site_name %}Sign up with one
+                of your existing third party accounts{% endblocktrans %}</p>
+            {% include "socialaccount/snippets/provider_list.html" with process="signup" %}
+            {% include "socialaccount/snippets/login_extra.html" %}
+            <hr>
+        {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p>{% trans "Create a new local account" %}</p>
+            <p><br /><strong>{% trans "At the moment the sign up is limited to the Portodimare partners as the GAIR is still in construction. <br />For more information contact us at " %} <a href="mailto:supportGAIR@regione.emilia-romagna.it">supportGAIR@regione.emilia-romagna.it</a></strong><br /><br /></p>
+            <form id="signup_form" method="post" action="{% url "account_signup" %}" autocapitalize="off" {% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+                <fieldset>
+                    {% csrf_token %}
+                    {{ form|as_bootstrap }}
+                    {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                    {% endif %}
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-info">{% trans "Sign up" %}</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+<div style="margin-top: 50px;"></div>
+{% endblock %}
+
+{% block extra_script %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#id_username').focus();
+        });
+    </script>
+{% endblock %}

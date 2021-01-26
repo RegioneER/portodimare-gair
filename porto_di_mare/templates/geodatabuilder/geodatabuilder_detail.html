@@ -1,0 +1,232 @@
+{% extends "geodatabuilder/geodatabuilder_base.html" %}
+
+{% load i18n %}
+
+{% block title %} GeoDataBuilder | {{ block.super }} {% endblock %}
+
+
+
+{% block body_class %}GeoDataBuilder detail{% endblock %}
+
+{%comment%}
+{% block sidebar %}
+
+{% endblock %}
+{%endcomment%}
+
+{% block body_outer %}
+
+<div class="container" id="GeoDataBuilder">
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="pull-left">
+                    <small><a class="btn-dark-light-link breadcrumb-title" href="{% url 'geodatabuilder_list' %}">{% trans "Explore GeoDataBuilder" %}</a> /</small>
+                    <h1 class="page-title"> 
+                        {{geodatabuilder.label}}
+                    </h1>
+                </div>
+                <div class="pull-right">
+                    <a href="{% url 'geodatabuilder_create' %}" class="btn btn-info">{%trans 'Create new Expression' %}</a>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 25px;"></div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" 
+                    data-original-title="{% trans 'Owner' %}">
+                        <span class="fa fa-user"></span>
+                        {% if geodatabuilder.owner.get_full_name.split|length > 0  %}
+                            {{geodatabuilder.owner.get_full_name}}
+                        {% else %}
+                            {{ geodatabuilder.owner.username }}
+                        {% endif %}  
+                    </div>
+                    
+                    <div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" 
+                    data-original-title="{% trans 'Created' %}">
+                        <span class="fa fa-calendar"></span>
+                        {{ geodatabuilder.created }}
+                    </div>
+                    
+                    <div class="pull-left icon-list" data-toggle="tooltip" data-placement="top" 
+                    data-original-title="{% trans 'Updated' %}">
+                        {{ geodatabuilder.updated }}
+                    </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <p>
+                                {{geodatabuilder.desc_expression}}
+                        </p>
+                        <div style="margin-top: 15px;"></div>
+                    </div>
+            
+
+                    {% with detail='true' %}
+                    {% include 'geodatabuilder/_expression.html' %}
+                    {% endwith %}
+                    
+                    
+                </div>
+
+            </div>
+            <div class="col-md-8 col-sm-8 col-xs-12 abstract">
+                <h2 class="h5">
+                    {% trans 'Layers' %}
+                </h2>
+                <div class="row" id="expression_layers">
+
+                </div>
+                <div class="row hide" id="expression_layers_template">
+                    <div class="item col-md-12 col-sm-12 col-xs-12 item-container ">
+                        <div class="row">
+                            <div class="col-md-1 col-sm-2 col-xs-2 no-gutter text-center icons-snippet">
+                                <div class="item-items ">
+                                    {% include 'base/_list_item.html' %}
+                                </div>
+                            </div>
+                            <div class="col-md-11 col-sm-10 col-xs-10 profile-avatar">
+                                <div 
+                                    class="item_thumbnail_url col-md-4 col-sm-4 col-xs-12 item-thumb">
+                                    
+                                </div>
+                                <div class="col-md-8 col-sm-8 col-xs-12 item-details">
+                                    
+                                    <div class="start-spacer hide" style="margin-top: 30px;"></div>
+
+
+                                    <h3 class="title item_title item-detail-title">
+                                    </h3>
+
+                                    <div class="alert alert-warning item_not_approved hide">{% trans "PENDING APPROVAL" %}</div>
+                                    <div class="alert alert-danger item_is_approved hide">{% trans "UNPUBLISHED" %}</div>
+
+                                    <p class="abstract"></p>
+
+                                    <div style="margin-top: 5px;"></div>
+                                    <a class="btn btn-info item_detail_url"  
+                                        href="#">
+
+                                        {% trans "View Layer" %}</a>
+
+                                    
+                                    <div class="end-spacer" style="margin-top: 30px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12 info">
+                <h2 class="h5">
+                    {% trans 'Case Study' %}
+                </h2>
+                <div id="expression_casestudy" 
+                    data-id="{{geodatabuilder.casestudy_api_id}}" 
+                    class="more">
+                    
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <img 
+                                class="img-responsive" 
+                                src="/static/img/img_placeholder.jpg" 
+                                alt="{% trans 'Expression Thumbnail' %}" 
+                                id="expression_casestudy_thumb" 
+                                class="hide" 
+                                title="" />
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12"> 
+                                <br />
+                            <h3 id="expression_casestudy_title" class="item-detail-title"></h3>
+                            
+
+                            <p id="expression_casestudy_description"></p>
+                            <br />
+                            <a id="expression_casestudy_view_btn"
+                                class="btn btn-info hide"
+                                href="{% url 'casestudies_detail' id=geodatabuilder.casestudy_api_id %}">
+                                {% trans "View Case Study" %}</a>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+                {% if user.is_authenticated %}
+
+                <button 
+                    style="margin-left: 0;"
+                    type="button" 
+                    class="btn btn-default btn-block gdb_clone_btn" 
+                    data-gdb_title="{{geodatabuilder.label}}"
+                    data-id="{{geodatabuilder.id}}">  
+                    {% trans 'CLONE EXPRESSION' %}
+                </button>
+
+                
+
+                <div style="margin-bottom: 11px;"></div>
+                {% endif %}
+
+
+
+                {% if  user.id == geodatabuilder.owner.id   %}
+                <div id="expression_remove">
+                    <a href="{% url 'geodatabuilder_remove' id=geodatabuilder.id %}" id="edit_geodatabuilder_btn" 
+                        class="btn btn-danger btn-block">{% trans "REMOVE EXPRESSION" %}</a>            
+                </div>
+                {% endif %}
+
+
+                
+
+            </div>
+
+            
+
+        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 50px;"></div>
+
+    </div>    
+
+</div>
+
+  
+{% include 'geodatabuilder/_confirm_geodatabuilder_clone.html' %}
+
+
+    
+{% endblock %} 
+
+
+
+{% block extra_script %}
+{{ block.super }}
+    {% if GEONODE_SECURITY_ENABLED %}
+        {% include "_permissions_form_js.html" %}
+    {% endif %}
+
+
+    {% include "geodatabuilder/_geodatabuilder_object.html" %}
+    {% include "geodatabuilder/_geodatabuilder_script_v2.html" %}
+
+
+    <script type="text/javascript">
+                
+        $(document).ready(function() {    
+            initGeodataBuilder();    
+        });
+
+    </script>
+
+    
+{% endblock extra_script %}
+

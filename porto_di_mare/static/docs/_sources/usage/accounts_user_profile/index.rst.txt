@@ -1,0 +1,30 @@
+Accounts and User Profile
+=========================
+
+.. warning:: 
+	| Currently only registrations made by PORTODIMARE project partners and their collaborators will be accepted. 
+	| For more information please write an e-mail to supportGAIR@regione.emilia-romagna.it
+
+In GAIR many contents are public so unregistered users have read-only access to public maps, layers and documents.
+In order to create maps, add layers or documents, edit the data and share these resources with other users, you need to sign in.
+
+Sign in
+-------
+
+| Users who already have a login and password can access, from any page in the web interface, via :guilabel:`Sign in` link at the top-right of  web page. 
+| Click that link, and the sign in form will appear. Insert releted user name and password and :guilabel:`Sign in` button.
+
+.. figure:: img/sign_in_button.png
+   :alt: Sign in button
+   :align: center
+   :name: sign_in_button
+
+   Sign in button
+
+This next section will guide you through account registration, updating your account information and preferences.
+
+.. toctree::
+    :maxdepth: 1
+
+    new_account/index
+    updating_profile/index

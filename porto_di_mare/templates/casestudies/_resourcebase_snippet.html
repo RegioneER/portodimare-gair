@@ -1,0 +1,173 @@
+{% load i18n %}
+
+<div ng-if="results.length == 0" ng-cloak lass="col-md-12 col-sm-12 col-xs-12 text-center icons-snippet">
+	<h3>{% trans "No content created yet." %}</h3>
+</div>
+
+
+<div class="row flex-grid resourcebase-snippet">
+
+	
+	{% verbatim %}
+	<article 
+		class="col-md-12 col-sm-12 col-xs-12"
+		ng-repeat="item in results | filter: query_cs"  resource_id="{{ item.id }}" ng-cloak class="ng-cloak">
+
+
+			<div class="col-md-1 col-sm-1 col-xs-2 no-gutter text-center icons-snippet">
+				{% endverbatim %}{% comment %}
+				<!-- <button class="btn btn-default btn-xs " ng-if="cart" ng-click="cart.toggleItem(item)"
+					data-toggle="tooltip" data-placement="right" title="Select">
+					<span ng-class="cart.getFaClass(item.id)"
+						class="fa fa-lg"></span></button> -->
+				{% endcomment %}{% verbatim %}
+
+				<div class="item-items ">
+
+					<ul class="list-unstyled icons-snippet-item">
+						{% endverbatim %}
+						<li>
+							<span data-toggle="tooltip" data-placement="left" title=""
+								data-original-title="{% verbatim %}{{ item.pdm_owner.full_name }}{% endverbatim %}">
+								<span class="fa fa-user"></span>
+							</span></li>
+						{% verbatim %}
+						<li>
+						<span data-toggle="tooltip" data-placement="left"
+							data-original-title="{% endverbatim %}{% trans 'Created Date' %}{% verbatim %} {{ item.created}}"
+							itemprop="datePublished" datetime="{{ item.created|date:"c"}}" >
+							<span class="fa fa-calendar"></span>
+							
+						</span></li>
+
+						<li>
+						<span data-toggle="tooltip" data-placement="left"
+							data-original-title="{% endverbatim %}{% trans 'Updated Date' %}{% verbatim %} {{ item.updated}}"
+							itemprop="dateModified" datetime="{{ item.updated|date:"c"}}">
+							<span class="fa fa-clock-o"></span>							
+						</span></li>
+						
+					</ul>
+				</div>
+				<div style="margin-top: 25px;"></div>
+
+			</div>
+			<div class="col-md-11 col-sm-11 col-xs-10 profile-avatar {{ item.cstype}}"> 
+
+
+
+
+				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 no-padding">
+					
+					<a class="item-thumb" 
+						style="background-image: url('{{ item.thumbnails[0].thumbnail || '/static/img/img_placeholder.jpg'  }}');" 
+						title="{% endverbatim %}{% trans 'View Case Study' %}{% verbatim %}{{item.label}}{% endverbatim %}" 
+						href="{% url 'casestudies'  %}{% verbatim %}{{item.id}}"> 
+						
+						<!-- /static/geonode/img/missing_thumb.png -->
+						
+					</a>
+
+					
+
+				</div>
+
+
+				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12  item-details {{ item.cstype}}">
+
+					
+					<div style="margin-top: 1em;"></div>
+
+
+
+					<div class="info">
+						<div class="pull-left icon-list" data-toggle="tooltip" data-placement="top"
+							data-original-title="{% endverbatim %}{% trans 'Module' %}{% verbatim %}" itemprop="module">
+							{{ item.module}}
+						</div>
+
+						<div class="pull-left icon-list title-{{item.cstype}}" data-toggle="tooltip" data-placement="top"
+							data-original-title="{% endverbatim %}{% trans 'Type' %}{% verbatim %}" itemprop="cstype">
+							{{ item.cstype}}
+						</div>
+
+						<div class="pull-left icon-list" data-toggle="tooltip" data-placement="top"
+							data-original-title="{% endverbatim %}{% trans 'Resolution' %}{% verbatim %}" itemprop="resolution">
+							{{ item.resolution}}
+						</div>
+
+					</div>
+
+					<div class="clearfix"></div>
+
+					<div style="margin-top: 5px;"></div>
+
+
+					<h3 class="item-detail-title">
+						<a href="{% endverbatim %}{% url 'casestudies'  %}{% verbatim %}{{item.id}}">{{ item.label }}</a>
+					</h3>
+					
+					<p class="abstract" ng-if="item.description.length > 0">
+						{{ item.description | limitTo: 300 }}{{ item.description.length  > 300 ? '...' : ''}}
+						<br />
+					</p>
+					<p class="abstract" ng-if="item.description.length == 0">
+						{% endverbatim %}
+						{% trans 'No description provided' %}
+						{% verbatim %}
+						<br />
+
+					</p>
+
+					<div id="label_cs_{{ item.id }}" class="hide" aria-hidden="true">
+						{{ item.label }}
+					</div>
+					<div id="description_cs_{{ item.id }}" class="hide" aria-hidden="true">
+						{{ item.description }}
+					</div>
+
+					<div style="margin-top: 30px;"></div>
+
+					<a class="btn btn-info hidden-sm_" href="{% endverbatim %}{% url 'casestudies'  %}{% verbatim %}{{item.id}}">
+						{% endverbatim %}
+						{% trans "Open Case Study" %}</a>
+					
+					{% if user.is_authenticated %}
+					<button 
+						type="button" 
+                        class="btn btn-dark cs_clone_btn float-right" 
+						data-cs_title="{% verbatim %}{{item.label}}{% endverbatim %}"
+
+						data-toggle="tooltip" 
+						data-placement="left"
+						data-original-title="{% trans 'Clone Case Study' %} "
+						data-title="{% verbatim %}{{item.label}}{% endverbatim %}"						
+						data-id="{% verbatim %}{{item.id}}{% endverbatim %}">  
+						
+						<span class="sr-only">
+						{% trans 'Clone Case Study' %} 
+						</span>
+
+						<span class="fa fa-copy"></span>
+						
+					</button>
+					{% endif %}
+					<div class="" style="margin-top: 15px;"></div>
+									
+				</div>
+
+
+			</div>
+
+			
+			<div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 40px;"></div>
+
+
+
+	</article>
+ 
+	
+</div>
+
+
+<div style="margin-top: 50px;"></div>

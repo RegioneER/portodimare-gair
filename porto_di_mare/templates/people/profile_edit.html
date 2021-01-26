@@ -1,0 +1,64 @@
+{% extends "people/profile_base.html" %}
+{% load i18n avatar_tags %}
+{% load bootstrap_tags %}
+
+{% block body_class %}{% trans "edit people" %}{% endblock %}
+{% block title %} {% trans "Edit Profile" %} - {{ block.super }} {% endblock %}
+
+{% block nav_user_isactive %}
+{% if user.id ==  profile.id %}
+active_menu
+{% endif %}
+{% endblock nav_user_isactive %}
+
+{% block nav_about_isactive %}
+{% if user.id != profile.id %}
+active_menu
+{% endif %}
+{% endblock nav_about_isactive %}
+
+
+{% block body_outer %}
+
+<div class="container">
+
+<div class="page-header">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="pull-left">
+            <small><a class="btn-dark-light-link breadcrumb-title" href="{{profile.get_absolute_url}}">{{ profile.name_long  }}</a> /</small>
+            {% if user == profile %}
+              <h1 class="page-title">{% trans "Edit Your Profile" %}</h1>
+            {% else %}
+              <h1 class="page-title">{% trans "Edit Profile for" %} {{ profile.username }}</h1>
+            {% endif %}
+        </div>        
+    </div>
+  </div>
+
+</div>
+
+<div class="col-xs-3 col-md-2 profile-image">
+  {% autoescape off %}{% avatar profile.username 240 %}{% endautoescape %}
+  {% if user == profile %}
+  <p><a class="btn btn-info btn-block" href="{% url 'avatar_change' %}">{% trans "Change your avatar" %}</a></p>
+  {% endif %}
+</div>
+
+<div class="col-xs-9 col-md-6 col-md-offset-2">
+  <form action="" method="post">
+    {% csrf_token %}
+    <div class="form-controls">
+      {{ form|as_bootstrap }}
+    </div>
+    <div class="form-actions">
+      <input type="submit" class="btn btn-info" value="{% trans "Update profile" %}" />
+    </div>
+  </form>
+</div>
+
+
+
+</div>
+<div style="margin-top: 50px;"></div>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "groups/group_base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block title %} {% trans "Explore Group Categories" %} - {{ block.super }} {% endblock %}
+
+{% block body_class %}{% trans "groups explore" %}{% endblock %}
+{% block nav_about_isactive %}active_menu{% endblock nav_about_isactive %}
+
+
+
+
+
+{% block body_outer %}
+
+
+
+<div  class="container">
+
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="pull-left">
+                    <h1 class="page-title"> 
+                        {% trans 'Explore Group Categories' %}
+                    </h1>
+                    
+                </div>
+                {% if user.is_authenticated %}
+                <div class="pull-right">
+                    <a href="{% url "group_category_create" %}" 
+                        class="btn btn-info btn-block" 
+                        target="_self">
+                        {% trans "Create a New Group Category" %}
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 25px;"></div>
+            
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+
+            
+        {% with include_type_filter='true' %}
+        {% with facet_type='groupcategories' %}
+        
+        </div>
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <h2 class="pull-left h3">
+                <span ng-bind="total_counts"></span>
+                <span>{% trans "Group Category found" %} </span>
+            </h2>
+        </div>
+
+   
+
+        <div class="col-md-12 col-sm-12 col-xs-12 grid-spacer">
+            {% include 'search/_groupcategory_snippet.html' %}
+        </div>
+        <div class="col-md-12" style="margin-top: 50px;"></div>
+
+       
+    </div>
+
+
+
+</div>
+
+
+    {% endwith %}
+    {% endwith %}
+{% endblock %}
+
+
+
+{% block extra_script %}
+{{ block.super }}
+  <script type="text/javascript">
+  SEARCH_URL = '{% url 'api_dispatch_list' api_name='ext' resource_name='groupcategory' %}'
+  </script>
+  {% with include_spatial='false' %}
+  {% include 'search/search_scripts.html' %}
+  {% endwith %}
+{% endblock extra_script %}

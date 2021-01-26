@@ -1,0 +1,76 @@
+{% extends "geonode_base.html" %}
+{% load i18n %}
+
+{% block title %} Favorites -- {{ block.super }} {% endblock %}
+{% block nav_user_isactive %}active_menu{% endblock nav_user_isactive %}
+
+{% block body_outer %}
+
+<div class="container">
+
+
+
+  	<div class="row">
+		<div class="col-md-12">
+			<div class="page-header">
+				<small><a class="btn-dark-light-link breadcrumb-title" href="{{user.get_absolute_url}}">{{ user.name_long  }}</a> /</small>
+				<h1 class="page-title">
+                {% trans "Favorites for" %} {{ user.username }}
+                </h1>
+			</div>        
+		</div>
+  	</div>
+
+{# list of user's current favorites #}
+<div class="twocol">
+    {% if favorites %}
+    <table id="favoritesListId" class="table">
+        <thead>
+            <th>Item</th>
+            <th>Type</th>
+            <th>&nbsp;</th>
+        </thead>
+        {% for favorite in favorites %}
+        <tr>
+            <td><a class="title" href='{{ favorite.content_object.detail_url }}' >{{favorite.content_object.title}}</a></td>
+            <td>{{ favorite.content_type }}</td>
+            <td><button data-url="{% url 'delete_favorite' favorite.pk %}" class="btn btn-danger pull-right delete-btn">Delete from Favorites</button></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <h2 class="h3">No favorites</h2>
+    {% endif %}
+</div>
+
+
+
+
+
+<div style="margin-top: 50px"></div>
+
+</div>
+{% endblock %}
+
+{% block extra_script %}
+{{ block.super }}
+<script type="text/javascript">
+    // add click behavior to the Delete Favorite button.
+    // ajax call to delete favorite and remove row on success.
+    $("#favoritesListId .delete-btn").click(function(event) {
+        var deleteUrl = this.dataset.url;
+        var tr = $(this).closest('tr');
+        $.post(
+            deleteUrl,
+            function(data) {
+                removeDomElementWithFade(tr);
+        });
+    });
+
+    function removeDomElementWithFade(elem) {
+        elem.fadeOut(800, function(){
+            elem.remove();
+        });
+    }
+</script>
+{% endblock extra_script %}

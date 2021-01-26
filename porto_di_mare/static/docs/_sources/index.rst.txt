@@ -1,0 +1,35 @@
+.. _mainindex:
+
+=======================
+GAIR Documentation
+=======================
+
+Welcome to Geoportal of Adriatic-Ionian region's Documentation.
+
+Here you can find information on how to access and use the Adriatic-Ionian Geoportal (GAIR), built to support the analysis and risk assessment within the Integrated Coastal Zone Management (ICZM) and 
+Maritime Spatial Planning (MSP) processes, and to be a concrete tool for the EUSAIR Action Plan implementation.
+
+The *GAIR* has been created within *PORTODIMARE project*: geoPORtal of TOols & Data for sustaInable Management of coAstal and maRine Environment* (https://portodimare.adrioninterreg.eu/) *ADRION* programme,
+which has put together the technical and scientific skills necessary for the best achievement of the intended objective.
+
+
+Table of contents
+=================
+
+.. toctree::
+    :caption: About
+    :maxdepth: 3
+
+    about/index
+	
+.. toctree::
+    :caption: Getting Started
+    :maxdepth: 3
+
+    getting-started/index
+
+.. toctree::
+    :caption: GAIR Help
+    
+	
+    usage/index

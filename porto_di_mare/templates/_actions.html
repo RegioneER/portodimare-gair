@@ -1,0 +1,38 @@
+{% load i18n %}
+<ul class="nav nav-tabs">
+  {% comment %}<li class="active"><a href="#info" data-toggle="tab"><span class="fa fa-info-circle"></span>{% trans "Info" %}</a></li>{% endcomment %}
+  {% if resource.polymorphic_ctype.name == 'layer' %}
+    {% if resource.is_mosaic  or resource.attribute_set.all  %}
+      <li class="active"><a href="#attributes" data-toggle="tab"><span class="fa fa-bars"></span>{% trans "Attributes" %}</a></li>
+    {% endif %}
+  {% endif %}
+  {% if resource.is_mosaic %}
+  <li><a href="#granules" data-toggle="tab"><span class="fa fa-bars"></span>{% trans "Granules" %}</a></li>
+  {% endif %}
+  {% comment %}{% if DISPLAY_SOCIAL %}
+  <li><a href="#share" data-toggle="tab"><span class="fa fa-share"></span>{% trans "Share" %}</a></li>
+  {% endif %}
+  {% endcomment %}
+  {% comment %}
+  {% if DISPLAY_RATINGS %}
+  <li><a href="#rate" data-toggle="tab"><span class="fa fa-star"></span>{% trans "Ratings" %}</a></li>
+  {% endif %} 
+  {% endcomment %}
+
+  {% comment %}
+  {% if DISPLAY_COMMENTS %}
+  <li class="active"><a href="#comments" data-toggle="tab"><span class="fa fa-comment-o"></span> {% trans "Comments" %}</a></li>
+  {% endif %}
+  {% endcomment %}
+
+  {% if EXIF_ENABLED and resource.polymorphic_ctype.name == 'document' and exif_data %}
+  <li><a href="#exif" data-toggle="tab"><span class="fa fa-photo"></span> {% trans "Exif" %}</a></li>
+  {% endif %}
+
+  {% comment %}
+  {% if FAVORITE_ENABLED %}
+  <li><a href="#favorite" data-toggle="tab"><span class="fa fa-star"></span>{% trans "Favorite" %}</a></li>
+  {% endif %}
+  {% endcomment %}
+
+</ul>

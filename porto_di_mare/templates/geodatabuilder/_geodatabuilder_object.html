@@ -1,0 +1,305 @@
+
+{% load i18n %}
+
+
+
+{% comment %}
+<!-- Snippet html e js degli oggetti che servono a creare l'espressione -->
+{% endcomment %}
+
+
+{% comment %}
+<!-- LAYER -->
+{% endcomment %}
+
+<div class="hidden" id="tpl_layer">
+    <div id=""
+        class=" expression_data is-layer show-popover">
+            
+            <span class="layer-text">
+            </span>
+
+            <span class="vector-layer-text">
+            </span>
+            
+            <label class="sr-only is-vector" for="vector_attribute">{% trans 'SELECT ATTRIBUTE' %}</label>
+            <select id="vector_attribute" name="" class="hidden ssf_select is-vector">
+                <option value="">-- {% trans 'SELECT ATTRIBUTE' %} --</option>
+            </select>
+
+    </div>
+</div>
+
+
+
+
+
+{% comment %}
+<!-- OPERATOR -->
+{% endcomment %}
+
+<div class="hidden" id="tpl_operator">
+    <div id=""
+        class=" expression_data  show-popover">
+    
+        <span class="operator-text is-operator"></span>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+{% comment %}
+<!-- NUMBER -->
+{% endcomment %}
+
+<div class="hidden" id="tpl_number">
+    <div id=""
+        class=" expression_data show-popover not-select">
+
+        <span class="is-number expr_template">
+            <input 
+                class="geodatabuilder_number number-text"
+                data-decimal="1"
+                data-orig-value="0"
+                data-text="0.0"
+                value=""
+                type="text" />
+        </span>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %}
+<!-- BRACKETS -->
+{% endcomment %}
+
+<div class="hidden" id="tpl_brackets">
+    <div id=""
+        class=" expression_data is-close show-popover is-bracket_open show-popover">
+        <span class="text">
+            (
+        </span>
+    </div>
+    
+    <div id=""
+        class=" expression_data is-bracket_close">
+        <span class="text">
+            )
+        </span>
+    </div>
+</div>
+
+
+
+
+
+
+{% comment %}
+<!-- FUNCTIONS -->
+{% endcomment %}
+
+<div class="hidden" id="tpl_functions">
+    <div id=""
+        class=" expression_data is-bracket_open show-popover">
+        <span class="function-text">
+        </span>
+    </div>
+    
+    <div id=""
+        class=" expression_data is-bracket_close not-select">
+        <span class="text function-param ">
+        ,
+        </span>
+        <span class="is-number expr_template function-param">
+            <input 
+                class="geodatabuilder_number param-text "
+                data-decimal="1"
+                data-orig-value="0"
+                
+                value=""
+                type="text" />
+        </span>
+        <span class="text">
+            )
+        </span>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+{% comment %}
+<!-- POPOVER -->
+{% endcomment %}
+
+<div class="hidden" id="tpl_popover">
+    <div id="popover-content" class="hide">
+        <button class="btn btn-danger btn-xs remove-btn" type="button">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            <span class="sr-only">{% trans 'Remove Element'%}</span>
+        </button>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    
+    var user_is_authenticated = false;
+    
+    {% if user.is_authenticated %}
+    user_is_authenticated = true;
+    {% endif %}
+
+
+    {% if HAYSTACK_SEARCH %}
+        SEARCH_URL = '{% url 'api_get_search' api_name='ext' resource_name='base' %}?type__in=layer'; //&keywords__slug__in=casestudies';
+    {% else %}
+        SEARCH_URL = '{% url 'api_dispatch_list' api_name='ext' resource_name='layers' %}'; //?keywords__slug__in=casestudies';
+    {% endif %}
+
+    FILTER_TYPE = 'geodatabuilder';
+
+
+
+    var obj_validator = {
+        isValid: true,
+        isNotEmptyBracket : true,
+        isNotEmptyFunction : true,
+        isValidBracket : true,
+        isValidBracketOrder: true,
+        isValidLayerOrderBrackets: true,
+        isValidLayerOrder: true,
+        isValidOperatorOrder: true,
+        isValidLayerStatus: true,
+        isValidLayerCount: true,
+        isSelectedVector: true,
+        isLayerFound: true,
+        isLayerPermitted: true,
+        errorCode: []
+    }
+
+
+    var obj_class = "show_popover expr_template column";
+
+    // oggetto del layer
+    var obj_layer = {
+        isValid: true,
+        name: "",
+        type: "",
+        text: "",
+        id: null,
+        template: "#tpl_layer",
+        class: obj_class,        
+        index: null,
+        layer: null,                // contiene tutto l'oggetto layer da getLayerById()
+        isVector: false,            // il layer è vettoriale o raster 
+        // layer.attribute: [],              // l'array degli attributi si trova dentro l'oggetto layer ed è lista degli attribuiti in caso di layer vector
+        valid_attribute : ["xsd:int" , "xsd:long" , "xsd:double"],  // attributi validi per la select
+        selected_opt : null,        // id dell'attributo selezionato
+        selected_opt_value : null,  // valore testuale dell'attributo selezionato
+    }
+
+
+    // oggetto dell'operatore
+    var obj_operator = {
+        isValid: true,
+        name: "",
+        type: "",
+        text: "",
+        id: null,
+        template: "#tpl_operator",
+        class: obj_class,
+        index: null
+    }
+
+
+    // oggetto del numero
+    var obj_number = {
+        isValid: true,
+        name: "",
+        type: "",
+        text: "",
+        id: null,
+        template: "#tpl_number",
+        class: obj_class,
+        index: null
+    }
+    
+
+    // oggetto delle parentesi
+    var obj_brackets = {
+        isValid: true,
+        name: "",
+        type: "",
+        text: "",
+        id: null,
+        template: "#tpl_brackets",
+        class: obj_class,
+        index: null,
+        content: [],
+    }
+
+
+
+    // oggetto delle funzioni
+    var obj_functions = {
+        isValid: true,
+        name: "",
+        type: "",
+        text: "",
+        id: null,
+        template: "#tpl_functions",
+        class: obj_class,
+        index: null,
+        content: [],
+        hasParams: false,
+        param: 0,
+    }
+
+
+
+
+
+
+
+
+</script>
+
+

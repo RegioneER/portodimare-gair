@@ -1,0 +1,58 @@
+{% load i18n %}
+
+<div class="modal fade"  id="confirm_casestudies_clone" data-backdrop="static"
+    data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <strong class="cs_title"></strong> 
+            </div>
+            <div class="modal-body">
+                {% trans 'Do you want clone this Case Study' %}                
+                ?
+
+                <div style="margin-top: 15px;"></div>
+
+                <div class="form-group">
+                    <label for="id_label">
+                    {% trans "Name" %}
+                    </label><br />
+                    <input class="form-control" id="id_label" name="label" />
+
+                </div>
+
+
+                <div class="form-group">
+                    <label for="cs_text">
+                    {% trans "Description" %}
+                    </label><br />
+                    <textarea rows="10" maxlength="2000" 
+                    class="form-control" cols="40" id="cs_text"></textarea>
+
+
+                </div>
+
+                <small>
+                {% trans 'Leave blank to keep the same Name and Description' %}
+                </small>
+            </div>
+                
+            <div class="modal-footer">
+                
+                
+
+                <button class="cs_clone_confirm_btn btn btn-info">
+                    <span class='hidden run_icon fa fa-circle-o-notch fa-spin'></span>
+                    {% trans 'CLONE CASE STUDY' %}                    
+                </button>
+
+                <button class="btn btn-default" data-dismiss="modal" aria-label="Close">
+                    {% trans 'Close' %}                                        
+                </button>
+
+
+            </div>
+        </div>
+    </div>
+</div>

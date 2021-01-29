@@ -1,10 +1,30 @@
-# portodimare-gair
+#  Introduction
+Welcome to GAIR - Geoportal of Adriatic-Ionian Region
 
-Porto_Di_Mare
-========================
+The Geo data portal of Adriatic Ionian Region (GAIR) is a community-based, open source portal based on GeoNode     ([http://geonode.org/](http://geonode.org/)),  a web-based Content       Management System (CMS) for developing geospatial  information systems       (GIS) and for deploying spatial data infrastructure  (SDI).
+GAIR provides access to numerous datasets related to coastal and  marine       areas and to several modules for Integrated Coastal Zone  Management       (ICZM) and Maritime Spatial Planning (MSP) analysis and risk  assessment.
 
-GeoNode template project. Generates a django project with GeoNode support.
+![Build Status](https://www.portodimare.eu/static/docs/_images/portodimare_home.png)
 
+In particular, the already implemented tools are:
+      - Module for Cumulative Effects Assessment (CEA)
+      - Module for Maritime Use Synergy and Conflict Analysis Tool (MUSC)
+      - Module for Supporting Allocated Zones for Aquaculture (AZA)
+      identification
+      - Module for particle/conservative contaminants dispersion (PAR TRAC)
+      - Module for Coastal Oil Spill Vulnerability Assessment
+      - Module for Small Scale Fishery Footprint (SSF)
+      - Module on Medium Scale Fishery Footprint (MSF) & Cumulative Effects
+      Assessment on SSF & MSF.
+
+![Build Status](https://www.portodimare.eu/static/docs/_images/MUC_matrix_pconflict.png)
+sostituito a quello attuale visto
+The Geoportal capitalizes data from other projects (e.g. Shape,  Adriplan)      and integrates existing databases/portals developed at  European and      national level. GAIR thus represents a relevant and original instrument      that improves  concretely the support to  transparent and efficient      decision-making  processes and transnational cooperation between the      Adriatic and Ionian  Region Countries on maritime and marine governance      and services and on  the implementation of ICZM/MSP processes. For the      same reason, GAIR is  an important support to the EUSAIR Action Plan      implementation,  cross-cutting to the 4 Pillars of the Strategy.
+
+GAIR is developed under _geoPORtal of TOols & Data for sustaInable      Management of coAstal and maRine Environment_       ([https://portodimare.adrioninterreg.eu/](https://portodimare.adrioninterreg.eu/)) _ADRION_ programme.
+
+
+# Release
 Developer Workshop
 ------------------
 
@@ -15,6 +35,7 @@ Available at::
 
 Create a custom project
 -----------------------
+This is based on a GeoNode template project. Generates a django project with GeoNode support.
 
 Note: You can call your geonode project whatever you like following the naming conventions for python packages (generally lower case with underscores (``_``). In the examples below, replace ``my_geonode`` with whatever you would like to name your project.
 
@@ -261,4 +282,28 @@ To illustrate whole concept of chained settings:
     |                        | included by |                               | included by |                                  |
     |   geonode.settings     |     ->      |  porto_di_mare.settings    |      ->     |  porto_di_mare.local_settings |
     +------------------------|-------------|-------------------------------|-------------|----------------------------------+
+    
+# Credits, documentation and how to contribute
+Developed with the support of Regione Emilia Romagna.
+
+All issues on Github are public. So, if the issue is one that is fine to disclose publicly, you could report it via the issue tracker.
+Securit issues must be addressed privately to portodimare@regione.emilia-romagna.it
+
+-    Issue Tracker: https://github.com/RegioneER/portodimare-gair/issues
+-    Source Code: https://github.com/RegioneER/portodimare-gair
+
+
+Full documentation for end users is available online at https://www.portodimare.eu/static/docs/index.html
+
+# License
+GAIR is ©2021 PORTODIMARE / developed by Regione Emilia-Romagna 
+Where third party code is included, a special licence notice is included following the rules defined in <https://reuse.software/spec/>.
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. 
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+A copy of the GNU General Public License should be included along with this repository. If not, see <http://www.gnu.org/licenses>.
+
+GAIR <https://www.portodimare.eu/> is the main output of the project PORTODIMARE, co-funded by the Interreg ADRION Programme <https://www.adrioninterreg.eu/>. 
+
+[![Build Status](https://www.portodimare.eu/static/docs/_static/logo-adrion-portodimare.png)](https://github.com/RegioneER/portodimare-gair)
 
